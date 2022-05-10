@@ -1,0 +1,13 @@
+name: Son Goku;
+hp: 200;
+hp-max: 200;
+atk: 200;
+def: 10;
+agi: 90;
+spd: 90;
+specials: [
+	1: Kamehameha,
+	2: Kaioken,
+	3: Recharge,
+];
+effects: Super Saiyan;
