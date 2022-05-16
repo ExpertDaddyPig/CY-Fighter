@@ -1,0 +1,14 @@
+name: Hinata;
+type: Support;
+hp: 180;
+hp-max: 180;
+atk: 50;
+def: 60;
+agi: 70;
+spd: 80;
+specials: [
+	1: Un peu de Ramen?,
+	2: Paume Celeste,
+	3: Mur de Paume,
+];
+effects: Byakugan;
