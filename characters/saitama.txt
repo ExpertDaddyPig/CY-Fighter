@@ -1,4 +1,5 @@
 name: Saitama;
+type: brawler;
 hp: 200;
 hp-max: 200;
 atk: 200;
@@ -11,5 +12,3 @@ specials: [
 	3: OK,
 ];
 effects: Serious Mode;
-	
-	
