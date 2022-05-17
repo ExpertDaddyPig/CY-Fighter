@@ -1,14 +1,14 @@
-name: Exert Daddy Pig;
-type: tank;
-hp: 550;
-hp-max: 550;
-atk: 90;
-def: 250;
-agi: 40;
-spd: 80;
+name: Saitama;
+type: brawler;
+hp: 200;
+hp-max: 200;
+atk: 200;
+def: 10;
+agi: 90;
+spd: 90;
 specials: [
-	1: Pizza,
-	2: Avion En Papier,
-	3: Roulade,
+	1: Coup d'boule,
+	2: One Punch,
+	3: OK,
 ];
-effects: Je suis un expert en tout;
+effects: Serious Mode;

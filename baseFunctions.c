@@ -160,7 +160,7 @@ team createTeam (char *name) {
             printf("\"%s\" n'est pas un personnage disponible dans ce roster.\nVeuillez réessayer avec une champion figurant dans la liste.", heros2);
             printf("\nChoissisez votre deuxième champion: ");
         }
-        if (strcmp(strlwr(heros1), strlwr(heros2)) == 0) {
+        if (strlwr(heros1) == strlwr(heros2)) {
             printf("Vous avez déjà choisi %s.\nVeuillez choisir un autre personnage.\nChoissisez votre deuxième champion: ", heros2);
             verif = 0;
         }
@@ -172,7 +172,7 @@ team createTeam (char *name) {
         if (verif == 0) {
             printf("\"%s\" n'est pas un personnage disponible dans ce roster.\nVeuillez réessayer avec une champion figurant dans la liste.", heros3);
         }
-        if (strcmp(strlwr(heros1), strlwr(heros3)) == 0 || strcmp(strlwr(heros2), strlwr(heros3)) == 0) {
+        if (strlwr(heros1) == strlwr(heros3) || strlwr(heros2) == strlwr(heros3)) {
             printf("Vous avez déjà choisi %s.\nVeuillez choisir un autre personnage.\nChoissisez votre troisième champion: ", heros3);
             verif = 0;
         }
