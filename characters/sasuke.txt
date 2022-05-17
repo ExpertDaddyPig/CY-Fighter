@@ -1,14 +1,14 @@
-name: Exert Daddy Pig;
-type: tank;
-hp: 550;
-hp-max: 550;
-atk: 90;
-def: 250;
-agi: 40;
+name: Sasuke Uchiha;
+type: Brawler;
+hp: 140;
+hp-max: 140;
+atk: 170;
+def: 90;
+agi: 95;
 spd: 80;
 specials: [
-	1: Pizza,
-	2: Avion En Papier,
-	3: Roulade,
+	1: Katon Boule de Feu,
+	2: Chidori,
+	3: Amaterasu,
 ];
-effects: Je suis un expert en tout;
+effects: Susano;

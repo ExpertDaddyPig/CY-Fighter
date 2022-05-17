@@ -1,8 +1,8 @@
 name: Son Goku;
-type: brawler;
+type: Brawler;
 hp: 300;
 hp-max: 300;
-atk: 100;
+atk: 150;
 def: 100;
 agi: 95;
 spd: 70;

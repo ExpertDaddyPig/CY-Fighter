@@ -2,7 +2,7 @@ name: Saitama;
 type: brawler;
 hp: 200;
 hp-max: 200;
-atk: 200;
+atk: 300;
 def: 10;
 agi: 90;
 spd: 90;

@@ -1,0 +1,14 @@
+name: Luigi;
+type: Brawler;
+hp: 150;
+hp-max: 150;
+atk: 135;
+def: 140;
+agi: 55;
+spd: 70;
+specials: [
+	1: Thunder Flower,
+	2: Boomerang Flower,
+	3: Hammer,
+];
+effects: Super Star;

@@ -1,14 +1,14 @@
-name: Exert Daddy Pig;
-type: tank;
-hp: 550;
-hp-max: 550;
+name: Scooby-Doo;
+type: Tank;
+hp: 500;
+hp-max: 500;
 atk: 90;
-def: 250;
-agi: 40;
-spd: 80;
+def: 200;
+agi: 60;
+spd: 75;
 specials: [
-	1: Pizza,
-	2: Avion En Papier,
-	3: Roulade,
+	1: Croque-Scooby,
+	2: Repos,
+	3: Plus de mystères!,
 ];
-effects: Je suis un expert en tout;
+effects: Sauve qui peut;

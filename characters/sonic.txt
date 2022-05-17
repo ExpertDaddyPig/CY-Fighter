@@ -1,14 +1,14 @@
-name: Exert Daddy Pig;
-type: tank;
-hp: 550;
-hp-max: 550;
-atk: 90;
-def: 250;
-agi: 40;
-spd: 80;
+name: Sonic The Hedgehog;
+type: Brawler;
+hp: 150;
+hp-max: 150;
+atk: 175;
+def: 75;
+agi: 90;
+spd: 120;
 specials: [
-	1: Pizza,
-	2: Avion En Papier,
-	3: Roulade,
+	1: Spin Attack,
+	2: Jump Attack,
+	3: Spin Dash,
 ];
-effects: Je suis un expert en tout;
+effects: Super Sonic;
