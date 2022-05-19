@@ -144,15 +144,10 @@ int verifyChamp (char *champName) {
 
 team createTeam (char *name) {
     team equipe;
-    char *teamName = NULL;
+    char *teamName = name;
     char heros1[40], heros2[40], heros3[40];
     int verif = 0;
     fighter champ1, champ2, champ3;
-    teamName = malloc(100*sizeof(teamName));
-    if (teamName == NULL) {
-                printf("erreur d'allocation");
-                exit(1);
-    }
     printf("Choissisez votre premier champion: ");
     do {
         scanf("%[^\n]%*c", heros1);

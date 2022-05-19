@@ -6,14 +6,16 @@ main.o: main.c
 baseFunctions.o: baseFunctions.c
 	gcc -c baseFunctions.c -o baseFunctions.o
 
-exec: main.o baseFunctions.o
-	gcc main.o baseFunctions.o -o exec
+combatFunctions.o: combatFunctions.c
+	gcc -c combatFunctions.c -o combatFunctions.o
+
+exec: baseFunctions.o combatFunctions.o main.o
+	gcc main.o baseFunctions.o combatFunctions.o -o exec
 
 #Delete all files if you are using Windows OS
 cleanW:
-	del main.o
-	del baseFunctions.o
-	del exec.exe
+	del *.o
+	del *.exe
 	@echo "Tout les fichiers ont ete supprimés"
 
 #Delete all files if you are using Linux OS
