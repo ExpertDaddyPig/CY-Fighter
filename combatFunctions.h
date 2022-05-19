@@ -5,14 +5,27 @@
 #include "baseFunctions.c"
 #include "main.c"
 
+int Espace(int a){
+	a=75-a;
+	return(a)
+}
+
 void Interface(){
 	int space;
-	printf("_[%s]",teamName);
+	printf("┏[%s]",teamName);
 	space=strlen(teamName);
+	space=75-space;
 	for(int i=0; i<space;i++){
-		
+		printf("━");
 	}
-	
+	printf("┓");
+	printf("┃    %s  |1|              %s  |2|              %s  |3|",getFighter(heros1),getFighter(heros2),getFighter(heros3))
+	space=strlen(getFighter(heros1))+strlen(getFighter(heros2))+strlen(getFighter(heros3));
+	espace=30-espace;
+	for(int i=0; i<space;i++){
+		printf(" ");
+	}
+	printf("┃");
 }
 
 int Tours(){
@@ -26,11 +39,11 @@ int Tours(){
 
 void main(){
 	printf("Le joueur 1 à choisi %s, %s et %s !",getFighter(heros1),getFighter(heros2),getFighter(heros3));
-	
+	Interface();
 	
 }
 
-┏[EQUIPE1]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┏[]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃    sasuke  |1|              sakura  |¤|              naruto  |3|            ┃
 ┃    (***)                                                                    ┃
 ┃   [#################   ]   [#################   ]   [##############      ]  ┃
