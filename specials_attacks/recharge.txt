@@ -1,0 +1,7 @@
+name: Recharge;
+description: Goku recharge son ki. Au bout de 2 recharges, Goku peut utiliser sa capacité ultime et se transformer en Super Sayajin.;
+type: Status;
+duration: 1;
+heal: 0;
+accuracy: 100;
+cooldown: 0;

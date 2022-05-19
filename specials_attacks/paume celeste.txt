@@ -1,0 +1,7 @@
+name: Paume Celeste;
+description: Hinata envoie une coque d'air comprimé vers les points vitaux de sa cible. Si le Byakugan est activé, la cible subira le double des dégats.;
+type: Attack;
+power: 45;
+duration: 0;
+accuracy: 95;
+cooldown: 1;

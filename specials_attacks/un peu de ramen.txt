@@ -1,0 +1,7 @@
+name: Kaioken;
+description: Hinata donne un ramen à sa cible, lui régénérant 60 points de vie + 30% des points de vie manquants.;
+type: Status;
+duration: 0;
+heal: 60;
+accuracy: 100;
+cooldown: 2;

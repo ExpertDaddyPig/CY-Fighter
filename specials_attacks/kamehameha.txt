@@ -1,0 +1,7 @@
+name: Kamehameha;
+description: Goku charge son Kamehameha et le lance sur sa cible.;
+type: Attack;
+power: 120;
+duration: 1;
+accuracy: 95;
+cooldown: 2;

@@ -1,0 +1,7 @@
+name: Kaioken;
+description: Goku passe en Kaioken, sa prochaine attaque aura une puissance doublée.;
+type: Status;
+duration: 1;
+heal: 0;
+accuracy: 100;
+cooldown: 3;

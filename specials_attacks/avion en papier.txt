@@ -1,0 +1,7 @@
+name: Avion En Papier;
+description: Daddy Pig lance un avion en papier vers sa cible. Etant donné l'expertise de ce dernier, l'avion atteindra toujours sa cible.;
+type: Attack;
+power: 60;
+duration: 0;
+accuracy: 100;
+cooldown: 1;
