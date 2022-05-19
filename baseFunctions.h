@@ -30,5 +30,6 @@ typedef struct {
 fighter getFighter(char *name);
 team createTeam(char *name);
 int verifyChamp(char *champName);
+char toLowerCase(char *str);
 
 #endif

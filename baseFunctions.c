@@ -3,6 +3,16 @@
 #include <stdlib.h>
 #include "baseFunctions.h"
 
+char toLowerCase(char *str) {  
+    int i = 0;  
+    while (str[i] != '\0') {
+        if (str[i] >= 'A' && str[i] <= 'Z') {
+            str[i] = str[i] + 32;
+        } 
+        i++; 
+    }  
+}  
+
 fighter getFighter (char *champName) {
     FILE *data;
     fighter champ;
@@ -134,18 +144,14 @@ int verifyChamp (char *champName) {
 
 team createTeam (char *name) {
     team equipe;
-    char *teamName = NULL;
+    char *teamName = name;
     char heros1[40], heros2[40], heros3[40];
     int verif = 0;
     fighter champ1, champ2, champ3;
-    teamName = malloc(100*sizeof(teamName));
-    if (teamName == NULL) {
-                printf("erreur d'allocation");
-                exit(1);
-    }
     printf("Choissisez votre premier champion: ");
     do {
         scanf("%[^\n]%*c", heros1);
+        toLowerCase(heros1);
         verif = verifyChamp(heros1);
         if (verif == 0) {
             printf("\"%s\" n'est pas un personnage disponible dans ce roster.\nVeuillez réessayer avec une champion figurant dans la liste.", heros1);
@@ -155,12 +161,13 @@ team createTeam (char *name) {
     printf("Choissisez votre deuxième champion: ");
     do {
         scanf("%[^\n]%*c", heros2);
+        toLowerCase(heros2);
         verif = verifyChamp(heros2);
         if (verif == 0) {
             printf("\"%s\" n'est pas un personnage disponible dans ce roster.\nVeuillez réessayer avec une champion figurant dans la liste.", heros2);
             printf("\nChoissisez votre deuxième champion: ");
         }
-        if (strlwr(heros1) == strlwr(heros2)) {
+        if (strcmp(heros1, heros2) == 0) {
             printf("Vous avez déjà choisi %s.\nVeuillez choisir un autre personnage.\nChoissisez votre deuxième champion: ", heros2);
             verif = 0;
         }
@@ -168,11 +175,13 @@ team createTeam (char *name) {
     printf("Choissisez votre troisième champion: ");
     do {
         scanf("%[^\n]%*c", heros3);
+        toLowerCase(heros3);
         verif = verifyChamp(heros3);
         if (verif == 0) {
             printf("\"%s\" n'est pas un personnage disponible dans ce roster.\nVeuillez réessayer avec une champion figurant dans la liste.", heros3);
+            printf("Choissisez votre troisième champion: ");
         }
-        if (strlwr(heros1) == strlwr(heros3) || strlwr(heros2) == strlwr(heros3)) {
+        if (strcmp(heros1, heros3) == 0 || strcmp(heros2, heros3) == 0) {
             printf("Vous avez déjà choisi %s.\nVeuillez choisir un autre personnage.\nChoissisez votre troisième champion: ", heros3);
             verif = 0;
         }
