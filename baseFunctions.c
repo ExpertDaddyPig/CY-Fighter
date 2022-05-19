@@ -3,6 +3,16 @@
 #include <stdlib.h>
 #include "baseFunctions.h"
 
+char strlwr(char *str) {  
+    int i;  
+    while (str[i] != '\0') {
+        if ( str [i] >= 65 && str [i] <= 90) {
+            str[i] = str[i] + 32;
+            i =+ 1; 
+        } 
+    }  
+}  
+
 fighter getFighter (char *champName) {
     FILE *data;
     fighter champ;
