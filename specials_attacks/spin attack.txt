@@ -1,0 +1,9 @@
+name: Spin Attack;
+description: Sonic se met en boule et roule vers sa cible. Il attaquera forcément en premier.;
+type: Attack;
+power: 90;
+duration: 0;
+accuracy: 75;
+cooldown: 1;
+priority: 1;
+targets: 1;

@@ -1,0 +1,9 @@
+name: One Punch;
+description: Si Saitama arrive à toucher sa cible, elle sera instantanément mise K.O.;
+type: Attack;
+power: 99999999;
+duration: 0;
+accuracy: 50;
+cooldown: 5;
+priority: 0;
+targets: 1;

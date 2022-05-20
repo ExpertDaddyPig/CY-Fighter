@@ -1,0 +1,9 @@
+name: Club de Golf;
+description: Peach prend un club de golf et frappe violemment sa cible.;
+type: Attack;
+power: 90;
+duration: 0;
+accuracy: 95;
+cooldown: 1;
+priority: 0;
+targets: 1;

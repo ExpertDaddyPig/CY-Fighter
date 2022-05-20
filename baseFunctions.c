@@ -52,6 +52,7 @@ fighter getFighter (char *champName) {
         i++;
         letter = fgetc(data);
     }
+    type[i] = '\0';
     i = 0;
     fseek(data, 6, SEEK_CUR);
     fscanf(data, "%d", &hp);
@@ -140,9 +141,8 @@ fighter getFighter (char *champName) {
 
 int verifyChamp (char *champName) {
     FILE *data;
-    char file[] = "characters/";
-    char end[] = ".txt";
-    strcat(strcat(file, champName), end);
+    char file[100];
+    snprintf(file, sizeof(file), "characters/%s.txt", champName);
     data = fopen(file, "r+");
     if (data == NULL) {
         return 0;
@@ -219,8 +219,6 @@ team createTeam (char *name) {
     } while (verif == 0 || nameVerif == 0);
     champ3 = getFighter(heros3);
     printf("Vous avez choisi: %s\n", champ3.name);
-    strcpy(teamName,name);
-    free(teamName);
     strcpy(equipe.teamName, name);
     equipe.team[0] = champ1;
     equipe.team[1] = champ2;

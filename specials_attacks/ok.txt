@@ -1,0 +1,9 @@
+name: OK;
+description: Saitama devient neutre. Cela blesse psycologiquement ses adversaires et leur fait perdre 20% de leur défense pendant 1 tour.;
+type: Debuff;
+power: 0;
+duration: 1;
+accuracy: 100;
+cooldown: 5;
+priority: 0;
+targets: 3;

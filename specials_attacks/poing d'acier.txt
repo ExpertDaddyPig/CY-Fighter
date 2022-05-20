@@ -1,0 +1,9 @@
+name: Poing d'Acier;
+description: Knuckles se rue vers sa cible et lui donne un gros coup de poing.;
+type: Attack;
+power: 110;
+duration: 0;
+accuracy: 95;
+cooldown: 1;
+priority: 0;
+targets: 1;

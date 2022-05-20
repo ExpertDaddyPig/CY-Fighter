@@ -1,0 +1,9 @@
+name: Hammer;
+description: Luigi/Mario prend son marteau et frappe sa cible avec.;
+type: Attack;
+power: 100;
+duration: 0;
+accuracy: 80;
+cooldown: 1;
+priority: 0;
+targets: 1;

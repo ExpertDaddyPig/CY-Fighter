@@ -1,0 +1,9 @@
+name: Thunder Flower;
+description: Luigi prend une Thunder Flower, il peut alors faire tomber la foudre sur deux membres au hasard de l'équipe adverse.;
+type: Attack;
+power: 100;
+duration: 0;
+accuracy: 95;
+cooldown: 2;
+priority: 0;
+targets: 2;

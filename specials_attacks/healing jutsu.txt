@@ -1,0 +1,9 @@
+name: Healing Jutsu;
+description: Sakura utilise un jutsu permettant de soigner un allié. Il regagnera 100 points de vie.;
+type: Status;
+duration: 0;
+heal: 100;
+accuracy: 100;
+cooldown: 1;
+priority: 1;
+targets: 1;

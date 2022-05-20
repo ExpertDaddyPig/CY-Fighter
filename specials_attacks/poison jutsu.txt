@@ -1,0 +1,9 @@
+name: Poison Jutsu;
+description: Sakura utilise un jutsu altérant la santé du receveur. Il perdra 10 points de vie à la fin du tour pendant 5 tours.;
+type: Debuff;
+power: 0;
+duration: 5;
+accuracy: 100;
+cooldown: 4;
+priority: 0;
+targets: 1;

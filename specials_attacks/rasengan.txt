@@ -1,0 +1,9 @@
+name: Rasengan;
+description: Naruto charge une boule de chakra et la lance sur sa cible.;
+type: Attack;
+power: 130;
+duration: 1;
+accuracy: 95;
+cooldown: 1;
+priority: 0;
+targets: 1;

@@ -1,0 +1,9 @@
+name: Fire Flower;
+description: Mario prend une Fire Flower, il lance deux boules de feu sur sa cible.;
+type: Attack;
+power: 100;
+duration: 0;
+accuracy: 65;
+cooldown: 1;
+priority: 0;
+targets: 1;

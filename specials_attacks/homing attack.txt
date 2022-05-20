@@ -1,0 +1,9 @@
+name: Homing Attack;
+description: Sonic saute en l'air et fonce sur sa cible. Il ne manquera jamais sa cible.;
+type: Attack;
+power: 100;
+duration: 0;
+accuracy: 100;
+cooldown: 2;
+priority: 0;
+targets: 1;

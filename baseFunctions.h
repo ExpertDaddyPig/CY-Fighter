@@ -15,7 +15,7 @@ typedef struct {
 } stats;
 
 typedef struct {
-    char name[40];
+    char name[100];
     char type[40];
     char specials[3][40];
     char effect[40];
