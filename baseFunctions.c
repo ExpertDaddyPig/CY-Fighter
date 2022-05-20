@@ -43,6 +43,7 @@ fighter getFighter (char *champName) {
         i++;
         letter = fgetc(data);
     }
+    type[i] = '\0';
     i = 0;
     fseek(data, 6, SEEK_CUR);
     fscanf(data, "%d", &hp);
@@ -131,9 +132,8 @@ fighter getFighter (char *champName) {
 
 int verifyChamp (char *champName) {
     FILE *data;
-    char file[] = "characters/";
-    char end[] = ".txt";
-    strcat(strcat(file, champName), end);
+    char file[100];
+    snprintf(file, sizeof(file), "characters/%s.txt", champName);
     data = fopen(file, "r+");
     if (data == NULL) {
         return 0;
@@ -178,7 +178,7 @@ team createTeam (char *name) {
         toLowerCase(heros3);
         verif = verifyChamp(heros3);
         if (verif == 0) {
-            printf("\"%s\" n'est pas un personnage disponible dans ce roster.\nVeuillez réessayer avec une champion figurant dans la liste.", heros3);
+            printf("\"%s\" n'est pas un personnage disponible dans ce roster.\nVeuillez réessayer avec une champion figurant dans la liste.\n", heros3);
             printf("Choissisez votre troisième champion: ");
         }
         if (strcmp(heros1, heros3) == 0 || strcmp(heros2, heros3) == 0) {
@@ -189,8 +189,6 @@ team createTeam (char *name) {
     champ1 = getFighter(heros1);
     champ2 = getFighter(heros2);
     champ3 = getFighter(heros3);
-    strcpy(teamName,name);
-    free(teamName);
     strcpy(equipe.teamName, name);
     equipe.team[0] = champ1;
     equipe.team[1] = champ2;
