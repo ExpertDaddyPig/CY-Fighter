@@ -1,4 +1,4 @@
-name: Knuckles The Echidna;
+name: Knuckles;
 type: Brawler;
 hp: 300;
 hp-max: 300;

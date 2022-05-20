@@ -4,3 +4,5 @@ type: Shield;
 duration: 2;
 accuracy: 100;
 cooldown: 5;
+priority: 1;
+targets: 3;

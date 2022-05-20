@@ -9,6 +9,6 @@ spd: 75;
 specials: [
 	1: Croque-Scooby,
 	2: Repos,
-	3: Plus de mystères!,
+	3: Plus de mysteres,
 ];
 effects: Sauve qui peut;

@@ -5,3 +5,5 @@ power: 45;
 duration: 0;
 accuracy: 95;
 cooldown: 1;
+priority: 0;
+targets: 1;

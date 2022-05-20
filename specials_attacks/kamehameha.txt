@@ -4,4 +4,6 @@ type: Attack;
 power: 120;
 duration: 1;
 accuracy: 95;
-cooldown: 2;
+cooldown: 1;
+priority: 0;
+targets: 1;

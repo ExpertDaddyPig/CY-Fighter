@@ -1,4 +1,4 @@
-name: Sasuke Uchiha;
+name: Sasuke;
 type: Brawler;
 hp: 140;
 hp-max: 140;

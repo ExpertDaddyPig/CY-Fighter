@@ -1,4 +1,4 @@
-name: Miles "Tails" Prower;
+name: Tails;
 type: Support;
 hp: 200;
 hp-max: 200;

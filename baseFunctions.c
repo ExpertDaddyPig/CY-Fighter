@@ -11,7 +11,16 @@ char toLowerCase(char *str) {
         } 
         i++; 
     }  
-}  
+} 
+
+void clear_scan() {
+	char c;
+	int res;
+	do
+	{
+		res = fscanf(stdin, "%c", &c);
+	} while (res == 1 && c != '\n');
+}
 
 fighter getFighter (char *champName) {
     FILE *data;
@@ -146,49 +155,70 @@ team createTeam (char *name) {
     team equipe;
     char *teamName = name;
     char heros1[40], heros2[40], heros3[40];
-    int verif = 0;
+    int verif = 0, nameVerif = 0;
     fighter champ1, champ2, champ3;
     printf("Choissisez votre premier champion: ");
     do {
-        scanf("%[^\n]%*c", heros1);
+        nameVerif = scanf("%[^\n]%*c", heros1);
         toLowerCase(heros1);
-        verif = verifyChamp(heros1);
-        if (verif == 0) {
-            printf("\"%s\" n'est pas un personnage disponible dans ce roster.\nVeuillez réessayer avec une champion figurant dans la liste.", heros1);
-            printf("\nChoissisez votre premier champion: ");
+        if (nameVerif == 0) {
+            printf("Veuillez entrer un nom de champion valide.\n");
+            printf("Choissisez votre premier champion: ");
+            clear_scan();
+        } else {
+            verif = verifyChamp(heros1);
+            if (verif == 0) {
+                printf("\"%s\" n'est pas un personnage disponible dans ce roster.\nVeuillez réessayer avec une champion figurant dans la liste.", heros1);
+                printf("\nChoissisez votre premier champion: ");
+            }
         }
-    } while (verif == 0);
+    } while (verif == 0 || nameVerif == 0);
+    champ1 = getFighter(heros1);
+    printf("Vous avez choisi: %s\n", champ1.name);
     printf("Choissisez votre deuxième champion: ");
     do {
-        scanf("%[^\n]%*c", heros2);
+        nameVerif = scanf("%[^\n]%*c", heros2);
         toLowerCase(heros2);
-        verif = verifyChamp(heros2);
-        if (verif == 0) {
-            printf("\"%s\" n'est pas un personnage disponible dans ce roster.\nVeuillez réessayer avec une champion figurant dans la liste.", heros2);
-            printf("\nChoissisez votre deuxième champion: ");
+        if (nameVerif == 0) {
+            printf("Veuillez entrer un nom de champion valide.\n");
+            printf("Choissisez votre deuxième champion: ");
+            clear_scan();
+        } else {
+            verif = verifyChamp(heros2);
+            if (verif == 0) {
+                printf("\"%s\" n'est pas un personnage disponible dans ce roster.\nVeuillez réessayer avec une champion figurant dans la liste.", heros1);
+                printf("\nChoissisez votre premier champion: ");
+            }
+            if (strcmp(heros1, heros2) == 0) {
+                printf("Vous avez déjà choisi %s.\nVeuillez choisir un autre personnage.\nChoissisez votre deuxième champion: ", heros2);
+                verif = 0;
+            }
         }
-        if (strcmp(heros1, heros2) == 0) {
-            printf("Vous avez déjà choisi %s.\nVeuillez choisir un autre personnage.\nChoissisez votre deuxième champion: ", heros2);
-            verif = 0;
-        }
-    } while (verif == 0);
+    } while (verif == 0 || nameVerif == 0);
+    champ2 = getFighter(heros2);
+    printf("Vous avez choisi: %s\n", champ2.name);
     printf("Choissisez votre troisième champion: ");
     do {
-        scanf("%[^\n]%*c", heros3);
+        nameVerif = scanf("%[^\n]%*c", heros3);
         toLowerCase(heros3);
-        verif = verifyChamp(heros3);
-        if (verif == 0) {
-            printf("\"%s\" n'est pas un personnage disponible dans ce roster.\nVeuillez réessayer avec une champion figurant dans la liste.", heros3);
+        if (nameVerif == 0) {
+            printf("Veuillez entrer un nom de champion valide.\n");
             printf("Choissisez votre troisième champion: ");
+            clear_scan();
+        } else {
+            verif = verifyChamp(heros3);
+            if (verif == 0) {
+                printf("\"%s\" n'est pas un personnage disponible dans ce roster.\nVeuillez réessayer avec une champion figurant dans la liste.", heros1);
+                printf("\nChoissisez votre premier champion: ");
+            }
+            if (strcmp(heros1, heros3) == 0 || strcmp(heros2, heros3) == 0) {
+                printf("Vous avez déjà choisi %s.\nVeuillez choisir un autre personnage.\nChoissisez votre troisième champion: ", heros3);
+                verif = 0;
+            }
         }
-        if (strcmp(heros1, heros3) == 0 || strcmp(heros2, heros3) == 0) {
-            printf("Vous avez déjà choisi %s.\nVeuillez choisir un autre personnage.\nChoissisez votre troisième champion: ", heros3);
-            verif = 0;
-        }
-    } while (verif == 0);
-    champ1 = getFighter(heros1);
-    champ2 = getFighter(heros2);
+    } while (verif == 0 || nameVerif == 0);
     champ3 = getFighter(heros3);
+    printf("Vous avez choisi: %s\n", champ3.name);
     strcpy(teamName,name);
     free(teamName);
     strcpy(equipe.teamName, name);

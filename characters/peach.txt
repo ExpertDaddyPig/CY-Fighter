@@ -8,7 +8,7 @@ agi: 40;
 spd: 50;
 specials: [
 	1: Club de Golf,
-	2: Prend une pèche!,
-	3: Les dames d'abord!,
+	2: Garde la peche,
+	3: Les Dames d'abord,
 ];
 effects: Faites de beaux reves;

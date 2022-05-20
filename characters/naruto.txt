@@ -1,4 +1,4 @@
-name: Naruto Uzumaki;
+name: Naruto;
 type: Brawler;
 hp: 130;
 hp-max: 130;

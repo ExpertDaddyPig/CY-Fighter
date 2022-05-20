@@ -23,7 +23,7 @@ void Interface(team equipe){
 	}
 	printf("┓\n");
 	printf("┃    %s  |1|              %s  |2|              %s  |3|",heros1,heros2,heros3);
-	space=strlen(heros1)+strlen(heros2)+strlen(heros3);
+    space=strlen(heros1)+strlen(heros2)+strlen(heros3);
 	space=30-space;
 	for(int i=0; i<space;i++){
 		printf(" ");

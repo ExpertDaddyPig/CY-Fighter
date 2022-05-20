@@ -1,4 +1,4 @@
-name: Sakura Haruno;
+name: Sakura;
 type: Support;
 hp: 350;
 hp-max: 350;
