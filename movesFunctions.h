@@ -7,15 +7,19 @@
 #include "baseFunctions.h"
 
 typedef struct {
-    char *name;
-    char *description;
-    char *type;
-    int power;
+	int power;
     int accuracy;
     int duration;
     int cooldown;
     int priority;
     int targets;
+} moveStats;
+
+typedef struct {
+    char name[100];
+    char description[300];
+    char type[100];
+    moveStats stats;
 } Move;
 
 Move getMove(char *name);

@@ -12,14 +12,14 @@ typedef struct {
     int def;
     int agi;
     int spd;
-} stats;
+} fighterStats;
 
 typedef struct {
     char name[100];
     char type[40];
     char specials[3][40];
     char effect[40];
-    stats stats;
+    fighterStats stats;
 } fighter;
 
 typedef struct {

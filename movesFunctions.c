@@ -7,9 +7,9 @@
 Move getMove(char *moveName) {
     FILE *data;
     Move move;
-    char file[100];
-    snprintf(file, sizeof(file), "specials_attacks/%s.txt", moveName);
-    data = fopen(file, "r+");
+    char *file;
+    snprintf(file, 100, "specials_attacks/%s.txt", moveName);
+    data = fopen(file, "r");
     if (data == NULL) {
         printf("%s n'est pas une capacité spéciale disponible.\nVeuillez réessayez avec une capacité figurant dans la liste.", moveName);
         exit(1);
@@ -26,7 +26,8 @@ Move getMove(char *moveName) {
     }
     name[i] = '\0';
     i = 0;
-    fseek(data, 15, SEEK_CUR);
+    printf("NAME:%s\n", name);
+    fseek(data, 14, SEEK_CUR);
     letter = fgetc(data);
     while (letter != ';') {
         desc[i] = letter;
@@ -35,7 +36,8 @@ Move getMove(char *moveName) {
     }
     desc[i] = '\0';
     i = 0;
-    fseek(data, 8, SEEK_CUR);
+    printf("DESC:%s\n", desc);
+    fseek(data, 7, SEEK_CUR);
     letter = fgetc(data);
     while (letter != ';') {
         type[i] = letter;
@@ -43,7 +45,11 @@ Move getMove(char *moveName) {
         letter = fgetc(data);
     }
     type[i] = '\0';
+    printf("TYPE:%s\n", type);
     i = 0;
+    strcpy(move.name, name);
+    strcpy(move.description, desc);
+    strcpy(move.type, type);
     if (strcmp(type, "Attack") == 0) {
         fseek(data, 9, SEEK_CUR);
         fscanf(data, "%d", &pow);
@@ -57,15 +63,12 @@ Move getMove(char *moveName) {
         fscanf(data, "%d", &prio);
         fseek(data, 11, SEEK_CUR);
         fscanf(data, "%d", &tar);
-        move.name = name;
-        move.description = desc;
-        move.type = type;
-        move.power = pow;
-        move.duration = dur;
-        move.accuracy = acc;
-        move.cooldown = cd;
-        move.priority = prio;
-        move.targets = tar;
+        move.stats.power = pow;
+        move.stats.duration = dur;
+        move.stats.accuracy = acc;
+        move.stats.cooldown = cd;
+        move.stats.priority = prio;
+        move.stats.targets = tar;
     }
     if (strcmp(type, "Status") == 0) {
         fseek(data, 12, SEEK_CUR);
@@ -80,15 +83,12 @@ Move getMove(char *moveName) {
         fscanf(data, "%d", &prio);
         fseek(data, 11, SEEK_CUR);
         fscanf(data, "%d", &tar);
-        move.name = name;
-        move.description = desc;
-        move.type = type;
-        move.power = pow;
-        move.duration = dur;
-        move.accuracy = acc;
-        move.cooldown = cd;
-        move.priority = prio;
-        move.targets = tar;
+        move.stats.power = pow;
+        move.stats.duration = dur;
+        move.stats.accuracy = acc;
+        move.stats.cooldown = cd;
+        move.stats.priority = prio;
+        move.stats.targets = tar;
     }
     if (strcmp(type, "Buff") == 0) {
         fseek(data, 12, SEEK_CUR);
@@ -101,16 +101,12 @@ Move getMove(char *moveName) {
         fscanf(data, "%d", &prio);
         fseek(data, 11, SEEK_CUR);
         fscanf(data, "%d", &tar);
-        pow = 0;
-        move.name = name;
-        move.description = desc;
-        move.type = type;
-        move.power = pow;
-        move.duration = dur;
-        move.accuracy = acc;
-        move.cooldown = cd;
-        move.priority = prio;
-        move.targets = tar;
+        move.stats.power = 0;
+        move.stats.duration = dur;
+        move.stats.accuracy = acc;
+        move.stats.cooldown = cd;
+        move.stats.priority = prio;
+        move.stats.targets = tar;
     }
     if (strcmp(type, "Debuff") == 0) {
         fseek(data, 8, SEEK_CUR);
@@ -125,15 +121,12 @@ Move getMove(char *moveName) {
         fscanf(data, "%d", &prio);
         fseek(data, 11, SEEK_CUR);
         fscanf(data, "%d", &tar);
-        move.name = name;
-        move.description = desc;
-        move.type = type;
-        move.power = pow;
-        move.duration = dur;
-        move.accuracy = acc;
-        move.cooldown = cd;
-        move.priority = prio;
-        move.targets = tar;
+        move.stats.power = pow;
+        move.stats.duration = dur;
+        move.stats.accuracy = acc;
+        move.stats.cooldown = cd;
+        move.stats.priority = prio;
+        move.stats.targets = tar;
     }
     if (strcmp(type, "Shield") == 0) {
         fseek(data, 12, SEEK_CUR);
@@ -146,16 +139,12 @@ Move getMove(char *moveName) {
         fscanf(data, "%d", &prio);
         fseek(data, 11, SEEK_CUR);
         fscanf(data, "%d", &tar);
-        pow = 0;
-        move.name = name;
-        move.description = desc;
-        move.type = type;
-        move.power = pow;
-        move.duration = dur;
-        move.accuracy = acc;
-        move.cooldown = cd;
-        move.priority = prio;
-        move.targets = tar;
+        move.stats.power = 0;
+        move.stats.duration = dur;
+        move.stats.accuracy = acc;
+        move.stats.cooldown = cd;
+        move.stats.priority = prio;
+        move.stats.targets = tar;
     }
     fclose(data);
     return move;

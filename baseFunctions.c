@@ -27,7 +27,7 @@ fighter getFighter (char *champName) {
     fighter champ;
     char file[100];
     snprintf(file, sizeof(file), "characters/%s.txt", champName);
-    data = fopen(file, "r+");
+    data = fopen(file, "r");
     if (data == NULL) {
         printf("%s n'est pas un personnage disponible dans ce roster.\nVeuillez réessayez avec une champion figurant dans la liste.", champName);
         exit(1);

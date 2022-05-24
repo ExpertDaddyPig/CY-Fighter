@@ -33,19 +33,13 @@ void Interface(team equipe){
         printf(" ");
         namespace = namespace + 1;
     }
-    printf("|1|");
-    for (int i = 0; i < spaceleft / 2; i++) {
-        printf(" ");
-    }
+    printf("|1|      ");
     printf("%s", heros2);
     for(int i = strlen(heros2); i < 17;i++) {
         printf(" ");
         namespace = namespace + 1;
     }
-    printf("|2|");
-    for (int i = 0; i < spaceleft / 2; i++) {
-        printf(" ");
-    }
+    printf("|2|      ");
     printf("%s", heros3);
     for(int i = strlen(heros3); i < 17;i++) {
         printf(" ");
