@@ -7,7 +7,7 @@ def: 90;
 agi: 90;
 spd: 75;
 specials: [
-	1: Heavy Punch,
+	1: Cherry Blossom Impact,
 	2: Poison Jutsu,
 	3: Healing Jutsu,
 ];

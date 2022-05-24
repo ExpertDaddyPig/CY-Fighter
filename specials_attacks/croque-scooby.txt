@@ -1,5 +1,5 @@
 name: Croque-Scooby;
-description: Scooby / Sammy mange un Croque-Scooby. Il regagne 75 points de vie.;
+description: Scooby / Sammy mange un Croque-Scooby.|Il regagne 75 points de vie.;
 type: Status;
 duration: 0;
 heal: 75;

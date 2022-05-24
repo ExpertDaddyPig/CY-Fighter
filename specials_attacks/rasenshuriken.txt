@@ -1,5 +1,5 @@
 name: Rasenshuriken;
-description: Si Naruto a un Rasengan en cours de chargement, il prendra un tour de chargement en plus pour le transformer en Rasenshuriken qui fera une explosion au contact d'un ennemi.;
+description: Si Naruto a un Rasengan en cours de chargement, il prendra|un tour de chargement en plus pour le transformer en Rasenshuriken|qui fera une explosion au contact d'un ennemi.;
 type: Attack;
 power: 150;
 duration: 1;

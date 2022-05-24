@@ -1,5 +1,5 @@
 name: Plus de mysteres;
-description: Scooby fait tomber les masques (il essaie). La colle utilisée inflige des dégats aux porteurs.;
+description: Scooby fait tomber les masques (il essaie).|La colle utilisée inflige des dégats aux porteurs.;
 type: Attack;
 power: 120;
 duration: 0;

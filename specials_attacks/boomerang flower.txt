@@ -1,5 +1,5 @@
 name: Boomerang Flower;
-description: Luigi prend une Boomerang Flower, il lance un boomerang qui frappera deux fois sa cible.;
+description: Luigi prend une Boomerang Flower, il lance un boomerang|qui frappera deux fois sa cible.;
 type: Attack;
 power: 75;
 duration: 0;

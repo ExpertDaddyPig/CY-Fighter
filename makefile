@@ -17,8 +17,7 @@ exec: baseFunctions.o combatFunctions.o movesFunctions.o main.o
 
 #Delete all files if you are using Windows OS
 cleanW:
-	del *.o
-	del *.exe
+	del *.o *.exe exec
 	@echo "Tout les fichiers ont ete supprimés"
 
 #Delete all files if you are using Linux OS

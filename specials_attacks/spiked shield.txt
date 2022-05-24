@@ -1,5 +1,5 @@
 name: Spiked Shield;
-description: Knuckles se met en boule. Toutes les attaques reçues sont réduites de 50% et font des dégâts supplémentaires de recul.;
+description: Knuckles se met en boule. Toutes les attaques reçues sont|réduites de 50% et font des dégâts supplémentaires de recul.;
 type: Shield;
 duration: 1;
 accuracy: 100;

@@ -1,5 +1,5 @@
 name: Healing Jutsu;
-description: Sakura utilise un jutsu permettant de soigner un allié. Il regagnera 100 points de vie.;
+description: Sakura utilise un jutsu permettant de soigner un allié.|Il regagnera 100 points de vie.;
 type: Status;
 duration: 0;
 heal: 100;

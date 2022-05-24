@@ -1,5 +1,5 @@
 name: Garrick Canon;
-description: Vegeta concentre son energie tout autour de lui et envoie un rayon puissance rayon d'énergie.;
+description: Vegeta concentre son energie tout autour de lui|et envoie un rayon puissance rayon d'énergie.;
 type: Attack;
 power: 130;
 duration: 1;

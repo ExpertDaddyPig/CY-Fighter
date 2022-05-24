@@ -1,5 +1,5 @@
 name: Coup d'Boule;
-description: Saitama fonce sur sa cible la tête la première, et lui inflige de gros dégâts.;
+description: Saitama fonce sur sa cible la tête la première,|et lui inflige de gros dégâts.;
 type: Attack;
 power: 120;
 duration: 0;

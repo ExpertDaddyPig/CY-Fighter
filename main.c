@@ -9,13 +9,13 @@
 
 void main() {
     int choice;
+    char teamName[200];
     printf("-----Bienvenue sur CY-Fighter !-----\n");
     printf("    ------------MENU------------    \n");
     printf("1: Jouer contre un adversaire\n");
     printf("2: Jouer contre un adversaire en mode IA\n");
     printf("3: Afficher la liste des personnages\n");
     printf("4: Quitter\n");
-    char teamName[200];
     int verif = 1;
     do {
         printf("Joueur 1 :\nEntrez le nom de votre équipe: ");
@@ -26,7 +26,7 @@ void main() {
         }
     } while (verif == 0);
     team team1 = createTeam(teamName);
-    do {
+    /*do {
         printf("Joueur 2 :\nEntrez le nom de votre équipe: ");
         verif = scanf("%[^\n]%*c", teamName);
         if (verif == 0) {
@@ -34,15 +34,22 @@ void main() {
             clear_scan();
         }
     } while (verif == 0);
-    team team2 = createTeam(teamName);
+    team team2 = createTeam(teamName);*/
     Interface(team1);
-    Move move = getMove("spiked shield");
-    printf("%s", move.name);
-    printf("%s", move.description);
-    printf("%s", move.type);
-    printf("%d", move.power);
-    printf("%d", move.accuracy);
-    printf("%d", move.duration);
-    printf("%d", move.cooldown);
-    printf("%d", move.targets);
+    Move move;
+    move = getMove("spiked shield");
+    printf("\n%s\n", move.name);
+    printf("%s\n", move.description);
+    printf("%s\n", move.type);
+    printf("%d\n", move.power);
+    printf("%d\n", move.accuracy);
+    printf("%d\n", move.duration);
+    printf("%d\n", move.cooldown);
+    printf("%d\n", move.targets);
+    const char * separators = "|";
+    char * strToken = strtok (move.description, separators );
+    while ( strToken != NULL ) {
+        printf ( "%s\n", strToken );
+        strToken = strtok ( NULL, separators );
+    }
 }

@@ -1,5 +1,5 @@
 name: Spin Attack;
-description: Sonic se met en boule et roule sur place afin de prendre de la vitesse. Au prochain tour, il fonce sur sa cible et lui inflige de gros dégats.;
+description: Sonic se met en boule et roule sur place afin de prendre de la vitesse.|Au prochain tour, il fonce sur sa cible et lui inflige de gros dégats.;
 type: Attack;
 power: 150;
 duration: 1;

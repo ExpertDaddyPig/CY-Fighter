@@ -1,5 +1,5 @@
 name: MAgic Hand;
-description: Tails utilise Magic Hand, une de ses armes sur l'équipe ennemie. Elle crée une onde de choc à l'impact.;
+description: Tails utilise Magic Hand, une de ses armes sur l'équipe ennemie.|Elle crée une onde de choc à l'impact.;
 type: Attack;
 power: 100;
 duration: 0;

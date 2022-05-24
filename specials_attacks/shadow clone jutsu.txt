@@ -1,5 +1,5 @@
 name: Shadow Clone Jutsu;
-description: Naruto se démultiplie en plusieurs clones. Il peut en faire appraître entre 5 et 10. Ils attaqueront tous la cible souhaitée.;
+description: Naruto se démultiplie en plusieurs clones. Il peut en faire appraître entre 5 et 10.|Ils attaqueront tous la cible souhaitée.;
 type: Attack;
 power: 20;
 duration: 0;

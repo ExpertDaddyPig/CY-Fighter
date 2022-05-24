@@ -25,9 +25,8 @@ void clear_scan() {
 fighter getFighter (char *champName) {
     FILE *data;
     fighter champ;
-    char file[] = "characters/";
-    char end[] = ".txt";
-    strcat(strcat(file, champName), end);
+    char file[100];
+    snprintf(file, sizeof(file), "characters/%s.txt", champName);
     data = fopen(file, "r+");
     if (data == NULL) {
         printf("%s n'est pas un personnage disponible dans ce roster.\nVeuillez réessayez avec une champion figurant dans la liste.", champName);

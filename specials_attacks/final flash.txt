@@ -1,5 +1,5 @@
 name: Final Flash;
-description: Vegeta rassemble du ki vers ses deux mains et les rassemble afin de créer un rayon d'énergie devastateur.;
+description: Vegeta rassemble du ki vers ses deux mains et|les rassemble afin de créer un rayon d'énergie devastateur.;
 type: Attack;
 power: 160;
 duration: 1;

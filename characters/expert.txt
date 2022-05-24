@@ -1,4 +1,4 @@
-name: Exert Daddy Pig;
+name: Expert Daddy Pig;
 type: Tank;
 hp: 550;
 hp-max: 550;

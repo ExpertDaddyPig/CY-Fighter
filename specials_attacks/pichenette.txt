@@ -1,5 +1,5 @@
 name: Pichenette;
-description: Sammy donne une petite pichenette à sa cible. Si Sammy est en Ultra Instinct: 0.00001%, sa pichenette devient aussi puissante qu'un météore.;
+description: Sammy donne une petite pichenette à sa cible.|Si Sammy est en Ultra Instinct: 0.00001%, sa pichenette devient aussi puissante qu'un météore.;
 type: Attack;
 power: 20;
 duration: 0;

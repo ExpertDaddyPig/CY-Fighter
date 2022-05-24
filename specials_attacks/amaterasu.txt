@@ -1,5 +1,5 @@
 name: Amaterasu;
-description: Sasuke envoie des flammes noires sur sa cible lui infligent des dégâts. Les flammes persisteront causant des dégâts à la cible pendant 3 tours.;
+description: Sasuke envoie des flammes noires sur sa cible lui infligent des dégâts.|Les flammes persisteront causant des dégâts à la cible pendant 3 tours.;
 type: Debuff;
 power: 60;
 duration: 3;

@@ -1,5 +1,5 @@
 name: Repulsion Celeste;
-description: Hinata crée un dome reppoussant toutes les attaques de l'ennemi pendant 2 tours.;
+description: Hinata crée un dome reppoussant toutes les attaques de l'ennemi|pendant 2 tours.;
 type: Shield;
 duration: 2;
 accuracy: 100;

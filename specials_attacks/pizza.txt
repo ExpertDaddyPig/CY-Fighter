@@ -1,5 +1,5 @@
 name: Pizza;
-description: Daddy Pig mange une pizza. Plutôt évident. Il regagne 75 points de vie. Si ses points de vie sont au maximum, il ne gagnera pas de points de vie en plus.;
+description: Daddy Pig mange une pizza. Plutôt évident. Il regagne 75 points de vie.;
 type: Status;
 duration: 0;
 heal: 75;
