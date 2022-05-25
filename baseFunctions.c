@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "baseFunctions.h"
 
-char toLowerCase(char *str) {  
+void toLowerCase(char *str) {  
     int i = 0;  
     while (str[i] != '\0') {
         if (str[i] >= 'A' && str[i] <= 'Z') {
@@ -16,8 +16,7 @@ char toLowerCase(char *str) {
 void clear_scan() {
 	char c;
 	int res;
-	do
-	{
+	do {
 		res = fscanf(stdin, "%c", &c);
 	} while (res == 1 && c != '\n');
 }
@@ -185,7 +184,7 @@ team createTeam (char *name) {
         } else {
             verif = verifyChamp(heros2);
             if (verif == 0) {
-                printf("\"%s\" n'est pas un personnage disponible dans ce roster.\nVeuillez réessayer avec une champion figurant dans la liste.", heros1);
+                printf("\"%s\" n'est pas un personnage disponible dans ce roster.\nVeuillez réessayer avec une champion figurant dans la liste.", heros2);
                 printf("\nChoissisez votre premier champion: ");
             }
             if (strcmp(heros1, heros2) == 0) {

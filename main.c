@@ -17,7 +17,7 @@ void main() {
     printf("3: Afficher la liste des personnages\n");
     printf("4: Quitter\n");
     int verif = 1;
-    /*do {
+    do {
         printf("Joueur 1 :\nEntrez le nom de votre équipe: ");
         verif = scanf("%[^\n]%*c", teamName);
         if (verif == 0) {
@@ -26,7 +26,7 @@ void main() {
         }
     } while (verif == 0);
     team team1 = createTeam(teamName);
-    /*do {
+    do {
         printf("Joueur 2 :\nEntrez le nom de votre équipe: ");
         verif = scanf("%[^\n]%*c", teamName);
         if (verif == 0) {
@@ -34,9 +34,9 @@ void main() {
             clear_scan();
         }
     } while (verif == 0);
-    team team2 = createTeam(teamName);*/
-    //Interface(team1);
-    Move move;
+    team team2 = createTeam(teamName);
+    Interface(team1, team2);
+    /*Move move;
     move = getMove("amaterasu");
     printf("\nMove Name: %s\n", move.name);
     printf("Description:");
@@ -55,5 +55,5 @@ void main() {
     printf("Accuracy: %d\n", move.stats.accuracy);
     printf("Duration: %d\n", move.stats.duration);
     printf("Cooldown: %d\n", move.stats.cooldown);
-    printf("Targets: %d\n", move.stats.targets);
+    printf("Targets: %d\n", move.stats.targets);*/
 }

@@ -7,7 +7,7 @@
 #include "baseFunctions.h"
 
 int espace(int a);
-void Interface(team equipe);
+void Interface(team ally, team enemy);
 
 #endif
 /*int Tours(){
