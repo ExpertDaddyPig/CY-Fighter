@@ -5,5 +5,5 @@ duration: 0;
 heal: 60;
 accuracy: 100;
 cooldown: 2;
-priority: 0;
+priority: 1;
 targets: 1;

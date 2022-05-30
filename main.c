@@ -25,7 +25,7 @@ void main() {
             clear_scan();
         }
     } while (verif == 0);
-    team team1 = createTeam(teamName);
+    Team team1 = createTeam(teamName);
     do {
         printf("Joueur 2 :\nEntrez le nom de votre équipe: ");
         verif = scanf("%[^\n]%*c", teamName);
@@ -34,8 +34,9 @@ void main() {
             clear_scan();
         }
     } while (verif == 0);
-    team team2 = createTeam(teamName);
+    Team team2 = createTeam(teamName);
     Interface(team1, team2);
+    fight(team1, team2);
     /*Move move;
     move = getMove("amaterasu");
     printf("\nMove Name: %s\n", move.name);

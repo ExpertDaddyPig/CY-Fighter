@@ -7,8 +7,9 @@
 Move getMove(char *moveName) {
     FILE *data;
     Move move;
-    char *file;
-    snprintf(file, 100, "specials_attacks/%s.txt", moveName);
+    char file[50];
+    sprintf(file, "specials_attacks/%s.txt", moveName);
+    fflush(stdout);
     data = fopen(file, "r");
     if (data == NULL) {
         printf("%s n'est pas une capacité spéciale disponible.\nVeuillez réessayez avec une capacité figurant dans la liste.", moveName);
@@ -26,8 +27,7 @@ Move getMove(char *moveName) {
     }
     name[i] = '\0';
     i = 0;
-    printf("NAME:%s\n", name);
-    fseek(data, 14, SEEK_CUR);
+    fseek(data, 15, SEEK_CUR);
     letter = fgetc(data);
     while (letter != ';') {
         desc[i] = letter;
@@ -36,8 +36,7 @@ Move getMove(char *moveName) {
     }
     desc[i] = '\0';
     i = 0;
-    printf("DESC:%s\n", desc);
-    fseek(data, 7, SEEK_CUR);
+    fseek(data, 8, SEEK_CUR);
     letter = fgetc(data);
     while (letter != ';') {
         type[i] = letter;
@@ -45,12 +44,11 @@ Move getMove(char *moveName) {
         letter = fgetc(data);
     }
     type[i] = '\0';
-    printf("TYPE:%s\n", type);
     i = 0;
     strcpy(move.name, name);
     strcpy(move.description, desc);
     strcpy(move.type, type);
-    if (strcmp(type, "Attack") == 0) {
+    if (strcmp(move.type, "Attack") == 0) {
         fseek(data, 9, SEEK_CUR);
         fscanf(data, "%d", &pow);
         fseek(data, 12, SEEK_CUR);
@@ -70,7 +68,7 @@ Move getMove(char *moveName) {
         move.stats.priority = prio;
         move.stats.targets = tar;
     }
-    if (strcmp(type, "Status") == 0) {
+    if (strcmp(move.type, "Status") == 0) {
         fseek(data, 12, SEEK_CUR);
         fscanf(data, "%d", &dur);
         fseek(data, 8, SEEK_CUR);
@@ -90,7 +88,7 @@ Move getMove(char *moveName) {
         move.stats.priority = prio;
         move.stats.targets = tar;
     }
-    if (strcmp(type, "Buff") == 0) {
+    if (strcmp(move.type, "Buff") == 0) {
         fseek(data, 12, SEEK_CUR);
         fscanf(data, "%d", &dur);
         fseek(data, 12, SEEK_CUR);
@@ -108,7 +106,7 @@ Move getMove(char *moveName) {
         move.stats.priority = prio;
         move.stats.targets = tar;
     }
-    if (strcmp(type, "Debuff") == 0) {
+    if (strcmp(move.type, "Debuff") == 0) {
         fseek(data, 8, SEEK_CUR);
         fscanf(data, "%d", &pow);
         fseek(data, 12, SEEK_CUR);
@@ -128,7 +126,7 @@ Move getMove(char *moveName) {
         move.stats.priority = prio;
         move.stats.targets = tar;
     }
-    if (strcmp(type, "Shield") == 0) {
+    if (strcmp(move.type, "Shield") == 0) {
         fseek(data, 12, SEEK_CUR);
         fscanf(data, "%d", &dur);
         fseek(data, 12, SEEK_CUR);
@@ -149,3 +147,4 @@ Move getMove(char *moveName) {
     fclose(data);
     return move;
 }
+

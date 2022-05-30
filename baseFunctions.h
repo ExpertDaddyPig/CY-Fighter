@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+
 typedef struct {
     int hp;
     int hpMax;
@@ -20,18 +21,17 @@ typedef struct {
     char specials[3][40];
     char effect[40];
     fighterStats stats;
-} fighter;
+} Fighter;
 
 typedef struct {
     char teamName[100];
-    fighter team[3];
-} team;
+    Fighter team[3];
+} Team;
 
-fighter getFighter(char *name);
-team createTeam(char *name);
+Fighter getFighter(char *name);
+Team createTeam(char *name);
 int verifyChamp(char *champName);
 void toLowerCase(char *str);
 void clear_scan();
-
 
 #endif

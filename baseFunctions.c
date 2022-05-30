@@ -2,6 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "baseFunctions.h"
+#include "combatFunctions.h"
+
 
 void toLowerCase(char *str) {  
     int i = 0;  
@@ -21,9 +23,9 @@ void clear_scan() {
 	} while (res == 1 && c != '\n');
 }
 
-fighter getFighter (char *champName) {
+Fighter getFighter (char *champName) {
     FILE *data;
-    fighter champ;
+    Fighter champ;
     char file[100];
     snprintf(file, sizeof(file), "characters/%s.txt", champName);
     data = fopen(file, "r");
@@ -127,10 +129,10 @@ fighter getFighter (char *champName) {
         champ.specials[0][i] = special1[i];
     }
     for (i = 0; i <= strlen(special2); i++) {
-        champ.specials[0][i] = special2[i];
+        champ.specials[1][i] = special2[i];
     }
     for (i = 0; i <= strlen(special3); i++) {
-        champ.specials[0][i] = special3[i];
+        champ.specials[2][i] = special3[i];
     }
     strcpy(champ.effect, effect);
     fclose(data);
@@ -149,12 +151,12 @@ int verifyChamp (char *champName) {
     return 1;
 }
 
-team createTeam (char *name) {
-    team equipe;
+Team createTeam (char *name) {
+    Team equipe;
     char *teamName = name;
     char heros1[40], heros2[40], heros3[40];
     int verif = 0, nameVerif = 0;
-    fighter champ1, champ2, champ3;
+    Fighter champ1, champ2, champ3;
     printf("Choissisez votre premier champion: ");
     do {
         nameVerif = scanf("%[^\n]%*c", heros1);
@@ -206,7 +208,7 @@ team createTeam (char *name) {
         } else {
             verif = verifyChamp(heros3);
             if (verif == 0) {
-                printf("\"%s\" n'est pas un personnage disponible dans ce roster.\nVeuillez réessayer avec une champion figurant dans la liste.", heros1);
+                printf("\"%s\" n'est pas un personnage disponible dans ce roster.\nVeuillez réessayer avec une champion figurant dans la liste.", heros3);
                 printf("\nChoissisez votre premier champion: ");
             }
             if (strcmp(heros1, heros3) == 0 || strcmp(heros2, heros3) == 0) {
@@ -222,4 +224,62 @@ team createTeam (char *name) {
     equipe.team[1] = champ2;
     equipe.team[2] = champ3;
     return equipe;
+}
+
+int tabTri(ActiveTeam tab[], int size) {
+	for(int i=0;i<size-1;i++) {   
+		if(tab[i].champ.stats.spd < tab[i+1].champ.stats.spd) {
+			return 0;
+		}
+	}
+	return 1;
+}
+
+void sortBySpeed(ActiveTeam *fighters, int size) {
+    int i,indiceMin,noetape;
+    ActiveTeam temp;
+	for (noetape = 0; noetape < size - 1; noetape++) {
+		indiceMin = noetape;
+		for (i = noetape + 1; i < size; i++) {
+            if (fighters[i].champ.stats.spd > fighters[indiceMin].champ.stats.spd) {
+			    indiceMin = i; 
+		    }
+		} 
+        if (indiceMin != noetape) {
+            temp = fighters[indiceMin];
+            fighters[indiceMin] = fighters[noetape];
+            fighters[noetape] = temp;
+        }
+     }
+}
+
+void makeOrder(ActiveTeam *fighters) {
+    ActiveTeam prio0[6], prio1[6];
+    int prio0Size = 0, prio1Size = 0, verif;
+    for (int i = 0; i < 6; i++) {
+        if (fighters[i].move.stats.priority == 0) {
+            prio0[i] = fighters[i];
+            printf("NO PRIO : %s\n", prio0[i].champ.name);
+            prio0Size++;
+        } else {
+            prio1[i] = fighters[i];
+            printf("   PRIO : %s\n", prio1[i].champ.name);
+            prio1Size++;
+        }
+    }
+    do {
+        verif = tabTri(prio0, prio0Size);
+        sortBySpeed(prio0, prio0Size);
+    } while (verif == 0);
+    do {
+        verif = tabTri(prio1, prio1Size);
+        sortBySpeed(prio1, prio1Size);
+    } while (verif == 0);
+    for (int i = 0; i < 6; i++) {
+        if (i < prio1Size) {
+            fighters[i] = prio1[i];
+        } else {
+            fighters[i] = prio0[i];
+        }
+    }
 }
