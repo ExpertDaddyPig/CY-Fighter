@@ -1,0 +1,14 @@
+name: Expert Daddy Pig;
+type: Tank;
+hp: 550;
+hp-max: 550;
+atk: 90;
+def: 250;
+agi: 40;
+spd: 80;
+specials: [
+	1: Pizza,
+	2: Avion En Papier,
+	3: Roulade,
+];
+effects: Je suis un expert en tout;
