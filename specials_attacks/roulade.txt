@@ -1,9 +1,0 @@
-name: Roulade;
-description: Daddy Pig se met en boule et roule sur sa cible.;
-type: Attack;
-power: 90;
-duration: 0;
-accuracy: 75;
-cooldown: 0;
-priority: 0;
-targets: 1;

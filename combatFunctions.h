@@ -4,13 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "movesFunctions.h"
-
-typedef struct {
-    Fighter champ;
-    Move move;
-    int targets;
-} ActiveTeam;
+#include "baseFunctions.h"
 
 int espace(int a);
 void Interface(Team ally, Team enemy);

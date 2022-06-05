@@ -7,8 +7,6 @@ def: 90;
 agi: 60;
 spd: 70;
 specials: [
-	1: Defense Bots,
-	2: Magic Hand,
-	3: Energy Canon,
+	1: Magic Hand,
+	2: Defense Bots,
 ];
-effects: Super Tails;

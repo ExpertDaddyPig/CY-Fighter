@@ -1,8 +1,10 @@
 name: Kaioken;
 description: Goku passe en Kaioken, sa prochaine attaque aura une puissance doublée.;
 type: Buff;
+charge: 0;
 duration: 1;
 accuracy: 100;
-cooldown: 3;
-priority: 0;
+cooldown: 1;
+priority: 1;
+turn: 0;
 targets: 1;

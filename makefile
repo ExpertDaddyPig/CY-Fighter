@@ -12,8 +12,11 @@ combatFunctions.o: combatFunctions.c
 movesFunctions.o: movesFunctions.c
 	gcc -c movesFunctions.c -o movesFunctions.o
 
-exec: baseFunctions.o combatFunctions.o movesFunctions.o main.o
-	gcc main.o baseFunctions.o combatFunctions.o movesFunctions.o -o exec
+attacksFunctions.o: attacksFunctions.c
+	gcc -c attacksFunctions.c -o attacksFunctions.o
+
+exec: baseFunctions.o combatFunctions.o movesFunctions.o attacksFunctions.o main.o
+	gcc main.o baseFunctions.o combatFunctions.o movesFunctions.o attacksFunctions.o -o exec
 
 #Delete all files if you are using Windows OS
 cleanW:

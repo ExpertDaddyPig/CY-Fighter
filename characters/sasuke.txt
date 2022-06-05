@@ -9,6 +9,4 @@ spd: 80;
 specials: [
 	1: Katon Boule de Feu,
 	2: Chidori,
-	3: Amaterasu,
 ];
-effects: Susano;

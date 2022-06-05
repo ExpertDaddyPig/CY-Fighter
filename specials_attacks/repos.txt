@@ -1,9 +1,11 @@
 name: Repos;
-description: Scooby s'endort et regagne la totalité de ses points de vie.|Il ne peut plus attaquer pendant 2 tour.;
+description: Scooby s'endort et regagne la totalité de ses points de vie.;
 type: Status;
+charge: 0;
 duration: 2;
 heal: 500;
 accuracy: 100;
-cooldown: 1;
-priority: 0;
+cooldown: 3;
+priority: -1;
+turn: 0;
 targets: 1;

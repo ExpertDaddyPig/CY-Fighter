@@ -8,7 +8,5 @@ agi: 60;
 spd: 75;
 specials: [
 	1: Croque-Scooby,
-	2: Pichenette,
-	3: Kamehameha,
+	2: Kamehameha,
 ];
-effects: Ultra Instinct: 0.00001%;

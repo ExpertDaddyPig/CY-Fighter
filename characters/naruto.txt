@@ -8,7 +8,5 @@ agi: 90;
 spd: 75;
 specials: [
 	1: Rasengan,
-	2: Rasenshuriken,
-	3: Shadow Clone Jutsu,
+	2: Shadow Clone Jutsu,
 ];
-effects: Biju Mode;

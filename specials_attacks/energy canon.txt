@@ -1,9 +1,0 @@
-name: Energy Canon;
-description: Tails utilise Energy Canon. Après 1 tour de chargement,|il tire un puissant rayon électrique sur sa cible.;
-type: Attack;
-power: 120;
-duration: 1;
-accuracy: 80;
-cooldown: 3;
-priority: 0;
-targets: 1;

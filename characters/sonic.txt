@@ -9,6 +9,4 @@ spd: 120;
 specials: [
 	1: Spin Attack,
 	2: Homing Attack,
-	3: Spin Dash,
 ];
-effects: Super Sonic;

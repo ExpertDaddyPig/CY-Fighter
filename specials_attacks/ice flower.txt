@@ -1,9 +1,11 @@
 name: Ice Flower;
-description: Mario prend une Ice Flower, il lance une boule de neige sur sa cible.|Elle a une chance de geler la cible pendant 1 à 3 tours.;
+description: Mario prend une Ice Flower, il lance une boule de neige sur sa cible.|Elle a une chance de geler la cible jusqu'à la fin du combat;
 type: Attack;
 power: 75;
+charge: 0;
 duration: 0;
 accuracy: 95;
 cooldown: 1;
 priority: 0;
+turn: 0;
 targets: 1;

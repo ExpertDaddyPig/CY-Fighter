@@ -9,6 +9,4 @@ spd: 50;
 specials: [
 	1: Club de Golf,
 	2: Garde la peche,
-	3: Les Dames d'abord,
 ];
-effects: Faites de beaux reves;

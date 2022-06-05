@@ -1,9 +1,11 @@
 name: Un peu de ramen?;
 description: Hinata donne un ramen à sa cible, lui régénérant|60 points de vie + 30% des points de vie manquants.;
 type: Status;
+charge: 0;
 duration: 0;
 heal: 60;
 accuracy: 100;
 cooldown: 2;
-priority: 1;
+priority: 0;
+turn: 0;
 targets: 1;

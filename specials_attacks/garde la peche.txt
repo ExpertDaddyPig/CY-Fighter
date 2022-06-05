@@ -1,9 +1,11 @@
 name: Garde la peche;
 description: Peach donne une peche à tous ses équipiers, leur redonnant 50 points de vie.;
 type: Status;
+charge: 0;
 duration: 0;
 heal: 50;
 accuracy: 100;
 cooldown: 1;
-priority: 1;
+priority: 0;
+turn: 0;
 targets: 3;

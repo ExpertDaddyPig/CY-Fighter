@@ -9,6 +9,5 @@ spd: 90;
 specials: [
 	1: Coup d'boule,
 	2: One Punch,
-	3: OK,
 ];
-effects: Serious Mode;
+

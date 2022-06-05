@@ -1,14 +1,12 @@
 name: Knuckles;
-type: Brawler;
+type: Tank;
 hp: 300;
 hp-max: 300;
 atk: 100;
-def: 150;
+def: 250;
 agi: 40;
-spd: 100;
+spd: 70;
 specials: [
-	1: Spiked Shield,
-	2: Poing d'Acier,
-	3: Seisme,
+	1: Poing d'Acier,
+	2: Seisme,
 ];
-effects: Super Knuckles;

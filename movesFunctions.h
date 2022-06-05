@@ -6,22 +6,9 @@
 #include <string.h>
 #include "baseFunctions.h"
 
-typedef struct {
-	int power;
-    int accuracy;
-    int duration;
-    int cooldown;
-    int priority;
-    int targets;
-} moveStats;
-
-typedef struct {
-    char name[100];
-    char description[300];
-    char type[100];
-    moveStats stats;
-} Move;
-
+ActiveTeam useMove(ActiveTeam *activeTeam, Team *ally, Team *enemy, int moveIndex, int pos1, int pos2);
 Move getMove(char *name);
+void actions(ActiveTeam *fighters, Team *ally, Team *enemy, int turn);
+
 
 #endif

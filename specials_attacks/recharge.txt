@@ -1,8 +1,0 @@
-name: Recharge;
-description: Goku/Vegeta recharge son ki. Au bout de 2 recharges, Goku/Vegeta peut utiliser|sa capacité ultime et se transformer en Super Sayajin.;
-type: Buff;
-duration: 0;
-accuracy: 100;
-cooldown: 1;
-priority: 0;
-targets: 1;

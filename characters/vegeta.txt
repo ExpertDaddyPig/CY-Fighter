@@ -9,6 +9,4 @@ spd: 70;
 specials: [
 	1: Final Flash,
 	2: Garrick Canon,
-	3: Recharge,
 ];
-effects: Super Saiyan;

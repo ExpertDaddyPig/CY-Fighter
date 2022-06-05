@@ -9,6 +9,4 @@ spd: 70;
 specials: [
 	1: Thunder Flower,
 	2: Boomerang Flower,
-	3: Hammer,
 ];
-effects: Super Star;

@@ -18,43 +18,25 @@ void main() {
     printf("4: Quitter\n");
     int verif = 1;
     do {
-        printf("Joueur 1 :\nEntrez le nom de votre équipe: ");
+        printf("Joueur 1 :\nEntrez le nom de votre équipe (Appuyez sur \"entrée\" pour choisir le nom par défaut): ");
         verif = scanf("%[^\n]%*c", teamName);
         if (verif == 0) {
-            printf("Entrez un nom d'équipe valide.\n");
+            strcpy(teamName, "Equipe 1");
+            verif = 1;
             clear_scan();
         }
     } while (verif == 0);
     Team team1 = createTeam(teamName);
     do {
-        printf("Joueur 2 :\nEntrez le nom de votre équipe: ");
+        printf("Joueur 2 :\nEntrez le nom de votre équipe (Appuyez sur \"entrée\" pour choisir le nom par défaut): ");
         verif = scanf("%[^\n]%*c", teamName);
         if (verif == 0) {
-            printf("Entrez un nom d'équipe valide.\n");
+            strcpy(teamName, "Equipe 2");
+            verif = 1;
             clear_scan();
         }
     } while (verif == 0);
-    Team team2 = createTeam(teamName);
+    Team team2 = createTeam2(teamName, team1);
     Interface(team1, team2);
     fight(team1, team2);
-    /*Move move;
-    move = getMove("amaterasu");
-    printf("\nMove Name: %s\n", move.name);
-    printf("Description:");
-    char *strToken1 = strtok(move.description, "|");
-    char *strToken2 = strtok(NULL, "|");
-    char *strToken3 = strtok(NULL, "|");
-    printf(" %s\n",strToken1);
-    if (strToken2 != NULL) {
-    	printf("             %s\n",strToken2);
-    }
-    if (strToken3 != NULL) {
-    	printf("             %s\n",strToken3);
-    }
-    printf("Move Type: %s\n", move.type);
-    printf("Power: %d\n", move.stats.power);
-    printf("Accuracy: %d\n", move.stats.accuracy);
-    printf("Duration: %d\n", move.stats.duration);
-    printf("Cooldown: %d\n", move.stats.cooldown);
-    printf("Targets: %d\n", move.stats.targets);*/
 }

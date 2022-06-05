@@ -2,13 +2,11 @@ name: Scooby-Doo;
 type: Tank;
 hp: 500;
 hp-max: 500;
-atk: 90;
+atk: 120;
 def: 200;
 agi: 60;
-spd: 75;
+spd: 65;
 specials: [
 	1: Croque-Scooby,
 	2: Repos,
-	3: Plus de mysteres,
 ];
-effects: Sauve qui peut;

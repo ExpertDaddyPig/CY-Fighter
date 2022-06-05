@@ -9,6 +9,4 @@ spd: 70;
 specials: [
 	1: Kamehameha,
 	2: Kaioken,
-	3: Recharge,
 ];
-effects: Super Saiyan;

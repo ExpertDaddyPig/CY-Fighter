@@ -9,6 +9,4 @@ spd: 65;
 specials: [
 	1: Fire Flower,
 	2: Ice Flower,
-	3: Hammer,
 ];
-effects: Super Star;
