@@ -18,6 +18,8 @@ void Interface(Team ally, Team enemy) {
   heros4 = enemy.team[0].name;
   heros5 = enemy.team[1].name;
   heros6 = enemy.team[2].name;
+
+  // Display the two teams with their names and their fighters + their health bar. If the fighter is dead, it's displayed next to a red K.O.
   printf("┏[%s]", allyName);
   space = strlen(allyName);
   namespace = 0;
@@ -241,6 +243,7 @@ void caraInterface(Team equipe, int cara) {
   Move move;
   int space;
   hero = equipe.team[cara];
+  // Displaying the fighter's name and his moves
   printf("┏");
   for (int i = 0; i < 80; i++) {
     printf("━");
@@ -293,6 +296,8 @@ void movesInfos(Fighter champ) {
   Move move;
   int space;
   char buffer[100];
+
+  // Displaying the fighter's moves, their description and their stats
   printf("[Capacités spéciales de %s]\n-------------------\n", champ.name);
   for (int j = 0; j < 2; j++) {
     printf("    ");
@@ -320,7 +325,7 @@ void movesInfos(Fighter champ) {
     } else {
       printf("\n");
     }
-    printf("        Duration:  %d", move.stats.duration);
+    printf("        Cibles:    %d", move.stats.targets);
     if (strToken3 != NULL) {
       sprintf(buffer, "%d", move.stats.duration);
       space = strlen(buffer);
@@ -331,7 +336,7 @@ void movesInfos(Fighter champ) {
     } else {
       printf("\n");
     }
-    printf("        Cibles:    %d\n-------------------\n", move.stats.targets);
+    printf("\n-------------------\n");
   }
 }
 
@@ -339,15 +344,18 @@ Move moveChoice(Team *ally, Team *enemy, Fighter champ, int i, int *index) {
   Move move;
   int targets, choice;
   int verif = 0;
+  // Displaying the fighter's moves and asking the player to choose one
   do {
     caraInterface(*ally, i);
     printf("Choississez une attaque pour %s:\n", champ.name);
     verif = scanf("%d", &choice);
     printf("Vous avez choisi la capacité numéro %d.\n", choice);
+    // If the player chooses the option 4, informations about the fighter's moves are displayed and the player is asked to choose again
     if (choice == 4) {
       movesInfos(champ);
       verif = 0;
     } else {
+      // If the player chooses a move, the move is returned else the basic attack is returned
       if (choice == 1) {
         move = getMove(champ.specials[0]);
         verif = 1;
@@ -389,12 +397,18 @@ void turn(Team *ally, Team *enemy, ActiveTeam *activeTeam) {
   allyFighter1 = ally->team[0];
   allyFighter2 = ally->team[1];
   allyFighter3 = ally->team[2];
+  // Starting the turn
   printf("Au tour de l'équipe %s de choisir ses attaques:\n", ally->teamName);
-  allyMove1 = moveChoice(ally, enemy, allyFighter1, 0, &index);
-  printf("La capacité choisie est %s.\n", allyMove1.name);
-  verif = 0;
-  if (allyMove1.stats.targets != 3) {
-    if (strcmp(allyMove1.type, "Attack") == 0 ) {
+  // Check if the fighter is alive
+  if (allyFighter1.stats.hp > 0) {
+    // If the fighter is alive, the player is asked to choose his move
+    allyMove1 = moveChoice(ally, enemy, allyFighter1, 0, &index);
+    printf("La capacité choisie est %s.\n", allyMove1.name);
+    verif = 0;
+
+    // If the move has a single target, the player is asked to choose the target
+    if (allyMove1.stats.targets != 3) {
+      if (strcmp(allyMove1.type, "Attack") == 0 ) {
       if (strcmp(allyMove1.name, "Thunder Flower") != 0) {
         do {
           printf("Choississez la cible de %s:\n", allyFighter1.name);
@@ -405,18 +419,18 @@ void turn(Team *ally, Team *enemy, ActiveTeam *activeTeam) {
           } else {
             verif = 1;
           }
+          targets--;
           if (enemy->team[targets].stats.hp <= 0) {
             printf("Cette cible est K.O. Veuillez en choisir une autre.\n");
             verif = 0;
           }
         } while (verif == 0);
-        targets--;
         printf("La cible choisie est %s.\n", enemy->team[targets].name);
       } else {
         targets = -2;
       }
     }
-    if (strcmp(allyMove1.type, "Status") == 0 || strcmp(allyMove1.type, "Buff") == 0 ) {
+      if (strcmp(allyMove1.type, "Status") == 0 || strcmp(allyMove1.type, "Buff") == 0 ) {
       if (strcmp(allyMove1.name, "Pizza") != 0 && strcmp(allyMove1.name, "Repos") != 0 && strcmp(allyMove1.name, "Croque-Scooby") != 0 && strcmp(allyMove1.name, "Kaioken") != 0) {
         printf("Choississez la cible de %s:\n", allyFighter1.name);
         do {
@@ -425,29 +439,34 @@ void turn(Team *ally, Team *enemy, ActiveTeam *activeTeam) {
             printf("Veuillez saisir un numéro de cible valide.\n");
             verif = 0;
           }
+          targets--;
           if (ally->team[targets].stats.hp <= 0) {
             printf("Cette cible est K.O. Veuillez en choisir une autre.\n");
             verif = 0;
           }
         } while (verif == 0);
-        targets--;
         printf("La cible choisie est %s.\n", ally->team[targets].name);
       } else {
         targets = 0;
       }
     }
-  } else {
-    targets = -1;
+    } else {
+      targets = -1;
+    }
   }
   verif = 0;
+  // Store the move and the target in the active team, a structure containing the fighter and the move which's reloaded every turn
   activeTeam[0].champ = allyFighter1;
   activeTeam[0].move = allyMove1;
   activeTeam[0].moveIndex = index;
   activeTeam[0].targets = targets;
-  allyMove2 = moveChoice(ally, enemy, allyFighter2, 1, &index);
-  printf("La capacité choisie est %s.\n", allyMove2.name);
-  verif = 0;
-  if (allyMove2.stats.targets != 3) {
+
+  // Same steps for other fighters
+  if (allyFighter2.stats.hp > 0) {
+    allyMove2 = moveChoice(ally, enemy, allyFighter2, 1, &index);
+    printf("La capacité choisie est %s.\n", allyMove2.name);
+    verif = 0;
+    if (allyMove2.stats.targets != 3) {
     if (strcmp(allyMove2.type, "Attack") == 0 ) {
       if (strcmp(allyMove2.name, "Thunder Flower") != 0) {
         do {
@@ -459,12 +478,12 @@ void turn(Team *ally, Team *enemy, ActiveTeam *activeTeam) {
           } else {
             verif = 1;
           }
+          targets--;
           if (enemy->team[targets].stats.hp <= 0) {
             printf("Cette cible est K.O. Veuillez en choisir une autre.\n");
             verif = 0;
           }
         } while (verif == 0);
-        targets--;
         printf("La cible choisie est %s.\n", enemy->team[targets].name);
       } else {
         targets = -2;
@@ -490,18 +509,20 @@ void turn(Team *ally, Team *enemy, ActiveTeam *activeTeam) {
         targets = 1;
       }
     }
-  } else {
-    targets = -1;
+    } else {
+      targets = -1;
+    }
   }
   verif = 0;
   activeTeam[1].champ = allyFighter2;
   activeTeam[1].move = allyMove2;
   activeTeam[1].moveIndex = index;
   activeTeam[1].targets = targets;
-  allyMove3 = moveChoice(ally, enemy, allyFighter3, 2, &index);
-  printf("La capacité choisie est %s.\n", allyMove3.name);
-  verif = 0;
-  if (allyMove3.stats.targets != 3) {
+  if (allyFighter3.stats.hp > 0) {
+    allyMove3 = moveChoice(ally, enemy, allyFighter3, 2, &index);
+    printf("La capacité choisie est %s.\n", allyMove3.name);
+    verif = 0;
+    if (allyMove3.stats.targets != 3) {
     if (strcmp(allyMove3.type, "Attack") == 0 ) {
       if (strcmp(allyMove3.name, "Thunder Flower") != 0) {
         do {
@@ -544,8 +565,9 @@ void turn(Team *ally, Team *enemy, ActiveTeam *activeTeam) {
         targets = 2;
       }
     }
-  } else {
-    targets = -1;
+    } else {
+      targets = -1;
+    }
   }
   verif = 0;
   activeTeam[2].champ = allyFighter3;
@@ -555,11 +577,17 @@ void turn(Team *ally, Team *enemy, ActiveTeam *activeTeam) {
 }
 
 void fight(Team team1, Team team2) {
-  int pos1 = 0, pos2 = 0, win = 0, tours = 0;
+  int pos1 = 0, pos2 = 0, win = 0;
   ActiveTeam activeTeam1[3], activeTeam2[3], fusedTeams[6];
   do {
+    pos1 = 0;
+    pos2 = 0;
+
+    // Creating the active teams for the two teams
     turn(&team1, &team2, activeTeam1);
     turn(&team2, &team1, activeTeam2);
+
+    // Fusing the active teams
     for (int i = 0; i < 6; i++) {
       if (i < 3) {
         fusedTeams[i] = activeTeam1[pos1];
@@ -569,10 +597,17 @@ void fight(Team team1, Team team2) {
         pos2++;
       }
     }
+
+    // Making the order for every fighter
     makeOrder(fusedTeams);
-    actions(fusedTeams, &team1, &team2, tours);
-    tours++;
+
+    // Affecting moves effects to targets
+    actions(fusedTeams, &team1, &team2);
+
+    // Displaying the updated teams
     Interface(team1, team2);
+
+    // Checking if a team is dead or not
     if (team1.team[0].stats.hp <= 0 && team1.team[1].stats.hp <= 0 && team1.team[2].stats.hp <= 0) {
       if (team2.team[0].stats.hp > 0 || team2.team[1].stats.hp > 0 || team2.team[2].stats.hp > 0) {
         win = 2;
@@ -587,12 +622,14 @@ void fight(Team team1, Team team2) {
         win = 3;
       }
     }
+    // Repeat the fight if a team is not dead
   } while (win == 0);
+  // Displaying the winner, if both teams are dead, it's a draw
   if (win == 1) {
-    printf("Le vainqueur est %s.\n", team1.teamName);
+    printf("--------------------------%s REMPORTE LE COMBAT--------------------------\n", team1.teamName);
   } else if (win == 2) {
-    printf("Le vainqueur est %s.\n", team2.teamName);
+    printf("--------------------------%s REMPORTE LE COMBAT--------------------------\n", team2.teamName);
   } else {
-    printf("Les deux équipes sont K.O.\n");
+    printf("---------------------------------EGALITE---------------------------------\n");
   }
 }

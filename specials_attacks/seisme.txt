@@ -1,7 +1,7 @@
 name: Seisme;
 description: Knuckles donne un énorme coup de poing au sol,|créant un séisme blessant les membres de l'équipe ennemie.;
 type: Attack;
-power: 90;
+power: 110;
 charge: 0;
 duration: 0;
 accuracy: 75;

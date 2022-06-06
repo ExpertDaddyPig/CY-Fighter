@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-
+// Declaring all structures needed for the game
 typedef struct {
     int hp;
     int hpMax;
@@ -52,7 +52,10 @@ typedef struct {
     Move buff;
 } ActiveTeam;
 
+// Declaring basic functions
 Fighter getFighter(char *name);
+void fighterInfos(char *name);
+void printChamps();
 Team createTeam(char *name);
 Team createTeam2(char *name, Team team);
 int verifyChamp(char *champName);

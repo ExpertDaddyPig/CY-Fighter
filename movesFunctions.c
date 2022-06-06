@@ -8,6 +8,7 @@
 
 ActiveTeam useMove(ActiveTeam *fighter, Team *ally, Team *enemy, int moveIndex, int pos1, int pos2) {
     char *name = fighter->champ.name;
+    // Use the move of the fighter depending of his name
     if (strcmp(name, "Expert Daddy Pig") == 0) {
         if (moveIndex == 0) {
             pizza(fighter, ally, enemy);
@@ -191,8 +192,11 @@ Move getMove(char *moveName) {
     Move move;
     char file[50];
     sprintf(file, "specials_attacks/%s.txt", moveName);
+    // Open the file
     fflush(stdout);
     data = fopen(file, "r");
+
+    // Read the file if it exists, else print an error message
     if (data == NULL) {
         printf("%s n'est pas une capacité spéciale disponible.\nVeuillez réessayez avec une capacité figurant dans la liste.", moveName);
         exit(1);
@@ -202,6 +206,8 @@ Move getMove(char *moveName) {
     int pow, dur, acc, chr, tur, cd, prio, tar;
     int i = 0;
     char letter = fgetc(data);
+
+    // Store the name of the move
     while (letter != ';') {
         name[i] = letter;
         i++;
@@ -211,6 +217,8 @@ Move getMove(char *moveName) {
     i = 0;
     fseek(data, 15, SEEK_CUR);
     letter = fgetc(data);
+
+    // Store the description of the move
     while (letter != ';') {
         desc[i] = letter;
         i++;
@@ -220,6 +228,8 @@ Move getMove(char *moveName) {
     i = 0;
     fseek(data, 8, SEEK_CUR);
     letter = fgetc(data);
+
+    // Store the type of the move
     while (letter != ';') {
         type[i] = letter;
         i++;
@@ -230,6 +240,8 @@ Move getMove(char *moveName) {
     strcpy(move.name, name);
     strcpy(move.description, desc);
     strcpy(move.type, type);
+
+    // Store the stats of the move depending on its type
     if (strcmp(move.type, "Attack") == 0) {
         fseek(data, 9, SEEK_CUR);
         fscanf(data, "%d", &pow);
@@ -307,22 +319,25 @@ Move getMove(char *moveName) {
     return move;
 }
 
-void actions(ActiveTeam *fighters, Team *ally, Team *enemy, int turn) {
+void actions(ActiveTeam *fighters, Team *ally, Team *enemy) {
     int target1, target2, verif, pos1 = 0, pos2 = 0;
-    Move nobuff;
     srand(time(NULL));
+    // Executing all the actions of the active team
     for (int i = 0; i < 6; i++) {
         printf("Tour de %s.\n", fighters[i].champ.name);
+        // Check if the fighter is alive to use his move
         if (fighters[i].champ.stats.hp > 0) {
             verif = verifyTeam(fighters[i].champ, *enemy);
+            // Check in which team the fighter is to display the correct targets
             if (verif == 0) {
+                // If the targets value is -1, it means that the move affect all the enemies or all the allies
                 if (fighters[i].targets == -1) {
                     if (fighters[i].move.type == "Attack") {
                         printf("%s utilise %s sur l'équipe adverse.\n", fighters[i].champ.name, fighters[i].move.name);
                     } else {
                         printf("%s utilise %s sur son équipe.\n", fighters[i].champ.name, fighters[i].move.name);
                     }
-                } else if (fighters[i].targets == -2) {
+                } else if (fighters[i].targets == -2) { // If the targets value is -2, it means that the move a special move that affect two random targets in the enemy team
                     target1 = rand() % 3;
                     pos1 = target1; 
                     do {
@@ -331,12 +346,14 @@ void actions(ActiveTeam *fighters, Team *ally, Team *enemy, int turn) {
                     pos2 = target2;
                     printf("%s utilise %s sur %s et %s.\n", fighters[i].champ.name, fighters[i].move.name, enemy->team[target1].name, enemy->team[target2].name);
                 } else {
+                    // Check if the target is the fighter itself
                     if (fighters[i].champ.name == enemy->team[fighters[i].targets].name) {
                         printf("%s utilise %s.\n", fighters[i].champ.name, fighters[i].move.name);
                     } else {
                         printf("%s utilise %s sur %s.\n", fighters[i].champ.name, fighters[i].move.name, ally->team[fighters[i].targets].name);
                     }                }
             } else {
+                // Same as above but if the fighter is in the enemy team
                 if (fighters[i].targets == -1) {
                     if (fighters[i].move.type == "Attack") {
                         printf("%s utilise %s sur l'équipe adverse.\n", fighters[i].champ.name, fighters[i].move.name);
@@ -355,10 +372,11 @@ void actions(ActiveTeam *fighters, Team *ally, Team *enemy, int turn) {
                     if (fighters[i].champ.name == ally->team[fighters[i].targets].name) {
                         printf("%s utilise %s.\n", fighters[i].champ.name, fighters[i].move.name);
                     } else {
-                        printf("%s utilise %s sur %s.\n", fighters[i].champ.name, fighters[i].move.name, ally->team[fighters[i].targets].name);
+                        printf("%s utilise %s sur %s.\n", fighters[i].champ.name, fighters[i].move.name, enemy->team[fighters[i].targets].name);
                     }
                 }
             }
+            // Use the move of the fighter on his targets
             useMove(&fighters[i], ally, enemy, fighters[i].moveIndex, pos1, pos2);
             printf("\n");
         } else {

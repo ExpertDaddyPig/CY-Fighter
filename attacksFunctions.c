@@ -5,6 +5,7 @@
 #include "attacksFunctions.h"
 #include "baseFunctions.h"
 
+// This is the code of every moves that can be used in the game
 void basic(ActiveTeam *fighter, Team *ally, Team *enemy) {
     Fighter target;
     int power = fighter->champ.stats.atk;

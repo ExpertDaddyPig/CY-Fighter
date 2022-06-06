@@ -1,4 +1,4 @@
-name: Scooby-Doo;
+name: Scooby;
 type: Tank;
 hp: 500;
 hp-max: 500;

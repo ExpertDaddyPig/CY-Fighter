@@ -16,11 +16,11 @@ attacksFunctions.o: attacksFunctions.c
 	gcc -c attacksFunctions.c -o attacksFunctions.o
 
 exec: baseFunctions.o combatFunctions.o movesFunctions.o attacksFunctions.o main.o
-	gcc main.o baseFunctions.o combatFunctions.o movesFunctions.o attacksFunctions.o -o exec
+	gcc main.o baseFunctions.o combatFunctions.o movesFunctions.o attacksFunctions.o -o cy-fighter
 
 #Delete all files if you are using Windows OS
-cleanW:
-	del *.o *.exe exec
+cleanw:
+	del *.o *.exe cy-fighter
 	@echo "Tout les fichiers ont ete supprimés"
 
 #Delete all files if you are using Linux OS

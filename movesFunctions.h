@@ -6,9 +6,10 @@
 #include <string.h>
 #include "baseFunctions.h"
 
+// Declaring all moves functions
 ActiveTeam useMove(ActiveTeam *activeTeam, Team *ally, Team *enemy, int moveIndex, int pos1, int pos2);
 Move getMove(char *name);
-void actions(ActiveTeam *fighters, Team *ally, Team *enemy, int turn);
+void actions(ActiveTeam *fighters, Team *ally, Team *enemy);
 
 
 #endif

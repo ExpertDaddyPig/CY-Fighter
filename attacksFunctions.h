@@ -6,6 +6,7 @@
 #include <string.h>
 #include "baseFunctions.h"
 
+// Declaring all moves functions
 void basic(ActiveTeam *fighter, Team *ally, Team *enemy);
 void pizza(ActiveTeam *fighter, Team *ally, Team *enemy);
 void avion(ActiveTeam *fighter, Team *ally, Team *enemy);
