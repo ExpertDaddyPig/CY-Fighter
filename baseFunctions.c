@@ -519,7 +519,7 @@ void fighterInfos(char *champ) {
     for (int i = 0; i < 2; i++) {
         printf("\t%d. %s\n", i + 1, heros.specials[i]);
     }
-    printf("\n-------------------\n");
+    printf("-------------------\n");
 }
 
 void printChamps() {
