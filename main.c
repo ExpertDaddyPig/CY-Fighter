@@ -90,7 +90,7 @@ void main() {
                             printf("Ce personnage n'existe pas.\n");
                         }
                     }
-                } while (answer != 'N' || answer != 'n');
+                } while (answer == 'O' || answer == 'o');
                 break;
         }
     } while (choice != 3);
