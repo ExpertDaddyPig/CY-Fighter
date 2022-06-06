@@ -58,6 +58,7 @@ void main() {
                 Interface(team1, team2);
                 // Launch the fight until one team is dead
                 fight(team1, team2);
+                break;
             case 2:
                 // Display the list of the fighters
                 printChamps();
@@ -89,7 +90,8 @@ void main() {
                             printf("Ce personnage n'existe pas.\n");
                         }
                     }
-                } while (answer != 'N' && answer != 'n');
+                } while (answer != 'N' || answer != 'n');
+                break;
         }
     } while (choice != 3);
     // Exit the program

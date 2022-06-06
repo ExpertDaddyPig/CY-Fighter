@@ -994,7 +994,7 @@ void bots(ActiveTeam *fighter, Team *ally, Team *enemy) {
     Fighter target;
     int verif;
     printf("%s utilise %s.\n", fighter->champ.name, fighter->move.name);
-    verif = verifyTeam(fighter->champ, *enemy);
+    verif = verifyTeam(fighter->champ, *ally);
     for (int i = 0; i < 3; i++) {
         if (verif == 1) {
             target = ally->team[i];
