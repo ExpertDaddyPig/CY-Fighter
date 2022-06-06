@@ -258,7 +258,7 @@ void caraInterface(Team equipe, int cara) {
   for (int j = 0; j < 2; j++) {
     printf("┃      ");
     move = getMove(hero.specials[j]);
-    printf("{%d} %s | Type: %s ", j + 1, move.name, move.type, move.stats.cooldown);
+    printf("{%d} %s | Type: %s ", j + 1, move.name, move.type);
     space = strlen(move.name) + strlen(move.type) + 1 + 17;
     for (int i = space; i < 78; i++) {
       printf(" ");

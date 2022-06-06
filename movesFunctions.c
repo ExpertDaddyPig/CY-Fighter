@@ -6,7 +6,7 @@
 #include "movesFunctions.h"
 #include "attacksFunctions.h"
 
-ActiveTeam useMove(ActiveTeam *fighter, Team *ally, Team *enemy, int moveIndex, int pos1, int pos2) {
+void useMove(ActiveTeam *fighter, Team *ally, Team *enemy, int moveIndex, int pos1, int pos2) {
     char *name = fighter->champ.name;
     // Use the move of the fighter depending of his name
     if (strcmp(name, "Expert Daddy Pig") == 0) {
@@ -332,7 +332,7 @@ void actions(ActiveTeam *fighters, Team *ally, Team *enemy) {
             if (verif == 0) {
                 // If the targets value is -1, it means that the move affect all the enemies or all the allies
                 if (fighters[i].targets == -1) {
-                    if (fighters[i].move.type == "Attack") {
+                    if (strcmp(fighters[i].move.type, "Attack") == 0) {
                         printf("%s utilise %s sur l'équipe adverse.\n", fighters[i].champ.name, fighters[i].move.name);
                     } else {
                         printf("%s utilise %s sur son équipe.\n", fighters[i].champ.name, fighters[i].move.name);
@@ -355,7 +355,7 @@ void actions(ActiveTeam *fighters, Team *ally, Team *enemy) {
             } else {
                 // Same as above but if the fighter is in the enemy team
                 if (fighters[i].targets == -1) {
-                    if (fighters[i].move.type == "Attack") {
+                    if (strcmp(fighters[i].move.type, "Attack") == 0) {
                         printf("%s utilise %s sur l'équipe adverse.\n", fighters[i].champ.name, fighters[i].move.name);
                     } else {
                         printf("%s utilise %s sur son équipe.\n", fighters[i].champ.name, fighters[i].move.name);
