@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "combatFunctions.h"
 #include "movesFunctions.h"
+#include "baseFunctions.h"
 
 #define couleur(param) printf("\033[%sm",param)
 
@@ -348,6 +349,7 @@ Move moveChoice(Team *ally, Team *enemy, Fighter champ, int i, int *index) {
   do {
     caraInterface(*ally, i);
     printf("Choississez une attaque pour %s:\n", champ.name);
+    clear_scan();
     verif = scanf("%d", &choice);
     printf("Vous avez choisi la capacité numéro %d.\n", choice);
     // If the player chooses the option 4, informations about the fighter's moves are displayed and the player is asked to choose again
@@ -405,7 +407,6 @@ void turn(Team *ally, Team *enemy, ActiveTeam *activeTeam) {
     allyMove1 = moveChoice(ally, enemy, allyFighter1, 0, &index);
     printf("La capacité choisie est %s.\n", allyMove1.name);
     verif = 0;
-
     // If the move has a single target, the player is asked to choose the target
     if (allyMove1.stats.targets != 3) {
       if (strcmp(allyMove1.type, "Attack") == 0 ) {
