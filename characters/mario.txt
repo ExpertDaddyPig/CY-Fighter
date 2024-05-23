@@ -1,7 +1,7 @@
 name: Mario;
 type: Brawler;
-hp: 130;
-hp-max: 130;
+hp: 175;
+hp-max: 175;
 atk: 165;
 def: 120;
 agi: 60;

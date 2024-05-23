@@ -3,7 +3,7 @@ description: Peach donne une peche à tous ses équipiers, leur redonnant 50 poi
 type: Status;
 charge: 0;
 duration: 0;
-heal: 50;
+heal: 75;
 accuracy: 100;
 cooldown: 1;
 priority: 0;

@@ -7,49 +7,53 @@
 
 // Declaring all structures needed for the game
 typedef struct {
-    int hp;
-    int hpMax;
-    int atk;
-    int def;
-    int agi;
-    int spd;
+  int hp;
+  int hpMax;
+  int atk;
+  int def;
+  int agi;
+  int spd;
 } fighterStats;
 
 typedef struct {
-    char name[100];
-    char type[40];
-    char specials[2][40];
-    fighterStats stats;
+  char name[100];
+  char type[40];
+  char specials[2][40];
+  fighterStats stats;
 } Fighter;
 
 typedef struct {
-    char teamName[100];
-    Fighter team[3];
+  char teamName[100];
+  Fighter team[3];
 } Team;
 
 typedef struct {
-	int power;
-    int accuracy;
-    int duration;
-    int turns;
-    int cooldown;
-    int priority;
-    int targets;
+  int power;
+  int accuracy;
+  int duration;
+  int turns;
+  int cooldown;
+  int priority;
+  int targets;
 } moveStats;
 
 typedef struct {
-    char name[100];
-    char description[300];
-    char type[100];
-    moveStats stats;
+  char name[100];
+  char description[300];
+  char type[100];
+  moveStats stats;
 } Move;
 
 typedef struct {
-    Fighter champ;
-    Move move;
-    int moveIndex;
-    int targets;
-    Move buff;
+  Fighter champ;
+  int champIndex;
+  int moveIndex;
+  int targets;
+  int cooldowns[3];
+  int alive;
+  Move move;
+  Move buff;
+  Move debuff;
 } ActiveTeam;
 
 // Declaring basic functions
@@ -62,5 +66,7 @@ int verifyChamp(char *champName);
 int verifyTeam(Fighter champ, Team team);
 void toLowerCase(char *str);
 void clear_scan();
+char *getValue(char *input);
+char *getSpec(char *input);
 
 #endif

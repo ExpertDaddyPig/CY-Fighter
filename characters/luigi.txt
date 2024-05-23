@@ -1,7 +1,7 @@
 name: Luigi;
 type: Brawler;
-hp: 150;
-hp-max: 150;
+hp: 175;
+hp-max: 175;
 atk: 135;
 def: 140;
 agi: 55;

@@ -57,7 +57,10 @@ void main() {
 
       // Starting the game
       // Display the teams
+
       Interface(team1, team2);
+      printf("\nAppuyez sur entrée pour commencer le tour.\n");
+      clear_scan();
       // Launch the fight until one team is dead
       fight(team1, team2);
       break;

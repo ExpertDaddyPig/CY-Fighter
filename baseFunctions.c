@@ -24,6 +24,22 @@ void clear_scan() {
   } while (res == 1 && c != '\n');
 }
 
+char *getValue(char *input) {
+  char *value = malloc(200 * sizeof(char)), token[200];
+  strcpy(token, strtok(input, ":"));
+  strcpy(token, strtok(NULL, ":"));
+  sscanf(token, " %200[^;];", value);
+  return value;
+}
+
+char *getSpec(char *input) {
+  char *value = malloc(200 * sizeof(char)), token[200];
+  strcpy(token, strtok(input, ":"));
+  strcpy(token, strtok(NULL, ":"));
+  sscanf(token, " %200[^,],", value);
+  return value;
+}
+
 Fighter getFighter(char *champName) {
   FILE *data;
   Fighter champ;
@@ -43,58 +59,30 @@ Fighter getFighter(char *champName) {
 
   // Read the file and store the data in the Fighter structure
   char *name, *special1, *special2, *type, line[100], *token;
-  int atk, def, hp, hp_max, spd, agi;
+  int atk, def, hp, hp_max, spd, agi, last;
   int i = 0;
   char letter;
 
   // Get the name of the fighter
   fgets(line, sizeof(line), data);
-  name = strtok(line, ":");
-  name = strtok(NULL, ":");
-  name[0] = 0;
-  name[strlen(name) - 2] = '\0';
-  strcpy(champ.name, name);
+  name = getValue(line);
 
   // Get the type of the fighter
   fgets(line, sizeof(line), data);
-  type = strtok(line, ":");
-  type = strtok(NULL, ":");
-  type[0] = 0;
-  type[strlen(type) - 2] = '\0';
-  strcpy(champ.type, type);
-
+  type = getValue(line);
 
   // Get the stats of the fighter
-  fseek(data, 5, SEEK_CUR);
-  fscanf(data, "%d", &hp);
-  fseek(data, 10, SEEK_CUR);
-  fscanf(data, "%d", &hp_max);
-  fseek(data, 7, SEEK_CUR);
-  fscanf(data, "%d", &atk);
-  fseek(data, 7, SEEK_CUR);
-  fscanf(data, "%d", &def);
-  fseek(data, 7, SEEK_CUR);
-  fscanf(data, "%d", &agi);
-  fseek(data, 7, SEEK_CUR);
-  fscanf(data, "%d", &spd);
-  fseek(data, 13, SEEK_CUR);
-  letter = fgetc(data);
+  fscanf(data,
+         "hp: %d;\nhp-max: %d;\natk: %d;\ndef: %d;\nagi: %d;\nspd: "
+         "%d;\nspecials: [\n",
+         &hp, &hp_max, &atk, &def, &agi, &spd);
 
   // Get the special moves of the fighter
   fgets(line, sizeof(line), data);
-  special1 = strtok(line, ":");
-  special1 = strtok(NULL, ":");
-  special1[0] = 0;
-  special1[strlen(special1) - 2] = '\0';
-  strcpy(champ.specials[0], special1);
+  special1 = getSpec(line);
 
   fgets(line, sizeof(line), data);
-  special2 = strtok(line, ":");
-  special2 = strtok(NULL, ":");
-  special2[0] = 0;
-  special2[strlen(special2) - 2] = '\0';
-  strcpy(champ.specials[1], special2);
-
+  special2 = getSpec(line);
 
   // Store the data in the Fighter structure
   champ.stats.hp = hp;
@@ -103,6 +91,10 @@ Fighter getFighter(char *champName) {
   champ.stats.def = def;
   champ.stats.agi = agi;
   champ.stats.spd = spd;
+  strcpy(champ.name, name);
+  strcpy(champ.type, type);
+  strcpy(champ.specials[0], special1);
+  strcpy(champ.specials[1], special2);
 
   // Close the file and return the Fighter structure
   fclose(data);
@@ -273,7 +265,7 @@ Team createTeam2(char *name, Team team) {
         if (teamVerif == 1) {
           printf("Votre adversaire déjà choisi %s.\nVeuillez choisir un autre "
                  "personnage.\nChoissisez votre premier champion: ",
-                 heros2);
+                 heros1);
         }
       }
     }
@@ -430,9 +422,8 @@ void sortBySpeed(ActiveTeam *fighters, int size) {
 }
 
 void makeOrder(ActiveTeam *fighters) {
-  ActiveTeam prio0[6], prio1[6], noprio[6], sorted[6];
-  int prio0Size = 0, prio1Size = 0, noprioSize = 0, verif, pos1 = 0, pos0 = 0,
-      nopos = 0;
+  ActiveTeam *prio0 = malloc(6*sizeof(ActiveTeam)), *prio1 = malloc(6*sizeof(ActiveTeam)), *noprio = malloc(6*sizeof(ActiveTeam)), *sorted = malloc(6*sizeof(ActiveTeam));
+  int prio0Size = 0, prio1Size = 0, noprioSize = 0, verif, pos1 = 0, pos0 = 0, nopos = 0;
 
   // Separate the fighters in three groups of priority, if the fighter move has
   // a priority of 1, he will be in the first group, if the fighter move has a
