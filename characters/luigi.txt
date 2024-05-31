@@ -2,10 +2,10 @@ name: Luigi;
 type: Brawler;
 hp: 175;
 hp-max: 175;
-atk: 135;
-def: 140;
-agi: 55;
-spd: 70;
+atk: 165;
+def: 135;
+agi: 70;
+spd: 60;
 specials: [
 	1: Thunder Flower,
 	2: Boomerang Flower,

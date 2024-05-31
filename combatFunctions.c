@@ -349,7 +349,7 @@ Move moveChoice(Team *ally, Team *enemy, Fighter champ, int i, int *index,
         strcpy(move.type, "Attack");
         move.stats.power = champ.stats.atk;
         move.stats.accuracy = 95;
-        move.stats.duration = 0;
+        move.stats.duration = 100;
         move.stats.turns = 0;
         move.stats.priority = 0;
         move.stats.cooldown = 0;
@@ -595,9 +595,15 @@ void fight(Team team1, Team team2) {
   ActiveTeam *activeTeam1 = malloc(3 * sizeof(ActiveTeam)),
              *activeTeam2 = malloc(3 * sizeof(ActiveTeam)),
              *fusedTeams = malloc(6 * sizeof(ActiveTeam));
+  Effect *temp = malloc(sizeof(Effect)), *team1Effects = malloc(sizeof(Effect)),
+         *team2Effects = malloc(sizeof(Effect));
   for (int j = 0; j < 3; j++) {
     activeTeam1[j].alive = 1;
     activeTeam2[j].alive = 1;
+    activeTeam1[j].buffs = NULL;
+    activeTeam2[j].buffs = NULL;
+    activeTeam1[j].debuffs = NULL;
+    activeTeam2[j].debuffs = NULL;
     for (int i = 0; i < 3; i++) {
       activeTeam1[j].cooldowns[i] = -1;
       activeTeam2[j].cooldowns[i] = -1;
@@ -645,6 +651,62 @@ void fight(Team team1, Team team2) {
           activeTeam2[i].alive = 0;
         }
       }
+      temp = activeTeam1[i].buffs;
+      team1Effects = activeTeam1[i].buffs;
+      while (temp != NULL) {
+        if (temp->duration > -1) {
+          temp->duration--;
+          printf("\nLe buff %s sur %s est actif. %d tours restants.\n", temp->name,
+                activeTeam1[i].champ.name, temp->duration);
+          temp = temp->next;
+        } else {
+          printf("\nLe buff %s n'a plus effet sur %s\n", temp->name, activeTeam1[i].champ.name);
+          deleteEffect(team1Effects, temp->name);
+        }
+      }
+      activeTeam1[i].buffs = team1Effects;
+      temp = activeTeam1[i].debuffs;
+      team1Effects = activeTeam1[i].debuffs;
+      while (temp != NULL) {
+        if (temp->duration > -1) {
+          temp->duration--;
+          printf("\nLe debuff %s sur %s est actif. %d tours restants.\n", temp->name,
+                activeTeam1[i].champ.name, temp->duration);
+          temp = temp->next;
+        } else {
+          printf("\nLe debuff %s n'a plus effet sur %s\n", temp->name, activeTeam1[i].champ.name);
+          deleteEffect(team1Effects, temp->name);
+        }
+      }
+      activeTeam1[i].debuffs = team1Effects;
+      temp = activeTeam2[i].buffs;
+      team2Effects = activeTeam2[i].buffs;
+      while (temp != NULL) {
+        if (temp->duration > -1) {
+          temp->duration--;
+          printf("\nLe buff %s sur %s est actif. %d tours restants.\n", temp->name,
+                activeTeam2[i].champ.name, temp->duration);
+          temp = temp->next;
+        } else {
+          printf("\nLe buff %s n'a plus effet sur %s\n", temp->name, activeTeam2[i].champ.name);
+          deleteEffect(team2Effects, temp->name);
+        }
+      }
+      activeTeam2[i].buffs = team2Effects;
+      temp = activeTeam2[i].debuffs;
+      team2Effects = activeTeam2[i].debuffs;
+      while (temp != NULL) {
+        if (temp->duration > -1) {
+          temp->duration--;
+          printf("\nLe debuff %s sur %s est actif. %d tours restants.\n", temp->name,
+                activeTeam2[i].champ.name, temp->duration);
+          temp = temp->next;
+        } else {
+          printf("\nLe debuff %s n'a plus effet sur %s\n", temp->name, activeTeam2[i].champ.name);
+          deleteEffect(team2Effects, temp->name);
+        }
+      }
+      activeTeam2[i].buffs = team2Effects;
     }
 
     // Displaying the updated teams

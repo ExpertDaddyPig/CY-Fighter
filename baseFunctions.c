@@ -422,8 +422,12 @@ void sortBySpeed(ActiveTeam *fighters, int size) {
 }
 
 void makeOrder(ActiveTeam *fighters) {
-  ActiveTeam *prio0 = malloc(6*sizeof(ActiveTeam)), *prio1 = malloc(6*sizeof(ActiveTeam)), *noprio = malloc(6*sizeof(ActiveTeam)), *sorted = malloc(6*sizeof(ActiveTeam));
-  int prio0Size = 0, prio1Size = 0, noprioSize = 0, verif, pos1 = 0, pos0 = 0, nopos = 0;
+  ActiveTeam *prio0 = malloc(6 * sizeof(ActiveTeam)),
+             *prio1 = malloc(6 * sizeof(ActiveTeam)),
+             *noprio = malloc(6 * sizeof(ActiveTeam)),
+             *sorted = malloc(6 * sizeof(ActiveTeam));
+  int prio0Size = 0, prio1Size = 0, noprioSize = 0, verif, pos1 = 0, pos0 = 0,
+      nopos = 0;
 
   // Separate the fighters in three groups of priority, if the fighter move has
   // a priority of 1, he will be in the first group, if the fighter move has a
@@ -503,6 +507,41 @@ int verifyTeam(Fighter champ, Team enemy) {
     }
   }
   return verif;
+}
+
+Effect *createEffect(Move move) {
+  Effect *effect = malloc(sizeof(Effect));
+  strcpy(effect->name, move.name);
+  effect->stats = move.stats;
+  effect->duration = move.stats.duration - 1;
+  effect->next = NULL;
+  printf("Creating new effect %s: Duration: %d.", effect->name, effect->duration);
+  return effect;
+}
+
+void deleteEffect(Effect *effects, char *effect) {
+  Effect *temp = effects;
+  Effect *prev = NULL;
+
+  if (temp != NULL && strcmp(temp->name, effect) == 0) {
+    effects = temp->next;
+    free(temp);
+    return;
+  }
+
+  while (temp != NULL && strcmp(temp->name, effect) != 0) {
+    prev = temp;
+    temp = temp->next;
+  }
+
+  prev->next = temp->next;
+  free(temp);
+}
+
+Effect *addEffect(Effect *effects, Move effect) {
+  Effect *new = createEffect(effect);
+  new->next = effects;
+  return new;
 }
 
 void fighterInfos(char *champ) {

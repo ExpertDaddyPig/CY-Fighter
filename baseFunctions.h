@@ -44,6 +44,13 @@ typedef struct {
   moveStats stats;
 } Move;
 
+typedef struct Effect {
+  char name[100];
+  int duration;
+  moveStats stats;
+  struct Effect *next;
+} Effect;
+
 typedef struct {
   Fighter champ;
   int champIndex;
@@ -52,8 +59,8 @@ typedef struct {
   int cooldowns[3];
   int alive;
   Move move;
-  Move buff;
-  Move debuff;
+  Effect *buffs;
+  Effect *debuffs;
 } ActiveTeam;
 
 // Declaring basic functions
@@ -64,6 +71,9 @@ Team createTeam(char *name);
 Team createTeam2(char *name, Team team);
 int verifyChamp(char *champName);
 int verifyTeam(Fighter champ, Team team);
+void deleteEffect(Effect *effects, char *effect);
+Effect *addEffect(Effect *effects, Move effect);
+Effect *createEffect(Move move);
 void toLowerCase(char *str);
 void clear_scan();
 char *getValue(char *input);

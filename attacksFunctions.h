@@ -7,39 +7,39 @@
 #include "baseFunctions.h"
 
 // Declaring all moves functions
-void basic(ActiveTeam *fighter, Team *ally, Team *enemy);
-void pizza(ActiveTeam *fighter, Team *ally, Team *enemy);
-void avion(ActiveTeam *fighter, Team *ally, Team *enemy);
-void kamehameha(ActiveTeam *fighter, Team *ally, Team *enemy);
-void kaioken(ActiveTeam *fighter, Team *ally, Team *enemy);
-void ramen(ActiveTeam *fighter, Team *ally, Team *enemy);
-void paume(ActiveTeam *fighter, Team *ally, Team *enemy);
-void spiked(ActiveTeam *fighter, Team *ally, Team *enemy);
-void acier(ActiveTeam *fighter, Team *ally, Team *enemy);
-void seisme(ActiveTeam *fighter, Team *ally, Team *enemy);
-void thunder(ActiveTeam *fighter, Team *ally, Team *enemy, int pos1, int pos2);
-void fire(ActiveTeam *fighter, Team *ally, Team *enemy);
-void boomerang(ActiveTeam *fighter, Team *ally, Team *enemy);
-void ice(ActiveTeam *fighter, Team *ally, Team *enemy);
-void rasengan(ActiveTeam *fighter, Team *ally, Team *enemy);
-void clone(ActiveTeam *fighter, Team *ally, Team *enemy);
-void golf(ActiveTeam *fighter, Team *ally, Team *enemy);
-void peche(ActiveTeam *fighter, Team *ally, Team *enemy);
-void boule(ActiveTeam *fighter, Team *ally, Team *enemy);
-void punch(ActiveTeam *fighter, Team *ally, Team *enemy);
-void cherry(ActiveTeam *fighter, Team *ally, Team *enemy);
-void heal(ActiveTeam *fighter, Team *ally, Team *enemy);
-void katon(ActiveTeam *fighter, Team *ally, Team *enemy);
-void chidori(ActiveTeam *fighter, Team *ally, Team *enemy);
-void croque(ActiveTeam *fighter, Team *ally, Team *enemy);
-void repos(ActiveTeam *fighter, Team *ally, Team *enemy);
-void mysteres(ActiveTeam *fighter, Team *ally, Team *enemy);
-void spinattack(ActiveTeam *fighter, Team *ally, Team *enemy);
-void homming(ActiveTeam *fighter, Team *ally, Team *enemy);
-void bots(ActiveTeam *fighter, Team *ally, Team *enemy);
-void hand(ActiveTeam *fighter, Team *ally, Team *enemy);
-void flash(ActiveTeam *fighter, Team *ally, Team *enemy);
-void garrick(ActiveTeam *fighter, Team *ally, Team *enemy);
+void basic(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void pizza(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void avion(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void kamehameha(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void kaioken(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void ramen(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void paume(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void spiked(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void acier(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void seisme(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void thunder(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy, int pos1, int pos2);
+void fire(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void boomerang(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void ice(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void rasengan(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void clone(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void golf(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void peche(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void boule(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void punch(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void cherry(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void heal(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void katon(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void chidori(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void croque(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void repos(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void mysteres(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void spinattack(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void homming(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void bots(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void hand(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void flash(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
+void garrick(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy);
 
 
 

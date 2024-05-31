@@ -6,184 +6,184 @@
 #include <string.h>
 #include <time.h>
 
-void useMove(ActiveTeam *fighter, Team *ally, Team *enemy, int moveIndex,
+void useMove(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy, int moveIndex,
              int pos1, int pos2) {
   char *name = fighter->champ.name;
   // Use the move of the fighter depending of his
   if (strcmp(name, "Expert Daddy Pig") == 0) {
     if (moveIndex == 0) {
-      pizza(fighter, ally, enemy);
+      pizza(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 1) {
-      avion(fighter, ally, enemy);
+      avion(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighter, ally, enemy);
+      basic(fighters, fighter, ally, enemy);
     }
   }
   if (strcmp(name, "Son Goku") == 0) {
     if (moveIndex == 0) {
-      kamehameha(fighter, ally, enemy);
+      kamehameha(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 1) {
-      kaioken(fighter, ally, enemy);
+      kaioken(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighter, ally, enemy);
+      basic(fighters, fighter, ally, enemy);
     }
   }
   if (strcmp(name, "Hinata") == 0) {
     if (moveIndex == 0) {
-      ramen(fighter, ally, enemy);
+      ramen(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 1) {
-      paume(fighter, ally, enemy);
+      paume(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighter, ally, enemy);
+      basic(fighters, fighter, ally, enemy);
     }
   }
   if (strcmp(name, "Knuckles") == 0) {
     if (moveIndex == 0) {
-      acier(fighter, ally, enemy);
+      acier(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 1) {
-      seisme(fighter, ally, enemy);
+      seisme(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighter, ally, enemy);
+      basic(fighters, fighter, ally, enemy);
     }
   }
   if (strcmp(name, "Luigi") == 0) {
     if (moveIndex == 0) {
-      thunder(fighter, ally, enemy, pos1, pos2);
+      thunder(fighters, fighter, ally, enemy, pos1, pos2);
     }
     if (moveIndex == 1) {
-      boomerang(fighter, ally, enemy);
+      boomerang(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighter, ally, enemy);
+      basic(fighters, fighter, ally, enemy);
     }
   }
   if (strcmp(name, "Mario") == 0) {
     if (moveIndex == 0) {
-      fire(fighter, ally, enemy);
+      fire(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 1) {
-      ice(fighter, ally, enemy);
+      ice(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighter, ally, enemy);
+      basic(fighters, fighter, ally, enemy);
     }
   }
   if (strcmp(name, "Naruto") == 0) {
     if (moveIndex == 0) {
-      rasengan(fighter, ally, enemy);
+      rasengan(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 1) {
-      clone(fighter, ally, enemy);
+      clone(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighter, ally, enemy);
+      basic(fighters, fighter, ally, enemy);
     }
   }
   if (strcmp(name, "Princess Peach") == 0) {
     if (moveIndex == 0) {
-      golf(fighter, ally, enemy);
+      golf(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 1) {
-      peche(fighter, ally, enemy);
+      peche(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighter, ally, enemy);
+      basic(fighters, fighter, ally, enemy);
     }
   }
   if (strcmp(name, "Saitama") == 0) {
     if (moveIndex == 0) {
-      boule(fighter, ally, enemy);
+      boule(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 1) {
-      punch(fighter, ally, enemy);
+      punch(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighter, ally, enemy);
+      basic(fighters, fighter, ally, enemy);
     }
   }
   if (strcmp(name, "Sakura") == 0) {
     if (moveIndex == 0) {
-      cherry(fighter, ally, enemy);
+      cherry(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 1) {
-      heal(fighter, ally, enemy);
+      heal(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighter, ally, enemy);
+      basic(fighters, fighter, ally, enemy);
     }
   }
   if (strcmp(name, "Sasuke") == 0) {
     if (moveIndex == 0) {
-      katon(fighter, ally, enemy);
+      katon(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 1) {
-      chidori(fighter, ally, enemy);
+      chidori(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighter, ally, enemy);
+      basic(fighters, fighter, ally, enemy);
     }
   }
   if (strcmp(name, "Scooby-Doo") == 0) {
     if (moveIndex == 0) {
-      croque(fighter, ally, enemy);
+      croque(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 1) {
-      repos(fighter, ally, enemy);
+      repos(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighter, ally, enemy);
+      basic(fighters, fighter, ally, enemy);
     }
   }
   if (strcmp(name, "Shaggy (Sammy)") == 0) {
     if (moveIndex == 0) {
-      croque(fighter, ally, enemy);
+      croque(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      kamehameha(fighter, ally, enemy);
+      kamehameha(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighter, ally, enemy);
+      basic(fighters, fighter, ally, enemy);
     }
   }
   if (strcmp(name, "Sonic") == 0) {
     if (moveIndex == 0) {
-      spinattack(fighter, ally, enemy);
+      spinattack(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 1) {
-      homming(fighter, ally, enemy);
+      homming(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighter, ally, enemy);
+      basic(fighters, fighter, ally, enemy);
     }
   }
   if (strcmp(name, "Tails") == 0) {
     if (moveIndex == 0) {
-      hand(fighter, ally, enemy);
+      hand(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 1) {
-      bots(fighter, ally, enemy);
+      bots(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighter, ally, enemy);
+      basic(fighters, fighter, ally, enemy);
     }
   }
   if (strcmp(name, "Vegeta") == 0) {
     if (moveIndex == 0) {
-      flash(fighter, ally, enemy);
+      flash(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 1) {
-      garrick(fighter, ally, enemy);
+      garrick(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighter, ally, enemy);
+      basic(fighters, fighter, ally, enemy);
     }
   }
 }
@@ -346,10 +346,10 @@ void actions(ActiveTeam *fighters, Team *ally, Team *enemy) {
         }
       }
       // Use the move of the fighter on his targets
-      useMove(&fighters[i], ally, enemy, fighters[i].moveIndex, pos1, pos2);
+      useMove(fighters, &fighters[i], ally, enemy, fighters[i].moveIndex, pos1, pos2);
       printf("\n");
     } else {
-      printf("%s est K.O. et ne peut plus agir.\n", fighters[i].champ.name);
+      printf("%s est K.O. et ne peut plus agir.\n\n", fighters[i].champ.name);
     }
   }
 }

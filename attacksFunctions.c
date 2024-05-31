@@ -7,8 +7,9 @@
 
 // This is the code of every moves that can be used in the game
 
-void basic(ActiveTeam *fighter, Team *ally, Team *enemy) {
+void basic(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
+  Move move = fighter->move;
   int power = fighter->champ.stats.atk;
   int def, verif, miss = 0;
   float percent;
@@ -39,16 +40,18 @@ void basic(ActiveTeam *fighter, Team *ally, Team *enemy) {
       printf("%s a maintenant %d points de vie.\n",
              ally->team[fighter->targets].name,
              ally->team[fighter->targets].stats.hp);
+      fighter->buffs = addEffect(fighter->buffs, move);
     } else {
       enemy->team[fighter->targets] = target;
       printf("%s a maintenant %d points de vie.\n",
              enemy->team[fighter->targets].name,
              enemy->team[fighter->targets].stats.hp);
+      fighter->buffs = addEffect(fighter->buffs, move);
     }
   }
 }
 
-void pizza(ActiveTeam *fighter, Team *ally, Team *enemy) {
+void pizza(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int heal = fighter->move.stats.power;
   int verif;
@@ -82,7 +85,7 @@ void pizza(ActiveTeam *fighter, Team *ally, Team *enemy) {
   }
 }
 
-void avion(ActiveTeam *fighter, Team *ally, Team *enemy) {
+void avion(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss;
@@ -123,7 +126,7 @@ void avion(ActiveTeam *fighter, Team *ally, Team *enemy) {
   }
 }
 
-void kamehameha(ActiveTeam *fighter, Team *ally, Team *enemy) {
+void kamehameha(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss;
@@ -164,17 +167,16 @@ void kamehameha(ActiveTeam *fighter, Team *ally, Team *enemy) {
   }
 }
 
-void kaioken(ActiveTeam *fighter, Team *ally, Team *enemy) {
+void kaioken(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target = ally->team[fighter->targets];
   printf("%s utilise %s.\n", target.name, fighter->move.name);
   target.stats.atk = target.stats.atk * 2;
   printf("%s a maintenant %d points d'attaque.\n",
          ally->team[fighter->targets].name,
          ally->team[fighter->targets].stats.atk);
-  fighter->buff = fighter->move;
 }
 
-void ramen(ActiveTeam *fighter, Team *ally, Team *enemy) {
+void ramen(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int heal = fighter->move.stats.power, missing;
   int verif;
@@ -210,7 +212,7 @@ void ramen(ActiveTeam *fighter, Team *ally, Team *enemy) {
   }
 }
 
-void paume(ActiveTeam *fighter, Team *ally, Team *enemy) {
+void paume(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss;
@@ -251,7 +253,7 @@ void paume(ActiveTeam *fighter, Team *ally, Team *enemy) {
   }
 }
 
-void acier(ActiveTeam *fighter, Team *ally, Team *enemy) {
+void acier(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss;
@@ -292,7 +294,7 @@ void acier(ActiveTeam *fighter, Team *ally, Team *enemy) {
   }
 }
 
-void seisme(ActiveTeam *fighter, Team *ally, Team *enemy) {
+void seisme(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss;
@@ -333,7 +335,7 @@ void seisme(ActiveTeam *fighter, Team *ally, Team *enemy) {
   }
 }
 
-void thunder(ActiveTeam *fighter, Team *ally, Team *enemy, int pos1, int pos2) {
+void thunder(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy, int pos1, int pos2) {
   Fighter target1, target2;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss;
@@ -401,7 +403,7 @@ void thunder(ActiveTeam *fighter, Team *ally, Team *enemy, int pos1, int pos2) {
   }
 }
 
-void boomerang(ActiveTeam *fighter, Team *ally, Team *enemy) {
+void boomerang(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss;
@@ -445,7 +447,7 @@ void boomerang(ActiveTeam *fighter, Team *ally, Team *enemy) {
   }
 }
 
-void fire(ActiveTeam *fighter, Team *ally, Team *enemy) {
+void fire(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss;
@@ -495,7 +497,7 @@ void fire(ActiveTeam *fighter, Team *ally, Team *enemy) {
   }
 }
 
-void ice(ActiveTeam *fighter, Team *ally, Team *enemy) {
+void ice(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss, freeze;
@@ -541,7 +543,7 @@ void ice(ActiveTeam *fighter, Team *ally, Team *enemy) {
   }
 }
 
-void rasengan(ActiveTeam *fighter, Team *ally, Team *enemy) {
+void rasengan(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss;
@@ -582,7 +584,7 @@ void rasengan(ActiveTeam *fighter, Team *ally, Team *enemy) {
   }
 }
 
-void clone(ActiveTeam *fighter, Team *ally, Team *enemy) {
+void clone(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss, clones;
@@ -627,7 +629,7 @@ void clone(ActiveTeam *fighter, Team *ally, Team *enemy) {
   }
 }
 
-void golf(ActiveTeam *fighter, Team *ally, Team *enemy) {
+void golf(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss;
@@ -668,7 +670,7 @@ void golf(ActiveTeam *fighter, Team *ally, Team *enemy) {
   }
 }
 
-void peche(ActiveTeam *fighter, Team *ally, Team *enemy) {
+void peche(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int heal = fighter->move.stats.power;
   int verif;
@@ -706,7 +708,7 @@ void peche(ActiveTeam *fighter, Team *ally, Team *enemy) {
   }
 }
 
-void boule(ActiveTeam *fighter, Team *ally, Team *enemy) {
+void boule(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss;
@@ -747,7 +749,7 @@ void boule(ActiveTeam *fighter, Team *ally, Team *enemy) {
   }
 }
 
-void punch(ActiveTeam *fighter, Team *ally, Team *enemy) {
+void punch(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss;
@@ -788,7 +790,7 @@ void punch(ActiveTeam *fighter, Team *ally, Team *enemy) {
   }
 }
 
-void cherry(ActiveTeam *fighter, Team *ally, Team *enemy) {
+void cherry(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss;
@@ -829,7 +831,7 @@ void cherry(ActiveTeam *fighter, Team *ally, Team *enemy) {
   }
 }
 
-void heal(ActiveTeam *fighter, Team *ally, Team *enemy) {
+void heal(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int heal = fighter->move.stats.power;
   int verif;
@@ -863,7 +865,7 @@ void heal(ActiveTeam *fighter, Team *ally, Team *enemy) {
   }
 }
 
-void katon(ActiveTeam *fighter, Team *ally, Team *enemy) {
+void katon(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss;
@@ -904,7 +906,7 @@ void katon(ActiveTeam *fighter, Team *ally, Team *enemy) {
   }
 }
 
-void chidori(ActiveTeam *fighter, Team *ally, Team *enemy) {
+void chidori(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss;
@@ -945,7 +947,7 @@ void chidori(ActiveTeam *fighter, Team *ally, Team *enemy) {
   }
 }
 
-void croque(ActiveTeam *fighter, Team *ally, Team *enemy) {
+void croque(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int heal = fighter->move.stats.power;
   int verif;
@@ -979,7 +981,7 @@ void croque(ActiveTeam *fighter, Team *ally, Team *enemy) {
   }
 }
 
-void repos(ActiveTeam *fighter, Team *ally, Team *enemy) {
+void repos(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int heal = fighter->move.stats.power;
   int verif;
@@ -1013,7 +1015,7 @@ void repos(ActiveTeam *fighter, Team *ally, Team *enemy) {
   }
 }
 
-void spinattack(ActiveTeam *fighter, Team *ally, Team *enemy) {
+void spinattack(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss;
@@ -1054,7 +1056,7 @@ void spinattack(ActiveTeam *fighter, Team *ally, Team *enemy) {
   }
 }
 
-void homming(ActiveTeam *fighter, Team *ally, Team *enemy) {
+void homming(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss;
@@ -1095,7 +1097,7 @@ void homming(ActiveTeam *fighter, Team *ally, Team *enemy) {
   }
 }
 
-void hand(ActiveTeam *fighter, Team *ally, Team *enemy) {
+void hand(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss;
@@ -1136,7 +1138,7 @@ void hand(ActiveTeam *fighter, Team *ally, Team *enemy) {
   }
 }
 
-void bots(ActiveTeam *fighter, Team *ally, Team *enemy) {
+void bots(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int verif;
   printf(
@@ -1158,10 +1160,9 @@ void bots(ActiveTeam *fighter, Team *ally, Team *enemy) {
     printf("%s a maintenant %d points de defense.\n", target.name,
            target.stats.def);
   }
-  fighter->buff = fighter->move;
 }
 
-void flash(ActiveTeam *fighter, Team *ally, Team *enemy) {
+void flash(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss;
@@ -1202,7 +1203,7 @@ void flash(ActiveTeam *fighter, Team *ally, Team *enemy) {
   }
 }
 
-void garrick(ActiveTeam *fighter, Team *ally, Team *enemy) {
+void garrick(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss;

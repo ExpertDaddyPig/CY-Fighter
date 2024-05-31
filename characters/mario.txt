@@ -3,9 +3,9 @@ type: Brawler;
 hp: 175;
 hp-max: 175;
 atk: 165;
-def: 120;
+def: 135;
 agi: 60;
-spd: 65;
+spd: 70;
 specials: [
 	1: Fire Flower,
 	2: Ice Flower,
