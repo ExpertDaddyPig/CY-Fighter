@@ -1,0 +1,4 @@
+name: Test;
+description: Rien à voir ici.;
+damage: 0;
+luck: 0;

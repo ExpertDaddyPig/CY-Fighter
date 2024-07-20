@@ -5,7 +5,7 @@ hp-max: 300;
 atk: 150;
 def: 60;
 agi: 60;
-spd: 75;
+spd: 80;
 specials: [
 	1: Croque-Scooby,
 	2: Kamehameha,

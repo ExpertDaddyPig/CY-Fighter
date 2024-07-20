@@ -2,7 +2,7 @@ name: Princess Peach;
 type: Support;
 hp: 200;
 hp-max: 200;
-atk: 30;
+atk: 50;
 def: 160;
 agi: 40;
 spd: 50;

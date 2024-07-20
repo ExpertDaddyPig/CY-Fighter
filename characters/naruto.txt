@@ -5,7 +5,7 @@ hp-max: 130;
 atk: 160;
 def: 100;
 agi: 90;
-spd: 75;
+spd: 80;
 specials: [
 	1: Rasengan,
 	2: Shadow Clone Jutsu,

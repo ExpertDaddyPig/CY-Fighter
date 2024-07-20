@@ -32,6 +32,7 @@ typedef struct {
   int accuracy;
   int duration;
   int turns;
+  int charge;
   int cooldown;
   int priority;
   int targets;
@@ -46,8 +47,10 @@ typedef struct {
 
 typedef struct Effect {
   char name[100];
+  char description[300];
   int duration;
-  moveStats stats;
+  int damage;
+  int luck;
   struct Effect *next;
 } Effect;
 
@@ -71,12 +74,14 @@ Team createTeam(char *name);
 Team createTeam2(char *name, Team team);
 int verifyChamp(char *champName);
 int verifyTeam(Fighter champ, Team team);
-void deleteEffect(Effect *effects, char *effect);
-Effect *addEffect(Effect *effects, Move effect);
-Effect *createEffect(Move move);
+Effect *deleteEffect(Effect **effects, char *effect);
+Effect *addEffect(Effect *effects, char *effect, int dur);
+Effect *returnEffect(Effect *effects, char *effect);
+Effect *createEffect(char *effect, int dur);
 void toLowerCase(char *str);
 void clear_scan();
 char *getValue(char *input);
 char *getSpec(char *input);
+int searchEffect(ActiveTeam *activeFighter, char *buff);
 
 #endif

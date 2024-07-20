@@ -1,0 +1,4 @@
+name: Charge;
+description: La cible est incapable d'agir pendant le chargement de son attaque.;
+damage: 0;
+luck: -1;

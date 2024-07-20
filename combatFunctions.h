@@ -11,6 +11,7 @@ void Interface(Team ally, Team enemy);
 Move moveChoice(Team *ally, Team *enemy, Fighter champ, int i, int *index, ActiveTeam *activeTeam);
 void caraInterface(Team ally, int cara, ActiveTeam *activeTeam);
 void movesInfos(Fighter champ);
+void buffsInfos(ActiveTeam activeFighter);
 void fight(Team ally, Team enemy);
 void turn(Team *ally, Team *enemy, ActiveTeam *activeTeam);
 void sortBySpeed(ActiveTeam *team, int size);

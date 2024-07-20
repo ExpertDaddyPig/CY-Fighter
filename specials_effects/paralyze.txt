@@ -1,0 +1,4 @@
+name: Paralysie;
+description: La cible est ralentie et aura une chance de ne pas effectuer son attaque.;
+damage: 0;
+luck: 25;

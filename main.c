@@ -57,7 +57,7 @@ void main() {
 
       // Starting the game
       // Display the teams
-
+      printf("\n");
       Interface(team1, team2);
       printf("\nAppuyez sur entrée pour commencer le tour.\n");
       clear_scan();

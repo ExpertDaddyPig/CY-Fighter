@@ -1,0 +1,4 @@
+name: Defense Bots;
+description: [Capacité spéciale de Tails] Les membres de l'équipe de de Tails obtiennent 50 points de défense supplémentaires pendant 4 tours.;
+damage: 0;
+luck: -1;

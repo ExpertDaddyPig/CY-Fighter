@@ -1,0 +1,4 @@
+name: Gel;
+description: La cible est incapable d'agir tant qu'elle est gelée.;
+damage: 0;
+luck: 10;

@@ -101,6 +101,38 @@ Fighter getFighter(char *champName) {
   return champ;
 }
 
+Effect getEffect(char *effectName) {
+  FILE *data;
+  Effect effect;
+  char file[100];
+
+  // Open the file of the fighter
+  snprintf(file, sizeof(file), "specials_effects/%s.txt", effectName);
+  data = fopen(file, "r+");
+
+  // If the file doesn't exist, return NULL, and print an error message
+  if (data == NULL) {
+    exit(1);
+  }
+  char *name, *desc, line[500];
+  int dmg, lck;
+
+  fgets(line, sizeof(line), data);
+  name = getValue(line);
+  
+  fgets(line, sizeof(line), data);
+  desc = getValue(line);
+  fscanf(data, "damage: %d;\nluck: %d;", &dmg, &lck);
+  strcpy(effect.name, name);
+  strcpy(effect.description, desc);
+  effect.damage = dmg;
+  effect.luck = lck;
+  effect.next = NULL;
+
+  fclose(data);
+  return effect;
+}
+
 int verifyChamp(char *champName) {
   FILE *data;
   char file[100];
@@ -108,6 +140,19 @@ int verifyChamp(char *champName) {
   data = fopen(file, "r+");
 
   // Verify if the fighter exists, if not, return 0, else return 1
+  if (data == NULL) {
+    return 0;
+  }
+  fclose(data);
+  return 1;
+}
+
+int verifyEffect(char *effectName) {
+  FILE *data;
+  char file[100];
+  snprintf(file, sizeof(file), "specials_effects/%s.txt", effectName);
+  data = fopen(file, "r+");
+
   if (data == NULL) {
     return 0;
   }
@@ -509,39 +554,74 @@ int verifyTeam(Fighter champ, Team enemy) {
   return verif;
 }
 
-Effect *createEffect(Move move) {
+Effect *createEffect(char *name, int dur) {
   Effect *effect = malloc(sizeof(Effect));
-  strcpy(effect->name, move.name);
-  effect->stats = move.stats;
-  effect->duration = move.stats.duration - 1;
-  effect->next = NULL;
-  printf("Creating new effect %s: Duration: %d.", effect->name, effect->duration);
+  *effect = getEffect(name);
+  effect->duration = dur;
   return effect;
 }
 
-void deleteEffect(Effect *effects, char *effect) {
-  Effect *temp = effects;
-  Effect *prev = NULL;
+Effect *deleteEffect(Effect **effects, char *effect) {
+  Effect *current = *effects;
+  Effect *previous = NULL;
 
-  if (temp != NULL && strcmp(temp->name, effect) == 0) {
-    effects = temp->next;
-    free(temp);
-    return;
+  while (current != NULL && strcmp(current->name, effect) != 0) {
+    previous = current;
+    current = current->next;
   }
 
-  while (temp != NULL && strcmp(temp->name, effect) != 0) {
-    prev = temp;
-    temp = temp->next;
+  if (current == NULL) {
+    return *effects;
   }
 
-  prev->next = temp->next;
-  free(temp);
+  if (previous == NULL) {
+    *effects = current->next;
+  } else {
+    previous->next = current->next;
+  }
+
+  current = NULL;
+  free(current);
+  return *effects;
 }
 
-Effect *addEffect(Effect *effects, Move effect) {
-  Effect *new = createEffect(effect);
+Effect *addEffect(Effect *effects, char *effect, int dur) {
+  Effect *new = createEffect(effect, dur);
   new->next = effects;
   return new;
+}
+
+Effect *returnEffect(Effect *effects, char *effect) {
+  Effect *temp = effects, *res = NULL;
+  while (temp != NULL) {
+    if (strcmp(temp->name, effect) == 0) {
+      res = temp;
+    }
+    temp = temp->next;
+  }
+  if (res == NULL) printf("Effect not found\n");
+  return res;
+}
+
+int searchEffect(ActiveTeam *activeFighter, char *buff) {
+  Effect *temp = activeFighter->buffs;
+  int res = 1;
+  while (temp != NULL) {
+    if (strcmp(temp->name, buff) == 0) {
+      res = 0;
+    }
+    temp = temp->next;
+  }
+  if (res == 0) return res;
+  temp = activeFighter->debuffs;
+  res = 1;
+  while (temp != NULL) {
+    if (strcmp(temp->name, buff) == 0) {
+      res = 0;
+    }
+    temp = temp->next;
+  }
+  return res;
 }
 
 void fighterInfos(char *champ) {

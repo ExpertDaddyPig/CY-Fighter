@@ -1,0 +1,4 @@
+name: Brûlure;
+description: La cible subit 15 points de dégats à chaque tours tant qu'elle est brûlée.;
+damage: 15;
+luck: 25;

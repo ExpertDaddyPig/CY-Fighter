@@ -5,7 +5,7 @@ hp-max: 350;
 atk: 130;
 def: 90;
 agi: 90;
-spd: 75;
+spd: 80;
 specials: [
 	1: Cherry Blossom Impact,
 	2: Healing Jutsu,

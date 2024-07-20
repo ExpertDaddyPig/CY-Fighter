@@ -6,8 +6,8 @@
 #include <string.h>
 #include <time.h>
 
-void useMove(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy, int moveIndex,
-             int pos1, int pos2) {
+void useMove(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
+             int moveIndex, int pos1, int pos2) {
   char *name = fighter->champ.name;
   // Use the move of the fighter depending of his
   if (strcmp(name, "Expert Daddy Pig") == 0) {
@@ -131,7 +131,7 @@ void useMove(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
       basic(fighters, fighter, ally, enemy);
     }
   }
-  if (strcmp(name, "Scooby-Doo") == 0) {
+  if (strcmp(name, "Scooby") == 0) {
     if (moveIndex == 0) {
       croque(fighters, fighter, ally, enemy);
     }
@@ -231,6 +231,7 @@ Move getMove(char *moveName) {
            "%d;\npriority: %d;\nturn: %d;\ntargets: %d;\n",
            &pow, &chr, &dur, &acc, &cd, &prio, &tur, &tar);
     move.stats.power = pow;
+    move.stats.charge = chr;
     move.stats.duration = dur;
     move.stats.accuracy = acc;
     move.stats.cooldown = cd;
@@ -244,6 +245,7 @@ Move getMove(char *moveName) {
            "%d;\npriority: %d;\nturn: %d;\ntargets: %d;\n",
            &chr, &dur, &pow, &acc, &cd, &prio, &tur, &tar);
     move.stats.power = pow;
+    move.stats.charge = chr;
     move.stats.duration = dur;
     move.stats.accuracy = acc;
     move.stats.cooldown = cd;
@@ -253,10 +255,24 @@ Move getMove(char *moveName) {
   }
   if (strcmp(move.type, "Buff") == 0) {
     fscanf(data,
-           "charge: %d;\nduration: %d;\naccuracy: %d;\ncooldown: "
+           "power: %d;\ncharge: %d;\nduration: %d;\naccuracy: %d;\ncooldown: "
            "%d;\npriority: %d;\nturn: %d;\ntargets: %d;\n",
-           &chr, &dur, &acc, &cd, &prio, &tur, &tar);
-    move.stats.power = 0;
+           &pow, &chr, &dur, &acc, &cd, &prio, &tur, &tar);
+    move.stats.power = pow;
+    move.stats.charge = chr;
+    move.stats.duration = dur;
+    move.stats.accuracy = acc;
+    move.stats.cooldown = cd;
+    move.stats.priority = prio;
+    move.stats.turns = tur;
+    move.stats.targets = tar;
+  }
+  if (strcmp(move.type, "Debuff") == 0) {
+    fscanf(data,
+           "power: %d;\ncharge: %d;\nduration: %d;\naccuracy: %d;\ncooldown: "
+           "%d;\npriority: %d;\nturn: %d;\ntargets: %d;\n",
+           &pow, &chr, &dur, &acc, &cd, &prio, &tur, &tar);
+    move.stats.power = pow;
     move.stats.duration = dur;
     move.stats.accuracy = acc;
     move.stats.cooldown = cd;
@@ -268,88 +284,100 @@ Move getMove(char *moveName) {
   return move;
 }
 
-void actions(ActiveTeam *fighters, Team *ally, Team *enemy) {
-  int target1, target2, verif, pos1 = 0, pos2 = 0;
+ActiveTeam *actions(ActiveTeam *fighters, Team *ally, Team *enemy) {
+  int target1, target2, verif, pos1 = 0, pos2 = 0, freeze, sleep, charge;
   srand(time(NULL));
   // Executing all the actions of the active team
   for (int i = 0; i < 6; i++) {
     if (fighters[i].alive == 1) {
       // Check if the fighter is alive to use his move
-      printf("Tour de %s.\n", fighters[i].champ.name);
-      verif = verifyTeam(fighters[i].champ, *enemy);
-      // Check in which team the fighter is to display the correct targets
-      if (verif == 0) {
-        // If the targets value is -1, it means that the move affect all the
-        // enemies or all the allies
-        if (fighters[i].targets == -1) {
-          if (strcmp(fighters[i].move.type, "Attack") == 0) {
-            printf("%s utilise %s sur l'équipe adverse.\n",
-                   fighters[i].champ.name, fighters[i].move.name);
+      freeze = searchEffect(&fighters[i], "Gel");
+      sleep = searchEffect(&fighters[i], "Sommeil");
+      charge = searchEffect(&fighters[i], "Charge");
+      if (freeze != 0 && sleep != 0 && charge != 0) {
+        printf("Tour de %s.\n", fighters[i].champ.name);
+        verif = verifyTeam(fighters[i].champ, *enemy);
+        // Check in which team the fighter is to display the correct targets
+        if (verif == 0) {
+          // If the targets value is -1, it means that the move affect all the
+          // enemies or all the allies
+          if (fighters[i].targets == -1) {
+            if (strcmp(fighters[i].move.type, "Attack") == 0) {
+              printf("%s utilise %s sur l'équipe adverse.\n",
+                     fighters[i].champ.name, fighters[i].move.name);
+            } else {
+              printf("%s utilise %s sur son équipe.\n", fighters[i].champ.name,
+                     fighters[i].move.name);
+            }
+          } else if (fighters[i].targets == -2) {
+            // If the targets value is -2, it means that the move
+            // a special move that affect two random targets in
+            // the enemy team
+            target1 = rand() % 3;
+            pos1 = target1;
+            do {
+              target2 = rand() % 3;
+            } while (target1 == target2);
+            pos2 = target2;
+            printf("%s utilise %s sur %s et %s.\n", fighters[i].champ.name,
+                   fighters[i].move.name, enemy->team[target1].name,
+                   enemy->team[target2].name);
           } else {
-            printf("%s utilise %s sur son équipe.\n", fighters[i].champ.name,
-                   fighters[i].move.name);
+            // Check if the target is the fighter itself
+            if (fighters[i].targets == -3) {
+              printf("%s utilise %s.\n", fighters[i].champ.name,
+                     fighters[i].move.name);
+            } else {
+              printf("%s utilise %s sur %s.\n", fighters[i].champ.name,
+                     fighters[i].move.name,
+                     enemy->team[fighters[i].targets].name);
+            }
           }
-        } else if (fighters[i].targets ==
-                   -2) { // If the targets value is -2, it means that the move a
-                         // special move that affect two random targets in the
-                         // enemy team
-          target1 = rand() % 3;
-          pos1 = target1;
-          do {
-            target2 = rand() % 3;
-          } while (target1 == target2);
-          pos2 = target2;
-          printf("%s utilise %s sur %s et %s.\n", fighters[i].champ.name,
-                 fighters[i].move.name, enemy->team[target1].name,
-                 enemy->team[target2].name);
         } else {
-          // Check if the target is the fighter itself
-          if (strcmp(fighters[i].champ.name,
-                     enemy->team[fighters[i].targets].name) == 0) {
-            printf("%s utilise %s.\n", fighters[i].champ.name,
-                   fighters[i].move.name);
+          // Same as above but if the fighter is in the enemy team
+          if (fighters[i].targets == -1) {
+            if (strcmp(fighters[i].move.type, "Attack") == 0) {
+              printf("%s utilise %s sur l'équipe adverse.\n",
+                     fighters[i].champ.name, fighters[i].move.name);
+            } else {
+              printf("%s utilise %s sur son équipe.\n", fighters[i].champ.name,
+                     fighters[i].move.name);
+            }
+          } else if (fighters[i].targets == -2) {
+            target1 = rand() % 3;
+            pos1 = target1;
+            do {
+              target2 = rand() % 3;
+            } while (target1 == target2);
+            pos2 = target2;
+            printf("%s utilise %s sur %s et %s.\n", fighters[i].champ.name,
+                   fighters[i].move.name, ally->team[target1].name,
+                   ally->team[target2].name);
           } else {
-            printf("%s utilise %s sur %s.\n", fighters[i].champ.name,
-                   fighters[i].move.name,
-                   enemy->team[fighters[i].targets].name);
+            if (fighters[i].targets == -3) {
+              printf("%s utilise %s.\n", fighters[i].champ.name,
+                     fighters[i].move.name);
+            } else {
+              printf("%s utilise %s sur %s.\n", fighters[i].champ.name,
+                     fighters[i].move.name,
+                     ally->team[fighters[i].targets].name);
+            }
           }
         }
+        // Use the move of the fighter on his targets
+        useMove(fighters, &fighters[i], ally, enemy, fighters[i].moveIndex,
+                pos1, pos2);
+        printf("\n");
       } else {
-        // Same as above but if the fighter is in the enemy team
-        if (fighters[i].targets == -1) {
-          if (strcmp(fighters[i].move.type, "Attack") == 0) {
-            printf("%s utilise %s sur l'équipe adverse.\n",
-                   fighters[i].champ.name, fighters[i].move.name);
-          } else {
-            printf("%s utilise %s sur son équipe.\n", fighters[i].champ.name,
-                   fighters[i].move.name);
-          }
-        } else if (fighters[i].targets == -2) {
-          target1 = rand() % 3;
-          pos1 = target1;
-          do {
-            target2 = rand() % 3;
-          } while (target1 == target2);
-          pos2 = target2;
-          printf("%s utilise %s sur %s et %s.\n", fighters[i].champ.name,
-                 fighters[i].move.name, ally->team[target1].name,
-                 ally->team[target2].name);
-        } else {
-          if (strcmp(fighters[i].champ.name,
-                     ally->team[fighters[i].targets].name) == 0) {
-            printf("%s utilise %s.\n", fighters[i].champ.name,
-                   fighters[i].move.name);
-          } else {
-            printf("%s utilise %s sur %s.\n", fighters[i].champ.name,
-                   fighters[i].move.name, ally->team[fighters[i].targets].name);
-          }
-        }
+        (charge != 0)
+            ? printf("%s est %s et ne peut pas agir.\n\n",
+                     fighters[i].champ.name,
+                     sleep == 0 ? "endormi(e)" : "gelé(e)")
+            : printf("%s charge son attaque.\n\n", fighters[i].champ.name);
       }
-      // Use the move of the fighter on his targets
-      useMove(fighters, &fighters[i], ally, enemy, fighters[i].moveIndex, pos1, pos2);
-      printf("\n");
     } else {
       printf("%s est K.O. et ne peut plus agir.\n\n", fighters[i].champ.name);
     }
   }
+  return fighters;
 }

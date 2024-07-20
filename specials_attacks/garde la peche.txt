@@ -1,5 +1,5 @@
 name: Garde la peche;
-description: Peach donne une peche à tous ses équipiers, leur redonnant 50 points de vie.;
+description: Peach donne une peche à tous ses équipiers, leur redonnant 75 points de vie.;
 type: Status;
 charge: 0;
 duration: 0;

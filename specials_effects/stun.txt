@@ -1,0 +1,4 @@
+name: Stun;
+description: La cible est ralentie de 50% et sera une cible plus facile.;
+damage: 0;
+luck: 10;

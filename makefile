@@ -15,8 +15,11 @@ movesFunctions.o: movesFunctions.c
 attacksFunctions.o: attacksFunctions.c
 	gcc -c attacksFunctions.c -o attacksFunctions.o
 
-exec: baseFunctions.o combatFunctions.o movesFunctions.o attacksFunctions.o main.o
-	gcc main.o baseFunctions.o combatFunctions.o movesFunctions.o attacksFunctions.o -o cy-fighter
+effectsFunctions.o: effectsFunctions.c
+	gcc -c effectsFunctions.c -o effectsFunctions.o
+
+exec: baseFunctions.o combatFunctions.o movesFunctions.o effectsFunctions.o attacksFunctions.o main.o
+	gcc main.o baseFunctions.o combatFunctions.o movesFunctions.o effectsFunctions.o attacksFunctions.o -o cy-fighter
 
 #Delete all files if you are using Windows OS
 cleanw:
@@ -25,6 +28,6 @@ cleanw:
 
 #Delete all files if you are using Linux OS
 clean: 
-	rm -f *.o exec
+	rm -f *.o cy-fighter
 	@echo "Tout les fichiers ont ete supprimés"
 

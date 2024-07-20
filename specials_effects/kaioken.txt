@@ -1,0 +1,4 @@
+name: Kaioken;
+description: La prochaine attaque que le lanceur effectuera verra sa puissance doublée.;
+damage: 0;
+luck: -1;
