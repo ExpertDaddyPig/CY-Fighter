@@ -1,0 +1,11 @@
+name: Light Speed Attack;
+description: Sonic effectue une Homing Attack sur chaque ennemi. S'il touche sa cible, il attaquera la suivante.|L'attaque se terminera dans lorsqu'il ratera ou que sa cible est K.O.;
+type: Attack;
+power: 50;
+charge: -1;
+duration: 0;
+accuracy: 90;
+cooldown: 3;
+priority: 0;
+turn: 0;
+targets: 3;

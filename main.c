@@ -6,6 +6,7 @@
 #include "baseFunctions.h"
 #include "combatFunctions.h"
 #include "movesFunctions.h"
+#include "interfaceFunctions.h"
 
 void main() {
   int choice;
@@ -81,7 +82,7 @@ void main() {
         if (answer == 'O' || answer == 'o') {
           char name[100];
           // Ask the user for the name of the fighter
-          printf("Entrez l'aliase du personnage: ");
+          printf("Entrez le nom ou l'aliase du personnage: ");
           scanf("%[^\n]%*c", name);
 
           // Convert the name to lower case

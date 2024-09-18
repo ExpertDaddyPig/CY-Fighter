@@ -1,0 +1,11 @@
+name: Green Shell;
+description: Luigi lance une capapace verte sur une cible aléatoire.;
+type: Attack;
+power: 145;
+charge: -1;
+duration: 0;
+accuracy: 95;
+cooldown: 4;
+priority: 0;
+turn: 0;
+targets: -2;

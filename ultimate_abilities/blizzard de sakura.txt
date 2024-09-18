@@ -1,0 +1,11 @@
+name: Blizzard de Sakura;
+description: Sakura lance des kunaï sur lesquels sont accrochés de petits sachets contenant des petits parchemins explosifs.|Sa prochaine attaque déclenchera les explosions, blessant toute l'équipe adverse. Les explosions ont 15% de chance de brûler chaque cible.;
+type: Attack;
+power: 150;
+charge: -1;
+duration: -2;
+accuracy: 100;
+cooldown: 4;
+priority: 0;
+turn: 0;
+targets: 3;

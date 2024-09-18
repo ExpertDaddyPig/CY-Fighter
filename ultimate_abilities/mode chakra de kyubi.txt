@@ -1,0 +1,11 @@
+name: Mode Chakra de Kyubi;
+description: Sous cette forme, Naruto gagne en puissance, agilité et vitesse pendant 3 tours.;
+type: Buff;
+power: 0;
+charge: -1;
+duration: 3;
+accuracy: 100;
+cooldown: 4;
+priority: 1;
+turn: 0;
+targets: -4;

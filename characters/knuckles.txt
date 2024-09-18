@@ -7,6 +7,8 @@ def: 250;
 agi: 40;
 spd: 70;
 specials: [
-	1: Poing d'Acier,
-	2: Seisme,
+	1: Megaton Hook,
+	2: Maximum Heat Knuckle,
+	3: Spin Attack,
 ];
+ultimate: Meteor Crash;

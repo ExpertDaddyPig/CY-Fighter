@@ -13,13 +13,15 @@ typedef struct {
   int def;
   int agi;
   int spd;
-} fighterStats;
+  int shield;
+} FighterStats;
 
 typedef struct {
   char name[100];
   char type[40];
-  char specials[2][40];
-  fighterStats stats;
+  char specials[3][40];
+  char ultimate[50];
+  FighterStats stats;
 } Fighter;
 
 typedef struct {
@@ -36,18 +38,18 @@ typedef struct {
   int cooldown;
   int priority;
   int targets;
-} moveStats;
+} MoveStats;
 
 typedef struct {
   char name[100];
-  char description[300];
+  char description[500];
   char type[100];
-  moveStats stats;
+  MoveStats stats;
 } Move;
 
 typedef struct Effect {
   char name[100];
-  char description[300];
+  char description[500];
   int duration;
   int damage;
   int luck;
@@ -59,12 +61,18 @@ typedef struct {
   int champIndex;
   int moveIndex;
   int targets;
-  int cooldowns[3];
+  int cooldowns[4];
   int alive;
   Move move;
   Effect *buffs;
   Effect *debuffs;
 } ActiveTeam;
+
+typedef struct {
+  char name[100];
+  char aliase[100];
+  struct ChampNames *next;
+} ChampNames;
 
 // Declaring basic functions
 Fighter getFighter(char *name);
@@ -74,14 +82,12 @@ Team createTeam(char *name);
 Team createTeam2(char *name, Team team);
 int verifyChamp(char *champName);
 int verifyTeam(Fighter champ, Team team);
-Effect *deleteEffect(Effect **effects, char *effect);
-Effect *addEffect(Effect *effects, char *effect, int dur);
-Effect *returnEffect(Effect *effects, char *effect);
-Effect *createEffect(char *effect, int dur);
 void toLowerCase(char *str);
 void clear_scan();
+void removePattern(char *str, const char *pattern);
+char *getAliase(char *fullName);
+char *getFullName(char *aliase);
 char *getValue(char *input);
 char *getSpec(char *input);
-int searchEffect(ActiveTeam *activeFighter, char *buff);
 
 #endif

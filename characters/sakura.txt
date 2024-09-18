@@ -1,7 +1,7 @@
 name: Sakura;
 type: Support;
-hp: 350;
-hp-max: 350;
+hp: 175;
+hp-max: 175;
 atk: 130;
 def: 90;
 agi: 90;
@@ -9,4 +9,6 @@ spd: 80;
 specials: [
 	1: Cherry Blossom Impact,
 	2: Healing Jutsu,
+	3: Creation Rebirth,
 ];
+ultimate: Blizzard de Sakura;

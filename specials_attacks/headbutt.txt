@@ -1,8 +1,8 @@
-name: Coup d'Boule;
+name: Headbutt;
 description: Saitama fonce sur sa cible la tête la première,|et lui inflige de gros dégâts.|Cette attaque a 20% de chance d'étourdir la cible;
 type: Attack;
 power: 120;
-charge: 0;
+charge: -1;
 duration: 10;
 accuracy: 95;
 cooldown: 5;

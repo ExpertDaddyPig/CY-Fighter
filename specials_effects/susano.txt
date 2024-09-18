@@ -1,0 +1,4 @@
+name: Susano;
+description: [Ultimate | Susano] Sasuke gagne 30 points d'attaque et 50 points de défense.;
+damage: 0;
+luck: -1;

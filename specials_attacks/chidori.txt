@@ -2,7 +2,7 @@ name: Chidori;
 description: Sasuke génère un éclair dans sa main et l'envoie sur sa cible.|Cette attaque a 30% de chance de paralyser la cible.;
 type: Attack;
 power: 120;
-charge: 0;
+charge: -1;
 duration: 10;
 accuracy: 85;
 cooldown: 3;

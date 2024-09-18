@@ -1,0 +1,11 @@
+name: Rasenshuriken;
+description: Naruto charge une boule de chakra et celle-ci prend la forme d'un shuriken|et la lance sur l'équipe adverse. La cible prendra 25% de dégats supplémentaires.;
+type: Attack;
+power: 125;
+charge: 0;
+duration: 0;
+accuracy: 100;
+cooldown: 5;
+priority: 0;
+turn: 0;
+targets: 1;

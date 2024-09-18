@@ -10,6 +10,7 @@
 void useMove(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
              int moveIndex, int pos1, int pos2);
 Move getMove(char *name);
+Move getUltimate(char *name);
 ActiveTeam *actions(ActiveTeam *fighters, Team *ally, Team *enemy);
 
 #endif

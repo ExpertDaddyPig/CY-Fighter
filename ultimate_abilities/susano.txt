@@ -1,0 +1,11 @@
+name: Susano;
+description: Sasuke active son Susano, lui octroyant une meilleure resistance et puissance d'attaque.;
+type: Buff;
+power: 0;
+charge: -1;
+duration: 5;
+accuracy: 100;
+cooldown: 7;
+priority: 1;
+turn: 0;
+targets: -4;

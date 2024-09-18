@@ -1,0 +1,11 @@
+name: Byakugan;
+description: Hinata active son Byakugan pendant 5 tours. En plus d'un boost dans ses statistiques, les capacités spéciales d'Hinata obtiennent des effets supplémentaires.;
+type: Buff;
+power: 0;
+charge: -1;
+duration: 5;
+accuracy: 100;
+cooldown: 6;
+priority: 1;
+turn: 0;
+targets: -4;

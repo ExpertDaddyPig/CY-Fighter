@@ -1,0 +1,11 @@
+name: Creation Rebirth;
+description: Sakura libérant d'un seul coup une grande quantité de chakra et|donne un effet de régénération à toute son équipe pendant 6 tours. (25 hp/tours);
+type: Buff;
+power: 0;
+charge: -1;
+duration: 6;
+accuracy: 100;
+cooldown: 5;
+priority: 1;
+turn: 0;
+targets: 3;

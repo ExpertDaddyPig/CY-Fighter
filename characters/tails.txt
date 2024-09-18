@@ -9,4 +9,6 @@ spd: 70;
 specials: [
 	1: Magic Hand,
 	2: Defense Bots,
+	3: Rapid Tails Attack,
 ];
+ultimate: Power Laser;

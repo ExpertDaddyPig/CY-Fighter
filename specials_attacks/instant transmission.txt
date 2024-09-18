@@ -1,0 +1,11 @@
+name: Instant Transmission;
+description: Goku se téléporte derrière sa cible, la surprend et lui donne un coup.|L'attaque s'effectuera toujours en priorité.;
+type: Attack;
+power: 65;
+charge: -1;
+duration: 0;
+accuracy: 100;
+cooldown: 4;
+priority: 1;
+turn: 0;
+targets: 1;

@@ -1,0 +1,4 @@
+name: Byakugan;
+description: [Ultimate | Byakugan] Hinata gagne 20 points d'attaque, de défense et d'agilité. Les capacités spéciales "Paume de Hakke" et "Transfert de Chakra" sont boostées par cet effet.;
+damage: 0;
+luck: -1;

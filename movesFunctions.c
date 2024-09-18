@@ -1,6 +1,8 @@
 #include "movesFunctions.h"
 #include "attacksFunctions.h"
+#include "ultimateFunctions.h"
 #include "baseFunctions.h"
+#include "effectsFunctions.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -8,6 +10,10 @@
 
 void useMove(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
              int moveIndex, int pos1, int pos2) {
+  if (moveIndex == 3) {
+    basic(fighters, fighter, ally, enemy);
+    return;
+  }
   char *name = fighter->champ.name;
   // Use the move of the fighter depending of his
   if (strcmp(name, "Expert Daddy Pig") == 0) {
@@ -18,7 +24,10 @@ void useMove(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
       avion(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighters, fighter, ally, enemy);
+      marteau(fighters, fighter, ally, enemy);
+    }
+    if (moveIndex == 4) {
+      expert(fighters, fighter, ally, enemy);
     }
   }
   if (strcmp(name, "Son Goku") == 0) {
@@ -29,29 +38,38 @@ void useMove(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
       kaioken(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighters, fighter, ally, enemy);
+      instant(fighters, fighter, ally, enemy);
+    }
+    if (moveIndex == 4) {
+      saiyan(fighters, fighter, ally, enemy);
     }
   }
   if (strcmp(name, "Hinata") == 0) {
     if (moveIndex == 0) {
-      ramen(fighters, fighter, ally, enemy);
+      chakra(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 1) {
       paume(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighters, fighter, ally, enemy);
+      poings(fighters, fighter, ally, enemy);
+    }
+    if (moveIndex == 4) {
+      byakugan(fighters, fighter, ally, enemy);
     }
   }
   if (strcmp(name, "Knuckles") == 0) {
     if (moveIndex == 0) {
-      acier(fighters, fighter, ally, enemy);
+      hook(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 1) {
-      seisme(fighters, fighter, ally, enemy);
+      heat(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighters, fighter, ally, enemy);
+      spinattack(fighters, fighter, ally, enemy);
+    }
+    if (moveIndex == 4) {
+      meteor(fighters, fighter, ally, enemy);
     }
   }
   if (strcmp(name, "Luigi") == 0) {
@@ -62,7 +80,10 @@ void useMove(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
       boomerang(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighters, fighter, ally, enemy);
+      green(fighters, fighter, ally, enemy, pos1);
+    }
+    if (moveIndex == 4) {
+      star(fighters, fighter, ally, enemy);
     }
   }
   if (strcmp(name, "Mario") == 0) {
@@ -73,7 +94,10 @@ void useMove(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
       ice(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighters, fighter, ally, enemy);
+      red(fighters, fighter, ally, enemy);
+    }
+    if (moveIndex == 4) {
+      star(fighters, fighter, ally, enemy);
     }
   }
   if (strcmp(name, "Naruto") == 0) {
@@ -84,7 +108,10 @@ void useMove(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
       clone(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighters, fighter, ally, enemy);
+      rasenshuriken(fighters, fighter, ally, enemy);
+    }
+    if (moveIndex == 4) {
+      kyubi(fighters, fighter, ally, enemy);
     }
   }
   if (strcmp(name, "Princess Peach") == 0) {
@@ -92,21 +119,27 @@ void useMove(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
       golf(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 1) {
-      peche(fighters, fighter, ally, enemy);
+      vegetable(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighters, fighter, ally, enemy);
+      toad(fighters, fighter, ally, enemy);
+    }
+    if (moveIndex == 4) {
+      blossom(fighters, fighter, ally, enemy);
     }
   }
   if (strcmp(name, "Saitama") == 0) {
     if (moveIndex == 0) {
-      boule(fighters, fighter, ally, enemy);
+      sneeze(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 1) {
       punch(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighters, fighter, ally, enemy);
+      headbutt(fighters, fighter, ally, enemy);
+    }
+    if (moveIndex == 4) {
+      serious(fighters, fighter, ally, enemy);
     }
   }
   if (strcmp(name, "Sakura") == 0) {
@@ -117,7 +150,10 @@ void useMove(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
       heal(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighters, fighter, ally, enemy);
+      rebirth(fighters, fighter, ally, enemy);
+    }
+    if (moveIndex == 4) {
+      blizzard(fighters, fighter, ally, enemy);
     }
   }
   if (strcmp(name, "Sasuke") == 0) {
@@ -128,7 +164,10 @@ void useMove(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
       chidori(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighters, fighter, ally, enemy);
+      amaterasu(fighters, fighter, ally, enemy);
+    }
+    if (moveIndex == 4) {
+      susano(fighters, fighter, ally, enemy);
     }
   }
   if (strcmp(name, "Scooby") == 0) {
@@ -139,18 +178,24 @@ void useMove(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
       repos(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighters, fighter, ally, enemy);
+      charge(fighters, fighter, ally, enemy);
+    }
+    if (moveIndex == 4) {
+      mystery(fighters, fighter, ally, enemy);
     }
   }
-  if (strcmp(name, "Shaggy (Sammy)") == 0) {
+  if (strcmp(name, "Shaggy") == 0) {
     if (moveIndex == 0) {
       croque(fighters, fighter, ally, enemy);
     }
-    if (moveIndex == 2) {
+    if (moveIndex == 1) {
       kamehameha(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighters, fighter, ally, enemy);
+      flick(fighters, fighter, ally, enemy);
+    }
+    if (moveIndex == 4) {
+      ultra(fighters, fighter, ally, enemy);
     }
   }
   if (strcmp(name, "Sonic") == 0) {
@@ -161,7 +206,10 @@ void useMove(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
       homming(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighters, fighter, ally, enemy);
+      lightspeed(fighters, fighter, ally, enemy);
+    }
+    if (moveIndex == 4) {
+      super(fighters, fighter, ally, enemy);
     }
   }
   if (strcmp(name, "Tails") == 0) {
@@ -172,7 +220,10 @@ void useMove(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
       bots(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighters, fighter, ally, enemy);
+      tails(fighters, fighter, ally, enemy);
+    }
+    if (moveIndex == 4) {
+      laser(fighters, fighter, ally, enemy);
     }
   }
   if (strcmp(name, "Vegeta") == 0) {
@@ -183,7 +234,10 @@ void useMove(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
       garrick(fighters, fighter, ally, enemy);
     }
     if (moveIndex == 2) {
-      basic(fighters, fighter, ally, enemy);
+      pride(fighters, fighter, ally, enemy);
+    }
+    if (moveIndex == 4) {
+      saiyan(fighters, fighter, ally, enemy);
     }
   }
 }
@@ -239,7 +293,7 @@ Move getMove(char *moveName) {
     move.stats.turns = tur;
     move.stats.targets = tar;
   }
-  if (strcmp(move.type, "Status") == 0) {
+  if (strcmp(move.type, "Heal") == 0) {
     fscanf(data,
            "charge: %d;\nduration: %d;\nheal: %d;\naccuracy: %d;\ncooldown: "
            "%d;\npriority: %d;\nturn: %d;\ntargets: %d;\n",
@@ -284,8 +338,60 @@ Move getMove(char *moveName) {
   return move;
 }
 
+Move getUltimate(char *moveName) {
+  FILE *data;
+  Move move;
+  char file[50];
+  sprintf(file, "ultimate_abilities/%s.txt", moveName);
+  // Open the file
+  fflush(stdout);
+  data = fopen(file, "r");
+
+  // Read the file if it exists, else print an error message
+  if (data == NULL) {
+    printf("%s n'est pas une capacité ultime disponible.\nVeuillez réessayez "
+           "avec une capacité figurant dans la liste.",
+           moveName);
+    exit(1);
+  }
+  char *name, *desc, *type, line[500];
+  int pow, dur, acc, chr, tur, cd, prio, tar;
+  int i = 0;
+
+  // Store the name of the move
+  fgets(line, sizeof(line), data);
+  name = getValue(line);
+
+  // Store the description of the move
+  fgets(line, sizeof(line), data);
+  desc = getValue(line);
+
+  // Store the type of the move
+  fgets(line, sizeof(line), data);
+  type = getValue(line);
+
+  strcpy(move.name, name);
+  strcpy(move.description, desc);
+  strcpy(move.type, type);
+  fscanf(data,
+         "power: %d;\ncharge: %d;\nduration: %d;\naccuracy: %d;\ncooldown: "
+         "%d;\npriority: %d;\nturn: %d;\ntargets: %d;\n",
+         &pow, &chr, &dur, &acc, &cd, &prio, &tur, &tar);
+  move.stats.power = pow;
+  move.stats.charge = chr;
+  move.stats.duration = dur;
+  move.stats.accuracy = acc;
+  move.stats.cooldown = cd;
+  move.stats.priority = prio;
+  move.stats.turns = tur;
+  move.stats.targets = tar;
+  fclose(data);
+  return move;
+}
+
 ActiveTeam *actions(ActiveTeam *fighters, Team *ally, Team *enemy) {
   int target1, target2, verif, pos1 = 0, pos2 = 0, freeze, sleep, charge;
+  Effect *effect;
   srand(time(NULL));
   // Executing all the actions of the active team
   for (int i = 0; i < 6; i++) {
@@ -294,6 +400,13 @@ ActiveTeam *actions(ActiveTeam *fighters, Team *ally, Team *enemy) {
       freeze = searchEffect(&fighters[i], "Gel");
       sleep = searchEffect(&fighters[i], "Sommeil");
       charge = searchEffect(&fighters[i], "Charge");
+      if (charge == 0) {
+        effect = returnEffect(fighters[i].debuffs, "Charge");
+        if (effect->duration == -1) {
+          fighters[i].debuffs = deleteEffect(&fighters[i].debuffs, "Charge");
+          charge = 1;
+        }
+      }
       if (freeze != 0 && sleep != 0 && charge != 0) {
         printf("Tour de %s.\n", fighters[i].champ.name);
         verif = verifyTeam(fighters[i].champ, *enemy);
@@ -328,9 +441,20 @@ ActiveTeam *actions(ActiveTeam *fighters, Team *ally, Team *enemy) {
               printf("%s utilise %s.\n", fighters[i].champ.name,
                      fighters[i].move.name);
             } else {
-              printf("%s utilise %s sur %s.\n", fighters[i].champ.name,
-                     fighters[i].move.name,
-                     enemy->team[fighters[i].targets].name);
+              if (strcmp(fighters[i].move.type, "Attack") == 0) {
+                printf("%s utilise %s sur %s.\n", fighters[i].champ.name,
+                       fighters[i].move.name,
+                       enemy->team[fighters[i].targets].name);
+              } else {
+                if (strcmp(ally->team[fighters[i].targets].name, fighters[i].champ.name) != 0) {
+                  printf("%s utilise %s sur %s.\n", fighters[i].champ.name,
+                         fighters[i].move.name,
+                         ally->team[fighters[i].targets].name);
+                } else {
+                  printf("%s utilise %s.\n", fighters[i].champ.name,
+                         fighters[i].move.name);
+                }
+              }
             }
           }
         } else {
@@ -350,17 +474,29 @@ ActiveTeam *actions(ActiveTeam *fighters, Team *ally, Team *enemy) {
               target2 = rand() % 3;
             } while (target1 == target2);
             pos2 = target2;
-            printf("%s utilise %s sur %s et %s.\n", fighters[i].champ.name,
-                   fighters[i].move.name, ally->team[target1].name,
-                   ally->team[target2].name);
+            if (strcmp(fighters[i].move.name, "Thunder Flower") != 0)
+              printf("%s utilise %s sur %s et %s.\n", fighters[i].champ.name,
+                     fighters[i].move.name, ally->team[target1].name,
+                     ally->team[target2].name);
           } else {
             if (fighters[i].targets == -3) {
               printf("%s utilise %s.\n", fighters[i].champ.name,
                      fighters[i].move.name);
             } else {
-              printf("%s utilise %s sur %s.\n", fighters[i].champ.name,
-                     fighters[i].move.name,
-                     ally->team[fighters[i].targets].name);
+              if (strcmp(fighters[i].move.type, "Attack") == 0) {
+                printf("%s utilise %s sur %s.\n", fighters[i].champ.name,
+                       fighters[i].move.name,
+                       ally->team[fighters[i].targets].name);
+              } else {
+                if (strcmp(enemy->team[fighters[i].targets].name, fighters[i].champ.name) != 0) {
+                  printf("%s utilise %s sur %s.\n", fighters[i].champ.name,
+                         fighters[i].move.name,
+                         enemy->team[fighters[i].targets].name);
+                } else {
+                  printf("%s utilise %s.\n", fighters[i].champ.name,
+                         fighters[i].move.name);
+                }
+              }
             }
           }
         }

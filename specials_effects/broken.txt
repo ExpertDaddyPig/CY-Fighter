@@ -1,0 +1,4 @@
+name: Brisage;
+description: [Capacité spéciale d'Expert Daddy Pig] La cible perd 20 points de défense pendant 5 tours.;
+damage: 0;
+luck: 15;

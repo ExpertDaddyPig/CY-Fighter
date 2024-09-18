@@ -9,4 +9,6 @@ spd: 60;
 specials: [
 	1: Croque-Scooby,
 	2: Repos,
+	3: Charge Scooby,
 ];
+ultimate: Mystery Machine;

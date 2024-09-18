@@ -9,4 +9,6 @@ spd: 60;
 specials: [
 	1: Thunder Flower,
 	2: Boomerang Flower,
+	3: Green Shell,
 ];
+ultimate: Super Star;

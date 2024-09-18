@@ -1,0 +1,11 @@
+name: Amaterasu;
+description: Sasuke crée un feu noir dans l'une de ses pupilles puis le propage sur sa ligne de vue jusqu'à sa cible.|Cette attaque a 100% de chance de brûler sa cible.;
+type: Attack;
+power: 60;
+charge: -1;
+duration: 10;
+accuracy: 80;
+cooldown: 8;
+priority: 0;
+turn: 0;
+targets: 1;

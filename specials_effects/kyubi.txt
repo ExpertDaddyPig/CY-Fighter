@@ -1,0 +1,4 @@
+name: Mode Chakra de Kyubi;
+description: [Ultimate | Mode Chakra de Kyubi] Naruto gagne 30 points d'attaque, 20 points d'agilité et 30 points de vitesse.;
+damage: 0;
+luck: -1;

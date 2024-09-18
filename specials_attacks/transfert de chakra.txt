@@ -1,0 +1,11 @@
+name: Transfert de Chakra;
+description: Hinata donne son chakra à sa cible ou elle-même, lui régénérant|60 points de vie + 30% des points de vie manquants. Si le Byakugan est activé, |la cible obtient un bouclier correspondant à 10% des hp max de la cible.;
+type: Heal;
+charge: -1;
+duration: 0;
+heal: 60;
+accuracy: 100;
+cooldown: 2;
+priority: 0;
+turn: 0;
+targets: 1;

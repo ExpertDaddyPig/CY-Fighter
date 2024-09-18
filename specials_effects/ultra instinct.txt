@@ -1,0 +1,4 @@
+name: Ultra Instinct;
+description: [Ultimate | Ultra Instinct 0.00001%] Shaggy gagne 60 points d'agilité et 10 points de vitesse.;
+damage: 0;
+luck: -1;

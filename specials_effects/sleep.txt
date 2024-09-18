@@ -1,4 +1,4 @@
 name: Sommeil;
 description: La cible est incapable d'agir tant qu'elle est dort.;
 damage: 0;
-luck: 10;
+luck: 15;

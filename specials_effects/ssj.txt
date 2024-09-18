@@ -1,0 +1,4 @@
+name: Super Saiyan;
+description: [Ultimate | Super Saiyan] L'utilisateur obtient un boost de 20 points dans toutes ses statistiques.;
+damage: 0;
+luck: -1;

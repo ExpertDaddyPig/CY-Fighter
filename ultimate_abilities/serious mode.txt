@@ -1,0 +1,11 @@
+name: Serious Mode;
+description: Saitama active le Serious Mode pendant 6 tours, améliorant ses capacités spéciales.;
+type: Buff;
+power: 0;
+charge: -1;
+duration: 6;
+accuracy: 100;
+cooldown: 8;
+priority: 1;
+turn: 0;
+targets: -4;

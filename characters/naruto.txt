@@ -1,7 +1,7 @@
 name: Naruto;
 type: Brawler;
-hp: 130;
-hp-max: 130;
+hp: 160;
+hp-max: 160;
 atk: 160;
 def: 100;
 agi: 90;
@@ -9,4 +9,6 @@ spd: 80;
 specials: [
 	1: Rasengan,
 	2: Shadow Clone Jutsu,
+	3: Rasenshuriken,
 ];
+ultimate: Mode Chakra de Kyubi;

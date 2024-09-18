@@ -1,0 +1,11 @@
+name: Meteor Crash;
+description: Knuckles utilise le pouvoir de la Terre et fait tomber un météore sur sa cible, infligant de gros dégats.;
+type: Attack;
+power: 200;
+charge: -1;
+duration: 0;
+accuracy: 100;
+cooldown: 7;
+priority: 0;
+turn: 0;
+targets: 1;

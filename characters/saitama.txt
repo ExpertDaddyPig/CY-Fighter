@@ -1,5 +1,5 @@
 name: Saitama;
-type: brawler;
+type: Brawler;
 hp: 200;
 hp-max: 200;
 atk: 300;
@@ -7,7 +7,8 @@ def: 10;
 agi: 90;
 spd: 90;
 specials: [
-	1: Coup d'boule,
-	2: One Punch,
+	1: Headbutt,
+	2: Serious Punch,
+	3: Serious Sneeze,
 ];
-
+ultimate: Serious Mode;

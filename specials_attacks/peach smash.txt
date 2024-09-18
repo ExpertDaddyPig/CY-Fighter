@@ -1,8 +1,8 @@
-name: Club de Golf;
+name: Peach Smash;
 description: Peach prend un club de golf et frappe violemment sa cible.|Cette attaque a 20% de chance d'étourdir la cible;
 type: Attack;
 power: 150;
-charge: 0;
+charge: -1;
 duration: 7;
 accuracy: 95;
 cooldown: 3;

@@ -1,0 +1,11 @@
+name: Super Saiyan;
+description: L'utilisateur se transforme en Super Saiyan, lui octroyant un boost de 20 points dans toutes ses statistiques pendant 5 tours.;
+type: Buff;
+power: 0;
+charge: -1;
+duration: 5;
+accuracy: 100;
+cooldown: 8;
+priority: 1;
+turn: 0;
+targets: -4;

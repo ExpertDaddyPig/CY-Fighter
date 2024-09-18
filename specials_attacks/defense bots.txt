@@ -2,7 +2,7 @@ name: Defense Bots;
 description: Tails envoie ses robots pour bloquer les attaques.|Les membres de son équipe gagne 10 points de défense|pendant 4 tours.;
 type: Buff;
 power: 50;
-charge: 0;
+charge: -1;
 duration: 4;
 accuracy: 100;
 cooldown: 5;

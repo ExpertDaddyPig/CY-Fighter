@@ -1,0 +1,11 @@
+name: Vegetable;
+description: Peach donne un légume à tous ses équipiers, leur redonnant 75 points de vie.;
+type: Heal;
+charge: -1;
+duration: 0;
+heal: 75;
+accuracy: 100;
+cooldown: 1;
+priority: 0;
+turn: 0;
+targets: 3;

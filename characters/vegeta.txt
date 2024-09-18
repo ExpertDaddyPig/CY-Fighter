@@ -1,12 +1,14 @@
 name: Vegeta;
 type: Brawler;
-hp: 300;
-hp-max: 300;
+hp: 210;
+hp-max: 210;
 atk: 160;
 def: 100;
-agi: 95;
+agi: 85;
 spd: 70;
 specials: [
 	1: Final Flash,
 	2: Garrick Canon,
+	3: Saiyan Pride,
 ];
+ultimate: Super Saiyan;

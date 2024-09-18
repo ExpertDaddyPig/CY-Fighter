@@ -1,5 +1,7 @@
 #include "baseFunctions.h"
 #include "combatFunctions.h"
+#include "effectsFunctions.h"
+#include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -24,11 +26,93 @@ void clear_scan() {
   } while (res == 1 && c != '\n');
 }
 
+void removePattern(char *str, const char *pattern) {
+  int len = strlen(pattern);
+  char *pos;
+
+  while ((pos = strstr(str, pattern)) != NULL) {
+    memmove(pos, pos + len, strlen(pos + len) + 1);
+  }
+}
+
+char *getAliase(char *fullName) {
+  FILE *data;
+  struct dirent *entry;
+  char *aliase, *fileName, *champName, file[100];
+  int verif = 0;
+  Fighter champ;
+  DIR *dp = opendir("./characters");
+
+  if (dp == NULL) {
+    perror("Unable to open directory");
+    exit(1);
+  }
+
+  while ((entry = readdir(dp)) && verif == 0) {
+    if (strcmp(entry->d_name, ".") != 0 && strcmp(entry->d_name, "..") != 0) {
+      fileName = entry->d_name;
+      snprintf(file, sizeof(file), "characters/%s", fileName);
+      data = fopen(file, "r+");
+      if (data == NULL) {
+        printf("Error opening : %s\n", fileName);
+        verif = 0;
+      } else {
+        removePattern(fileName, ".txt");
+        champ = getFighter(fileName);
+        champName = champ.name;
+        if (strcmp(champName, fullName) == 0) {
+          aliase = fileName;
+          verif = 1;
+        } else {
+          toLowerCase(champName);
+          if (strcmp(champName, fullName) == 0) {
+            aliase = fileName;
+            verif = 1;
+          }
+        }
+        fclose(data);
+      }
+    }
+  }
+
+  closedir(dp);
+  return aliase;
+}
+
+char *getFullName(char *aliase) {
+  FILE *data;
+  struct dirent *entry;
+  char *fullName, *fileName, file[100];
+  int verif = 0;
+  Fighter champ;
+  DIR *dp = opendir("./characters");
+
+  if (dp == NULL) {
+    perror("Unable to open directory");
+    exit(1);
+  }
+
+  while ((entry = readdir(dp)) && verif == 0) {
+    if (strcmp(entry->d_name, ".") != 0 && strcmp(entry->d_name, "..") != 0) {
+      fileName = entry->d_name;
+      removePattern(fileName, ".txt");
+      if (strcmp(fileName, aliase) == 0) {
+        champ = getFighter(aliase);
+        verif = 1;
+        fullName = champ.name;
+      }
+    }
+  }
+
+  closedir(dp);
+  return fullName;
+}
+
 char *getValue(char *input) {
-  char *value = malloc(200 * sizeof(char)), token[200];
+  char *value = malloc(500 * sizeof(char)), token[500];
   strcpy(token, strtok(input, ":"));
   strcpy(token, strtok(NULL, ":"));
-  sscanf(token, " %200[^;];", value);
+  sscanf(token, " %500[^;];", value);
   return value;
 }
 
@@ -51,14 +135,18 @@ Fighter getFighter(char *champName) {
 
   // If the file doesn't exist, return NULL, and print an error message
   if (data == NULL) {
-    printf("%s n'est pas un personnage disponible dans ce roster.\nVeuillez "
-           "réessayez avec une champion figurant dans la liste.",
-           champName);
-    exit(1);
+    snprintf(file, sizeof(file), "characters/%s.txt", getAliase(champName));
+    data = fopen(file, "r");
+    if (data == NULL) {
+      printf("%s n'est pas un personnage disponible dans ce roster.\nVeuillez "
+             "réessayez avec une champion figurant dans la liste.",
+             champName);
+      exit(1);
+    }
   }
-
   // Read the file and store the data in the Fighter structure
-  char *name, *special1, *special2, *type, line[100], *token;
+  char *name, *special1, *special2, *special3, *ultimate, *type, line[100],
+      *token;
   int atk, def, hp, hp_max, spd, agi, last;
   int i = 0;
   char letter;
@@ -84,6 +172,13 @@ Fighter getFighter(char *champName) {
   fgets(line, sizeof(line), data);
   special2 = getSpec(line);
 
+  fgets(line, sizeof(line), data);
+  special3 = getSpec(line);
+
+  fgets(line, sizeof(line), data);
+  fgets(line, sizeof(line), data);
+  ultimate = getValue(line);
+
   // Store the data in the Fighter structure
   champ.stats.hp = hp;
   champ.stats.hpMax = hp_max;
@@ -91,46 +186,17 @@ Fighter getFighter(char *champName) {
   champ.stats.def = def;
   champ.stats.agi = agi;
   champ.stats.spd = spd;
+  champ.stats.shield = 0;
   strcpy(champ.name, name);
   strcpy(champ.type, type);
   strcpy(champ.specials[0], special1);
   strcpy(champ.specials[1], special2);
+  strcpy(champ.specials[2], special3);
+  strcpy(champ.ultimate, ultimate);
 
   // Close the file and return the Fighter structure
   fclose(data);
   return champ;
-}
-
-Effect getEffect(char *effectName) {
-  FILE *data;
-  Effect effect;
-  char file[100];
-
-  // Open the file of the fighter
-  snprintf(file, sizeof(file), "specials_effects/%s.txt", effectName);
-  data = fopen(file, "r+");
-
-  // If the file doesn't exist, return NULL, and print an error message
-  if (data == NULL) {
-    exit(1);
-  }
-  char *name, *desc, line[500];
-  int dmg, lck;
-
-  fgets(line, sizeof(line), data);
-  name = getValue(line);
-  
-  fgets(line, sizeof(line), data);
-  desc = getValue(line);
-  fscanf(data, "damage: %d;\nluck: %d;", &dmg, &lck);
-  strcpy(effect.name, name);
-  strcpy(effect.description, desc);
-  effect.damage = dmg;
-  effect.luck = lck;
-  effect.next = NULL;
-
-  fclose(data);
-  return effect;
 }
 
 int verifyChamp(char *champName) {
@@ -141,20 +207,11 @@ int verifyChamp(char *champName) {
 
   // Verify if the fighter exists, if not, return 0, else return 1
   if (data == NULL) {
-    return 0;
-  }
-  fclose(data);
-  return 1;
-}
-
-int verifyEffect(char *effectName) {
-  FILE *data;
-  char file[100];
-  snprintf(file, sizeof(file), "specials_effects/%s.txt", effectName);
-  data = fopen(file, "r+");
-
-  if (data == NULL) {
-    return 0;
+    snprintf(file, sizeof(file), "characters/%s.txt", getAliase(champName));
+    data = fopen(file, "r+");
+    if (data == NULL) {
+      return 0;
+    }
   }
   fclose(data);
   return 1;
@@ -168,7 +225,9 @@ Team createTeam(char *name) {
   Fighter champ1, champ2, champ3;
 
   // Getting the name of the first fighter
-  printf("Choissisez votre premier champion: ");
+  printf(
+      "Le nom de votre équipe est : %s.\nChoissisez votre premier champion: ",
+      name);
   do {
     nameVerif = scanf("%[^\n]%*c", heros1);
     toLowerCase(heros1);
@@ -283,7 +342,9 @@ Team createTeam2(char *name, Team team) {
   Fighter champ1, champ2, champ3;
 
   // Getting the name of the first fighter
-  printf("Choissisez votre premier champion: ");
+  printf(
+      "Le nom de votre équipe est : %s.\nChoissisez votre premier champion: ",
+      name);
   do {
     nameVerif = scanf("%[^\n]%*c", heros1);
     toLowerCase(heros1);
@@ -469,10 +530,11 @@ void sortBySpeed(ActiveTeam *fighters, int size) {
 void makeOrder(ActiveTeam *fighters) {
   ActiveTeam *prio0 = malloc(6 * sizeof(ActiveTeam)),
              *prio1 = malloc(6 * sizeof(ActiveTeam)),
+             *prio2 = malloc(6 * sizeof(ActiveTeam)),
              *noprio = malloc(6 * sizeof(ActiveTeam)),
              *sorted = malloc(6 * sizeof(ActiveTeam));
-  int prio0Size = 0, prio1Size = 0, noprioSize = 0, verif, pos1 = 0, pos0 = 0,
-      nopos = 0;
+  int prio0Size = 0, prio1Size = 0, prio2Size = 0, noprioSize = 0, verif,
+      pos2 = 0, pos1 = 0, pos0 = 0, nopos = 0;
 
   // Separate the fighters in three groups of priority, if the fighter move has
   // a priority of 1, he will be in the first group, if the fighter move has a
@@ -487,6 +549,10 @@ void makeOrder(ActiveTeam *fighters) {
       prio1[pos1] = fighters[i];
       prio1Size = prio1Size + 1;
       pos1 = pos1 + 1;
+    } else if (fighters[i].move.stats.priority == 2) {
+      prio2[pos2] = fighters[i];
+      prio2Size = prio2Size + 1;
+      pos2 = pos2 + 1;
     } else {
       noprio[nopos] = fighters[i];
       noprioSize = noprioSize + 1;
@@ -510,6 +576,14 @@ void makeOrder(ActiveTeam *fighters) {
       }
     } while (verif == 0);
   }
+  if (prio2Size > 1) {
+    do {
+      verif = tabTri(prio2, prio2Size);
+      if (verif == 0) {
+        sortBySpeed(prio2, prio2Size);
+      }
+    } while (verif == 0);
+  }
   if (noprioSize > 1) {
     do {
       verif = tabTri(noprio, noprioSize);
@@ -520,11 +594,15 @@ void makeOrder(ActiveTeam *fighters) {
   }
   pos0 = 0;
   pos1 = 0;
+  pos2 = 0;
   nopos = 0;
 
   // Merge the three groups in order of speed and move priority
   for (int i = 0; i < 6; i++) {
-    if (pos1 < prio1Size && prio1Size != 0) {
+    if (pos2 < prio2Size && prio2Size != 0) {
+      sorted[i] = prio2[pos2];
+      pos2 = pos2 + 1;
+    } else if (pos1 < prio1Size && prio1Size != 0) {
       sorted[i] = prio1[pos1];
       pos1 = pos1 + 1;
     } else if (pos0 < prio0Size && prio0Size != 0) {
@@ -554,76 +632,6 @@ int verifyTeam(Fighter champ, Team enemy) {
   return verif;
 }
 
-Effect *createEffect(char *name, int dur) {
-  Effect *effect = malloc(sizeof(Effect));
-  *effect = getEffect(name);
-  effect->duration = dur;
-  return effect;
-}
-
-Effect *deleteEffect(Effect **effects, char *effect) {
-  Effect *current = *effects;
-  Effect *previous = NULL;
-
-  while (current != NULL && strcmp(current->name, effect) != 0) {
-    previous = current;
-    current = current->next;
-  }
-
-  if (current == NULL) {
-    return *effects;
-  }
-
-  if (previous == NULL) {
-    *effects = current->next;
-  } else {
-    previous->next = current->next;
-  }
-
-  current = NULL;
-  free(current);
-  return *effects;
-}
-
-Effect *addEffect(Effect *effects, char *effect, int dur) {
-  Effect *new = createEffect(effect, dur);
-  new->next = effects;
-  return new;
-}
-
-Effect *returnEffect(Effect *effects, char *effect) {
-  Effect *temp = effects, *res = NULL;
-  while (temp != NULL) {
-    if (strcmp(temp->name, effect) == 0) {
-      res = temp;
-    }
-    temp = temp->next;
-  }
-  if (res == NULL) printf("Effect not found\n");
-  return res;
-}
-
-int searchEffect(ActiveTeam *activeFighter, char *buff) {
-  Effect *temp = activeFighter->buffs;
-  int res = 1;
-  while (temp != NULL) {
-    if (strcmp(temp->name, buff) == 0) {
-      res = 0;
-    }
-    temp = temp->next;
-  }
-  if (res == 0) return res;
-  temp = activeFighter->debuffs;
-  res = 1;
-  while (temp != NULL) {
-    if (strcmp(temp->name, buff) == 0) {
-      res = 0;
-    }
-    temp = temp->next;
-  }
-  return res;
-}
-
 void fighterInfos(char *champ) {
   Fighter heros;
   int space;
@@ -639,29 +647,30 @@ void fighterInfos(char *champ) {
   printf("\tVitesse: %d\n", heros.stats.spd);
   printf("\tAgilité: %d\n", heros.stats.agi);
   printf("Attaques Spéciales:\n");
-  for (int i = 0; i < 2; i++) {
+  for (int i = 0; i < 3; i++) {
     printf("\t%d. %s\n", i + 1, heros.specials[i]);
   }
+  printf("Compétence Ultime: \n\t%s\n", heros.ultimate);
   printf("-------------------\n");
 }
 
 void printChamps() {
   // Display all the fighters in the database
   printf("CHAMPIONS:                |  ALIASES: \n");
-  printf("- Expert Daddy Pig        |  - edp\n");
-  printf("- Scooby                  |  - scooby\n");
-  printf("- Shaggy (Sammy)          |  - shaggy\n");
-  printf("- Saitama                 |  - saitama\n");
-  printf("- Son Goku                |  - goku\n");
-  printf("- Vegeta                  |  - vega\n");
-  printf("- Hinata                  |  - hinata\n");
-  printf("- Naruto                  |  - naruto\n");
-  printf("- Sasuke                  |  - sasuke\n");
-  printf("- Sakura                  |  - sakura\n");
-  printf("- Sonic                   |  - sonic\n");
-  printf("- Tails                   |  - tails\n");
-  printf("- Knuckles                |  - knuckles\n");
-  printf("- Mario                   |  - mario\n");
-  printf("- Luigi                   |  - luigi\n");
-  printf("- Princess Peach          |  - peach\n");
+  printf("- Expert Daddy Pig        |  - %s\n", getAliase("Expert Daddy Pig"));
+  printf("- Scooby                  |  - %s\n", getAliase("Scooby"));
+  printf("- Shaggy                  |  - %s\n", getAliase("Shaggy"));
+  printf("- Saitama                 |  - %s\n", getAliase("Saitama"));
+  printf("- Son Goku                |  - %s\n", getAliase("Son Goku"));
+  printf("- Vegeta                  |  - %s\n", getAliase("Vegeta"));
+  printf("- Hinata                  |  - %s\n", getAliase("Hinata"));
+  printf("- Naruto                  |  - %s\n", getAliase("Naruto"));
+  printf("- Sasuke                  |  - %s\n", getAliase("Sasuke"));
+  printf("- Sakura                  |  - %s\n", getAliase("Sakura"));
+  printf("- Sonic                   |  - %s\n", getAliase("Sonic"));
+  printf("- Tails                   |  - %s\n", getAliase("Tails"));
+  printf("- Knuckles                |  - %s\n", getAliase("Knuckles"));
+  printf("- Mario                   |  - %s\n", getAliase("Mario"));
+  printf("- Luigi                   |  - %s\n", getAliase("Luigi"));
+  printf("- Princess Peach          |  - %s\n", getAliase("Princess Peach"));
 }

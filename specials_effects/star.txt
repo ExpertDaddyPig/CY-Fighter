@@ -1,0 +1,4 @@
+name: Super Star;
+description: [Ultimate | Super Star] Toutes les attaques infligant des dégats mortels laissent celui qui la subit à 1 hp. (Bonus de 30 dans la statistique de vitesse);
+damage: 0;
+luck: -1;

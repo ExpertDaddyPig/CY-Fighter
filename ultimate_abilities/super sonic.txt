@@ -1,0 +1,11 @@
+name: Super Sonic;
+description: Sonic concentre le pouvoir des 7 Chaos Emeralds et se transforme en Super Sonic, il devient encore plus rapide et puissant tout en devenant beaucoup plus résistant pendant 4 tours.;
+type: Buff;
+power: 0;
+charge: -1;
+duration: 4;
+accuracy: 100;
+cooldown: 6;
+priority: 1;
+turn: 0;
+targets: -4;

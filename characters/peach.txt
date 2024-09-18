@@ -3,10 +3,12 @@ type: Support;
 hp: 200;
 hp-max: 200;
 atk: 50;
-def: 160;
+def: 120;
 agi: 40;
 spd: 50;
 specials: [
-	1: Club de Golf,
-	2: Garde la peche,
+	1: Peach Smash,
+	2: Vegetable,
+	3: Toad Guard,
 ];
+ultimate: Peach Blossom;

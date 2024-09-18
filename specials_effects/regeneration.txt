@@ -1,0 +1,4 @@
+name: Régénération;
+description: La cible récupère 25 points de vie à chaque tours tant que l'effet est actif.;
+damage: -25;
+luck: -1;

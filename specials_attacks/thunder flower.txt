@@ -2,7 +2,7 @@ name: Thunder Flower;
 description: Luigi prend une Thunder Flower, il peut alors faire tomber la|foudre sur deux membres au hasard de l'équipe adverse.|Cette attaque a 30% de chance de paralyzer chaque cible.;
 type: Attack;
 power: 100;
-charge: 0;
+charge: -1;
 duration: 8;
 accuracy: 95;
 cooldown: 2;

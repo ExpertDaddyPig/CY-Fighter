@@ -1,7 +1,7 @@
 name: Sonic;
 type: Brawler;
-hp: 150;
-hp-max: 150;
+hp: 175;
+hp-max: 175;
 atk: 175;
 def: 75;
 agi: 90;
@@ -9,4 +9,6 @@ spd: 120;
 specials: [
 	1: Spin Attack,
 	2: Homing Attack,
+	3: Light Speed Attack,
 ];
+ultimate: Super Sonic;

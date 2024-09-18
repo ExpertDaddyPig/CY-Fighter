@@ -1,0 +1,11 @@
+name: Maximum Heat Knuckle;
+description: Knuckles charge sur l'équipe ennemie,| blessant tout les membres de l'équipe ennemie.;
+type: Attack;
+power: 110;
+charge: -1;
+duration: 0;
+accuracy: 75;
+cooldown: 1;
+priority: 0;
+turn: 0;
+targets: 3;

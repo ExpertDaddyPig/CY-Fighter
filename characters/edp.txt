@@ -9,4 +9,6 @@ spd: 70;
 specials: [
 	1: Pizza,
 	2: Avion En Papier,
+	3: Coup de marteau,
 ];
+ultimate: Expertise Absolue;

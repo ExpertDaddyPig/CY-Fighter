@@ -2,7 +2,7 @@ name: Kamehameha;
 description: Goku / Sammy charge son Kamehameha et le lance sur sa cible.;
 type: Attack;
 power: 150;
-charge: 1;
+charge: 0;
 duration: 0;
 accuracy: 95;
 cooldown: 2;

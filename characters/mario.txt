@@ -9,4 +9,6 @@ spd: 70;
 specials: [
 	1: Fire Flower,
 	2: Ice Flower,
+	3: Red Shell,
 ];
+ultimate: Super Star;

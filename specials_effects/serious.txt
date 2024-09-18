@@ -1,0 +1,4 @@
+name: Serious Mode;
+description: [Ultimate | Serious Mode] Les capacités spéciales de Saitama sont améliorées pendant la durée de l'effet.;
+damage: 0;
+luck: -1;

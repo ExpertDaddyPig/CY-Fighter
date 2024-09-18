@@ -1,0 +1,11 @@
+name: Serious Sneeze;
+description: Saitama éternue sur sa cible, lui infligeant des dégats minimes.|L'attaque a 50% de chance d'étourdir sa cible.|Lorsque Saitama est en Serious Mode, la chance de stun augmente de 25%.;
+type: Attack;
+power: 25;
+charge: -1;
+duration: 0;
+accuracy: 75;
+cooldown: 5;
+priority: 0;
+turn: 0;
+targets: 1;

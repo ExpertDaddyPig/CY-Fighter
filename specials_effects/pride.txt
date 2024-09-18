@@ -1,0 +1,4 @@
+name: Saiyan Pride;
+description: [Capacité spéciale de Vegeta] Vegeta gagne 40 points d'attaque pendant 3 tours.;
+damage: 0;
+luck: -1;

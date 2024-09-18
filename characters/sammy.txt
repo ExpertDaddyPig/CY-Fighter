@@ -1,7 +1,7 @@
-name: Shaggy (Sammy);
+name: Shaggy;
 type: Brawler;
-hp: 300;
-hp-max: 300;
+hp: 220;
+hp-max: 220;
 atk: 150;
 def: 60;
 agi: 60;
@@ -9,4 +9,6 @@ spd: 80;
 specials: [
 	1: Croque-Scooby,
 	2: Kamehameha,
+	3: Flick,
 ];
+ultimate: Ultra Instinct;

@@ -1,0 +1,11 @@
+name: Super Star;
+description: Mario ou Luigi prend une Super Star, le rendant invincible pendant 3 tours et lui donnant 30 points dans sa statistique de vitesse. Toutes les attaques infligant des dégats mortels le laisseront à 1 point de vie.;
+type: Buff;
+power: 0;
+charge: -1;
+duration: 3;
+accuracy: 100;
+cooldown: 5;
+priority: 1;
+turn: 0;
+targets: -4;

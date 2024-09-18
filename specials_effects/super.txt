@@ -1,0 +1,4 @@
+name: Super Sonic;
+description: [Ultimate | Super Sonic] Sonic gagne 30 points d'attaque, 50 points de vitesse et 50 points de defense.;
+damage: 0;
+luck: -1;

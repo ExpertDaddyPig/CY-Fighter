@@ -1,0 +1,11 @@
+name: Power Laser;
+description: Tails utilise son mecha Cyclone. Il tire un laser ultra puissant sur sa cible, lui infligant des dégats conséquents. Cyclone protège Tails lui donnant un bouclier équivalent à 75 points de vie.;
+type: Attack;
+power: 170;
+charge: -1;
+duration: 0;
+accuracy: 100;
+cooldown: 5;
+priority: 0;
+turn: 0;
+targets: 1;

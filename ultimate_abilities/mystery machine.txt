@@ -1,0 +1,11 @@
+name: Mystery Machine;
+description: Scooby appelle le Scooby-Gang, ils débarquent à bord de la Mystery Machine roulant sur toute l'équipe ennemie.;
+type: Attack;
+power: 140;
+charge: -1;
+duration: 0;
+accuracy: 100;
+cooldown: 5;
+priority: 0;
+turn: 0;
+targets: 3;

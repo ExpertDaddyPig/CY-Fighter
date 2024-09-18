@@ -1,0 +1,4 @@
+name: Kunaï Explosifs;
+description: [Ultimate | Blizzard de Sakura] Si Sakura attaque la cible, les kunaï explosent et infligent des dégats à toutes les membres de l'équipe. L'explosion a 15% de chance de brûler chaque cible.;
+damage: 150;
+luck: -1;

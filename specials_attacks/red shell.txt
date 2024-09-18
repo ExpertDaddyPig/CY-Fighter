@@ -1,0 +1,11 @@
+name: Red Shell;
+description: Mario lance une capapace rouge sur sa cible.;
+type: Attack;
+power: 125;
+charge: -1;
+duration: 0;
+accuracy: 100;
+cooldown: 3;
+priority: 0;
+turn: 0;
+targets: 1;

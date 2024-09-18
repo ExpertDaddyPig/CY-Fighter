@@ -1,0 +1,11 @@
+name: Ultra Instinct;
+description: Shaggy devient sérieux et utilise 0.00001% de sa puissance pendant 2 tours. Toutes les attaques qui ont pour cible Shaggy ont une très grande chance de rater dû à ses réflexes surhumains.;
+type: Buff;
+power: 0;
+charge: -1;
+duration: 2;
+accuracy: 100;
+cooldown: 6;
+priority: 1;
+turn: 0;
+targets: -4;

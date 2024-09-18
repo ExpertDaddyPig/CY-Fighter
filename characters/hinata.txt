@@ -7,6 +7,8 @@ def: 60;
 agi: 70;
 spd: 80;
 specials: [
-	1: Un peu de Ramen,
-	2: Paume Celeste,
+	1: Transfert de Chakra,
+	2: Paume du Hakke,
+	3: 64 Poings du Hakke Protecteur,
 ];
+ultimate: Byakugan;

@@ -1,0 +1,11 @@
+name: Flick;
+description: Shaggy donne une pichenette à sa cible.|La puissance de cette attaque est quintuplée lorsque la capacité ultime de Shaggy est active.;
+type: Attack;
+power: 25;
+charge: -1;
+duration: 0;
+accuracy: 95;
+cooldown: 5;
+priority: 0;
+turn: 0;
+targets: 1;

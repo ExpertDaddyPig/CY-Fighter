@@ -1,0 +1,11 @@
+name: Serious Punch;
+description: Si Saitama arrive à toucher sa cible, elle sera instantanément mise K.O.|Lorsque Saitama est en Serious Mode, la précision augmente de 25%.;
+type: Attack;
+power: 99999999;
+charge: -1;
+duration: 0;
+accuracy: 50;
+cooldown: 10;
+priority: 0;
+turn: 0;
+targets: 1;

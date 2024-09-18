@@ -2,7 +2,7 @@ name: Katon Boule de Feu;
 description: Sasuke envoie une grosse boule de feu presque inévitable.|Cette attaque a 40% de chance de brûler la cible.;
 type: Attack;
 power: 100;
-charge: 0;
+charge: -1;
 duration: 10;
 accuracy: 99;
 cooldown: 2;

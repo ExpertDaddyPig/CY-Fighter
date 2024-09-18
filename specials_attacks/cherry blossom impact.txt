@@ -2,7 +2,7 @@ name: Cherry Blossom Impact;
 description: Sakura concentre son chakra dans son poing|et donne un puissant coup à sa cible.;
 type: Attack;
 power: 100;
-charge: 0;
+charge: -1;
 duration: 0;
 accuracy: 80;
 cooldown: 1;

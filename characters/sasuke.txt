@@ -1,7 +1,7 @@
 name: Sasuke;
 type: Brawler;
-hp: 140;
-hp-max: 140;
+hp: 170;
+hp-max: 170;
 atk: 170;
 def: 90;
 agi: 95;
@@ -9,4 +9,6 @@ spd: 80;
 specials: [
 	1: Katon Boule de Feu,
 	2: Chidori,
+	3: Amaterasu,
 ];
+ultimate: Susano;
