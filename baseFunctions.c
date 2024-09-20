@@ -1,10 +1,10 @@
-#include "baseFunctions.h"
-#include "combatFunctions.h"
-#include "effectsFunctions.h"
 #include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "baseFunctions.h"
+#include "combatFunctions.h"
+#include "effectsFunctions.h"
 
 void toLowerCase(char *str) {
   int i = 0;
@@ -273,7 +273,7 @@ Team createTeam(char *name) {
                "roster.\nVeuillez réessayer avec une champion figurant dans la "
                "liste.",
                heros2);
-        printf("\nChoissisez votre premier champion: ");
+        printf("\nChoissisez votre deuxième champion: ");
       }
 
       // Verify if the two first fighters are different
@@ -309,7 +309,7 @@ Team createTeam(char *name) {
                "roster.\nVeuillez réessayer avec une champion figurant dans la "
                "liste.",
                heros3);
-        printf("\nChoissisez votre premier champion: ");
+        printf("\nChoissisez votre troisième champion: ");
       }
 
       // Verify if all fighters are different

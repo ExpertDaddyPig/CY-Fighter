@@ -172,6 +172,7 @@ void updateEffects(Effect **effectList, Effect *effect,
 void applyEffect(ActiveTeam *activeFighter, Team *team, Effect *effect) {
   int star = searchEffect(activeFighter, "Super Star");
   if (strcmp(effect->name, "Régénération") == 0) {
+   if (team->team[activeFighter->champIndex].stats.hp != 0) {
     printf("%s est régénère %d points de vie.\n", activeFighter->champ.name,
            -effect->damage);
     team->team[activeFighter->champIndex].stats.hp =
@@ -182,7 +183,7 @@ void applyEffect(ActiveTeam *activeFighter, Team *team, Effect *effect) {
           team->team[activeFighter->champIndex].stats.hpMax;
     }
     printf("%s a maintenant %d points de vie.\n", activeFighter->champ.name,
-           team->team[activeFighter->champIndex].stats.hp);
+           team->team[activeFighter->champIndex].stats.hp);}
   }
   if (strcmp(effect->name, "Brûlure") == 0) {
     printf("%s est brûlé(e) et subit %d points de dégats.\n",

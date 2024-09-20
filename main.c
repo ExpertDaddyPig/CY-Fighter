@@ -12,6 +12,7 @@ void main() {
   int choice;
   char teamName[200];
   int verif = 1;
+  printf("\e[1;1H\e[2J");
   printf("-----Bienvenue sur CY-Fighter !-----\n");
   // Display the menu until the user choose to quit
   do {

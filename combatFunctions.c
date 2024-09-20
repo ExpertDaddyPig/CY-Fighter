@@ -21,28 +21,47 @@ void activeCooldown(ActiveTeam *activeFighter, int champIndex) {
   }
 }
 
-Move moveChoice(Team *ally, Team *enemy, Fighter champ, int i, int *index,
+void desactiveCooldown(ActiveTeam *activeFighter, int champIndex) {
+  if (activeFighter->moveIndex != 4) {
+    printf("La capacité %s est maintenant en cours de récupération.\n",
+           activeFighter->move.name);
+    activeFighter->cooldowns[activeFighter->moveIndex] =
+        -1;
+  } else {
+    printf("La capacité ultime %s est maintenant en cours de chargement.\n",
+           activeFighter->move.name);
+    activeFighter->cooldowns[activeFighter->moveIndex - 1] =
+        -1;
+  }
+}
+
+Move moveChoice(Team *ally, Team *enemy, int *i, int *index,
                 ActiveTeam activeTeam[]) {
   Move move;
+  Fighter champ;
   int targets, choice;
   int verif = 0;
 
   // Displaying the fighter's moves and asking the player to choose one
   do {
-    caraInterface(*ally, i, activeTeam);
+    champ = ally->team[*i];
+    caraInterface(*ally, *i, activeTeam);
     printf("Choississez une attaque pour %s:\n", champ.name);
     verif = scanf("%d", &choice);
     printf("Vous avez choisi la capacité numéro %d.\n", choice);
     // If the player chooses the option 6, informations about the fighter's
     // moves are displayed and the player is asked to choose again
-    if (choice == 6) {
+    if (choice == 0 && i != 0) {
+      *i = *i - 1;
+      verif = 0;
+    } else if (choice == 6) {
       movesInfos(champ);
       verif = 0;
     } else if (choice == 7) {
-      buffsInfos(activeTeam[i]);
+      buffsInfos(activeTeam[*i]);
       verif = 0;
     } else if (choice == 8) {
-      champInfos(champ, activeTeam[i]);
+      champInfos(champ, activeTeam[*i]);
       verif = 0;
     } else if (choice == 9) {
       Interface(*ally, *enemy);
@@ -51,11 +70,11 @@ Move moveChoice(Team *ally, Team *enemy, Fighter champ, int i, int *index,
       // If the player chooses a move, the move is returned else the basic
       // attack is returned
       if (choice <= 3) {
-        if (activeTeam[i].cooldowns[choice - 1] > -1) {
+        if (activeTeam[*i].cooldowns[choice - 1] > -1) {
           printf("Cette capacité est en cours de récuperation. %d tours "
                  "restants.\nVeuillez en "
                  "choisir une autre.\n",
-                 activeTeam[i].cooldowns[choice - 1] + 1);
+                 activeTeam[*i].cooldowns[choice - 1] + 1);
           verif = 0;
         } else {
           move = getMove(champ.specials[choice - 1]);
@@ -77,10 +96,10 @@ Move moveChoice(Team *ally, Team *enemy, Fighter champ, int i, int *index,
         verif = 1;
       }
       if (choice == 5) {
-        if (activeTeam[i].cooldowns[choice - 2] > -1) {
+        if (activeTeam[*i].cooldowns[choice - 2] > -1) {
           printf("La capacité ultime n'est pas prête. %d tours "
                  "restants avant utilisation.\n",
-                 activeTeam[i].cooldowns[choice - 2] + 1);
+                 activeTeam[*i].cooldowns[choice - 2] + 1);
           verif = 0;
         } else {
           move = getUltimate(champ.ultimate);
@@ -119,7 +138,7 @@ void turn(Team *ally, Team *enemy, ActiveTeam *activeTeam) {
           // If the fighter is alive, the player is asked to choose his move
           activeTeam[i].champ = ally->team[i];
           allyMove =
-              moveChoice(ally, enemy, ally->team[i], i, &index, activeTeam);
+              moveChoice(ally, enemy, &i, &index, activeTeam);
           printf("L'option choisie est %s.\n", allyMove.name);
           verif = 0;
           // If the move has a single target, the player is asked to choose the
@@ -186,18 +205,28 @@ void turn(Team *ally, Team *enemy, ActiveTeam *activeTeam) {
           activeTeam[i].champIndex = i;
           activeTeam[i].moveIndex = index;
           activeTeam[i].targets = targets;
-          if (activeTeam[i].cooldowns[activeTeam[i].moveIndex] == -1) {
-            activeCooldown(&activeTeam[i], activeTeam[i].champIndex);
-          } else if (activeTeam[i].cooldowns[activeTeam[i].moveIndex - 1] ==
-                     -1) {
-            activeCooldown(&activeTeam[i], activeTeam[i].champIndex);
-          }
-          if (activeTeam[i].move.stats.charge != -1) {
-            printf("%s charge son attaque \"%s\". %d tour(s) de chargement.\n",
-                   activeTeam[i].champ.name, allyMove.name,
-                   allyMove.stats.charge + 1);
-            activeTeam[i].debuffs = addEffect(activeTeam[i].debuffs, "charge",
-                                              allyMove.stats.charge);
+          if (choice != -1) {
+            if (activeTeam[i].cooldowns[activeTeam[i].moveIndex] == -1) {
+              activeCooldown(&activeTeam[i], activeTeam[i].champIndex);
+            } else if (activeTeam[i].cooldowns[activeTeam[i].moveIndex - 1] ==
+                      -1) {
+              activeCooldown(&activeTeam[i], activeTeam[i].champIndex);
+            }
+            if (activeTeam[i].move.stats.charge != -1) {
+              printf("%s charge son attaque \"%s\". %d tour(s) de chargement.\n",
+                    activeTeam[i].champ.name, allyMove.name,
+                    allyMove.stats.charge + 1);
+              activeTeam[i].debuffs = addEffect(activeTeam[i].debuffs, "charge",
+                                                allyMove.stats.charge);
+            }
+          } else {
+            printf("%d\n", i);
+            if (activeTeam, activeTeam[i].cooldowns[activeTeam[i].moveIndex] != -1) {
+              desactiveCooldown(&activeTeam[i], activeTeam[i].champIndex);
+            } else if (activeTeam[i].cooldowns[activeTeam[i].moveIndex - 1] !=
+                      -1) {
+              desactiveCooldown(&activeTeam[i], activeTeam[i].champIndex);
+            }
           }
         } else {
           effect = returnEffect(activeTeam[i].debuffs, "Charge");

@@ -86,6 +86,9 @@ void expert(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       new_damage = damage - target.stats.shield;
       target.stats.shield = 0;
       target.stats.hp -= new_damage;
+      if (target.stats.hp < 0) {
+        target.stats.hp = 0;
+      }
       printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name,
              new_damage);
     } else if (target.stats.shield == damage) {
@@ -398,9 +401,9 @@ void blossom(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
     for (int j = 0; j < 6; j++) {
       if (strcmp(target.name, fighters[j].champ.name) == 0) {
         printf("L'effet \"Régénération\" est actif sur %s pendant %d tours.\n",
-               fighters[j].champ.name, fighter->move.stats.duration + 7);
+               fighters[j].champ.name, fighter->move.stats.duration + 2);
         fighters[j].buffs = addEffect(fighters[j].buffs, "regeneration",
-                                      fighter->move.stats.duration + 7);
+                                      fighter->move.stats.duration + 2);
       }
     }
     if (verif != 1) {

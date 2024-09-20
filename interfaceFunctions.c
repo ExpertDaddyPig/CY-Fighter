@@ -628,6 +628,17 @@ void caraInterface(Team equipe, int cara, ActiveTeam *activeTeam) {
     printf(" ");
   }
   printf("   ┃\n");
+  if (cara != 0) {
+    printf("┃     ");
+    color("33");
+    printf("Saisissez \"%d\" pour effectuer un retour arrière.", num - num);
+    color("0");
+    for (int i = strlen("Saisissez \"\" . pour effectuer un retour arrière") + 6;
+        i < 79; i++) {
+      printf(" ");
+    }
+    printf("   ┃\n");
+  }
   printf("┗");
   for (int i = 0; i < 80; i++) {
     printf("━");

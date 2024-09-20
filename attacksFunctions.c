@@ -43,7 +43,7 @@ void basic(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (miss < target.stats.agi) {
     printf("%s a manqué %s.\n", fighter->champ.name, target.name);
   } else {
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -89,7 +89,7 @@ void basic(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
                 target = enemy->team[j];
               }
               def = target.stats.def;
-              percent = (rand() % 5 + 35) / 100.0;
+              percent = (rand() % 5 + 20) / 100.0;
               burn = rand() % 100;
               power = effect->damage + fighter->champ.stats.atk / 10;
               int damage = power - def * percent;
@@ -300,7 +300,7 @@ void avion(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (miss < target.stats.agi) {
     printf("%s a manqué %s.\n", fighter->champ.name, target.name);
   } else {
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -396,7 +396,7 @@ void marteau(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   if (miss < target.stats.agi) {
     printf("%s a manqué %s.\n", fighter->champ.name, target.name);
   } else {
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -511,7 +511,7 @@ void kamehameha(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   if (miss > target.stats.agi) {
     printf("%s a manqué %s.\n\n", fighter->champ.name, target.name);
   } else {
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -639,7 +639,7 @@ void instant(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   if (miss < target.stats.agi) {
     printf("%s a manqué %s.\n", fighter->champ.name, target.name);
   } else {
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -808,7 +808,7 @@ void paume(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (miss < target.stats.agi) {
     printf("%s a manqué %s.\n", fighter->champ.name, target.name);
   } else {
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -955,7 +955,7 @@ void hook(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (miss < target.stats.agi) {
     printf("%s a manqué %s.\n", fighter->champ.name, target.name);
   } else {
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -1064,7 +1064,7 @@ void heat(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
     if (miss < target.stats.agi) {
       printf("%s a manqué %s.\n", fighter->champ.name, target.name);
     } else {
-      percent = (rand() % 5 + 35) / 100.0;
+      percent = (rand() % 5 + 20) / 100.0;
       int damage = power - def * percent;
       if (damage < 0) {
         damage = power / 10;
@@ -1159,7 +1159,7 @@ void thunder(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
     printf("%s a manqué %s.\n", fighter->champ.name, target1.name);
   } else if (miss > target1.stats.agi) {
     para = rand() % 100;
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -1231,7 +1231,7 @@ void thunder(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
     printf("%s a manqué %s.\n", fighter->champ.name, target2.name);
   } else if (miss > target2.stats.agi) {
     para = rand() % 100;
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -1326,7 +1326,7 @@ void boomerang(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   if (miss < target.stats.agi) {
     printf("%s a manqué %s.\n", fighter->champ.name, target.name);
   } else {
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -1449,7 +1449,7 @@ void green(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
     printf("%s a manqué %s.\n", fighter->champ.name, target.name);
   } else if (miss > target.stats.agi) {
     para = rand() % 100;
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -1531,7 +1531,7 @@ void fire(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (miss < target.stats.agi) {
     printf("%s a manqué %s.\n", fighter->champ.name, target.name);
   } else {
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -1561,7 +1561,7 @@ void fire(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
                damage);
       }
     }
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -1669,7 +1669,7 @@ void ice(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (miss < target.stats.agi) {
     printf("%s a manqué %s.\n", fighter->champ.name, target.name);
   } else {
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -1776,7 +1776,7 @@ void red(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
     printf("%s a manqué %s.\n", fighter->champ.name, target.name);
   } else if (miss > target.stats.agi) {
     para = rand() % 100;
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -1862,7 +1862,7 @@ void rasengan(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   if (miss < target.stats.agi) {
     printf("%s a manqué %s.\n", fighter->champ.name, target.name);
   } else {
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -1957,7 +1957,7 @@ void clone(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (miss < target.stats.agi) {
     printf("%s a manqué %s.\n", fighter->champ.name, target.name);
   } else {
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -2056,7 +2056,7 @@ void rasenshuriken(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
     if (miss < target.stats.agi) {
       printf("%s a manqué %s.\n", fighter->champ.name, target.name);
     } else {
-      percent = (rand() % 5 + 35) / 100.0;
+      percent = (rand() % 5 + 20) / 100.0;
       int damage = power - def * percent;
       if (damage < 0) {
         damage = power / 10;
@@ -2152,7 +2152,7 @@ void golf(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (miss < target.stats.agi) {
     printf("%s a manqué %s.\n", fighter->champ.name, target.name);
   } else {
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -2361,7 +2361,7 @@ void sneeze(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   if (miss < target.stats.agi) {
     printf("%s a manqué %s.\n", fighter->champ.name, target.name);
   } else {
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -2472,7 +2472,7 @@ void punch(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (miss < target.stats.agi) {
     printf("%s a manqué %s.\n", fighter->champ.name, target.name);
   } else {
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -2568,7 +2568,7 @@ void headbutt(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   if (miss < target.stats.agi) {
     printf("%s a manqué %s.\n", fighter->champ.name, target.name);
   } else {
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -2677,7 +2677,7 @@ void cherry(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   if (miss < target.stats.agi) {
     printf("%s a manqué %s.\n", fighter->champ.name, target.name);
   } else {
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -2726,7 +2726,7 @@ void cherry(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
               }
             }
             def = target.stats.def;
-            percent = (rand() % 5 + 35) / 100.0;
+            percent = (rand() % 5 + 20) / 100.0;
             burn = rand() % 100;
             power = effect->damage + fighter->champ.stats.atk / 10;
             int damage = power - def * percent;
@@ -2968,7 +2968,7 @@ void katon(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (miss < target.stats.agi) {
     printf("%s a manqué %s.\n", fighter->champ.name, target.name);
   } else {
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -3076,7 +3076,7 @@ void chidori(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   if (miss < target.stats.agi) {
     printf("%s a manqué %s.\n", fighter->champ.name, target.name);
   } else {
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -3184,7 +3184,7 @@ void amaterasu(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   if (miss < target.stats.agi) {
     printf("%s a manqué %s.\n", fighter->champ.name, target.name);
   } else {
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -3416,7 +3416,7 @@ void charge(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   if (miss < target.stats.agi) {
     printf("%s a manqué %s.\n", fighter->champ.name, target.name);
   } else {
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -3517,7 +3517,7 @@ void flick(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (miss < target.stats.agi) {
     printf("%s a manqué %s.\n", fighter->champ.name, target.name);
   } else {
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -3612,7 +3612,7 @@ void spinattack(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   if (miss < target.stats.agi) {
     printf("%s a manqué %s.\n", fighter->champ.name, target.name);
   } else {
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -3707,7 +3707,7 @@ void homming(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   if (miss < target.stats.agi) {
     printf("%s a manqué %s.\n", fighter->champ.name, target.name);
   } else {
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -3821,7 +3821,7 @@ void lightspeed(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (miss < target.stats.agi) {
         printf("%s a manqué %s.\n", fighter->champ.name, target.name);
       } else {
-        percent = (rand() % 5 + 35) / 100.0;
+        percent = (rand() % 5 + 20) / 100.0;
         int damage = power - def * percent;
         if (damage < 0) {
           damage = power / 10;
@@ -3921,7 +3921,7 @@ void hand(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
     if (miss < target.stats.agi) {
       printf("%s a manqué %s.\n", fighter->champ.name, target.name);
     } else {
-      percent = (rand() % 5 + 35) / 100.0;
+      percent = (rand() % 5 + 20) / 100.0;
       para = rand() % 100;
       int damage = power - def * percent;
       if (damage < 0) {
@@ -4069,7 +4069,7 @@ void tails(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (miss < target.stats.agi) {
     printf("%s a manqué %s.\n", fighter->champ.name, target.name);
   } else {
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -4165,7 +4165,7 @@ void flash(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (miss < target.stats.agi) {
     printf("%s a manqué %s.\n", fighter->champ.name, target.name);
   } else {
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
@@ -4260,7 +4260,7 @@ void garrick(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   if (miss < target.stats.agi) {
     printf("%s a manqué %s.\n", fighter->champ.name, target.name);
   } else {
-    percent = (rand() % 5 + 35) / 100.0;
+    percent = (rand() % 5 + 20) / 100.0;
     int damage = power - def * percent;
     if (damage < 0) {
       damage = power / 10;
