@@ -3,9 +3,16 @@
 #include "effectsFunctions.h"
 #include "interfaceFunctions.h"
 #include "movesFunctions.h"
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+int checkHealthy(Fighter champ) {
+  if (champ.stats.hp > (int)(champ.stats.hpMax * 0.4))
+    return 0;
+  return 1;
+}
 
 void activeCooldown(ActiveTeam *activeFighter, int champIndex) {
   if (activeFighter->moveIndex != 4) {
@@ -124,56 +131,19 @@ Move moveChoice(Team *ally, Team *enemy, int *i, int *index,
 }
 
 Move moveChoiceBot(Team *ally, Team *enemy, int *i, int *index,
-                ActiveTeam activeTeam[], int bot) {
+                   ActiveTeam activeTeam[], int bot) {
   Move move;
   Fighter champ;
-  int targets, choice;
+  int targets, choice, healthy, killable, statusMove[4] = {0, 0, 0, 0};
   int verif = 0;
 
-  // Displaying the fighter's moves and asking the player to choose one
-  do {
-    champ = ally->team[*i];
-    caraInterface(*ally, *i, activeTeam);
-    printf("Choississez une attaque pour %s:\n", champ.name);
-    verif = scanf("%d", &choice);
-    printf("Vous avez choisi la capacité numéro %d.\n", choice);
-    // If the player chooses the option 6, informations about the fighter's
-    // moves are displayed and the player is asked to choose again
-    if (choice == 0 && i != 0) {
-      *i = *i - 1;
-      strcpy(move.name, "Retour");
-      strcpy(move.description, " ");
-      strcpy(move.type, " ");
-      move.stats.power = 0;
-      move.stats.accuracy = 0;
-      move.stats.duration = -1;
-      move.stats.charge = -1;
-      move.stats.turns = 0;
-      move.stats.priority = 0;
-      move.stats.cooldown = -1;
-      move.stats.targets = 1;
-      verif = 1;
-    } else if (choice == 6) {
-      movesInfos(champ);
-      verif = 0;
-    } else if (choice == 7) {
-      buffsInfos(activeTeam[*i]);
-      verif = 0;
-    } else if (choice == 8) {
-      champInfos(champ, activeTeam[*i]);
-      verif = 0;
-    } else if (choice == 9) {
-      Interface(*ally, *enemy);
-      verif = 0;
-    } else {
-      // If the player chooses a move, the move is returned else the basic
-      // attack is returned
+  switch (bot) {
+  case 1:
+    do {
+      champ = ally->team[*i];
+      choice = rand() % 5;
       if (choice <= 3) {
         if (activeTeam[*i].cooldowns[choice - 1] > -1) {
-          printf("Cette capacité est en cours de récuperation. %d tours "
-                 "restants.\nVeuillez en "
-                 "choisir une autre.\n",
-                 activeTeam[*i].cooldowns[choice - 1] + 1);
           verif = 0;
         } else {
           move = getMove(champ.specials[choice - 1]);
@@ -196,21 +166,162 @@ Move moveChoiceBot(Team *ally, Team *enemy, int *i, int *index,
       }
       if (choice == 5) {
         if (activeTeam[*i].cooldowns[choice - 2] > -1) {
-          printf("La capacité ultime n'est pas prête. %d tours "
-                 "restants avant utilisation.\n",
-                 activeTeam[*i].cooldowns[choice - 2] + 1);
           verif = 0;
         } else {
           move = getUltimate(champ.ultimate);
           verif = 1;
         }
       }
-      if (choice < 0 || choice > 6) {
+      if (choice < 0 || choice > 5) {
         verif = 0;
       }
-      if (verif == 0) {
-        printf("Veuillez saisir une option valide.\n");
+    } while (verif == 0);
+    *index = choice - 1;
+    break;
+
+  case 2:
+    champ = ally->team[*i];
+    if (strcmp(champ.type, "Support") == 0) {
+      for (int i = 0; i < 3; i++) {
+        move = getMove(champ.specials[i]);
+        if (strcmp(move.type, "Heal") == 0 || strcmp(move.type, "Buff") == 0 ||
+            strcmp(move.type, "Shield") == 0) {
+          if (strcmp(move.type, "Heal") == 0) {
+            if (move.stats.targets > 1) {
+              statusMove[i] = 2;
+            } else {
+              statusMove[i] = 1;
+            }
+          } else if (strcmp(move.type, "Shield") == 0) {
+            if (move.stats.targets > 1) {
+              statusMove[i] = 4;
+            } else {
+              statusMove[i] = 3;
+            }
+          } else {
+            if (move.stats.targets > 1) {
+              statusMove[i] = 6;
+            } else {
+              statusMove[i] = 5;
+            }
+          }
+        }
       }
+      move = getMove(champ.ultimate);
+      if (strcmp(move.type, "Heal") == 0 || strcmp(move.type, "Buff") == 0 ||
+          strcmp(move.type, "Shield") == 0) {
+        if (strcmp(move.type, "Heal") == 0) {
+          if (move.stats.targets > 1) {
+            statusMove[3] = 2;
+          } else {
+            statusMove[3] = 1;
+          }
+        } else if (strcmp(move.type, "Shield") == 0) {
+          if (move.stats.targets > 1) {
+            statusMove[3] = 4;
+          } else {
+            statusMove[3] = 3;
+          }
+        } else {
+          if (move.stats.targets > 1) {
+            statusMove[3] = 6;
+          } else {
+            statusMove[3] = 5;
+          }
+        }
+      }
+    }
+    break;
+
+  case 3:
+
+    break;
+
+  default:
+    do {
+      champ = ally->team[*i];
+      choice = rand() % 5;
+      if (choice <= 3) {
+        if (activeTeam[*i].cooldowns[choice - 1] > -1) {
+          verif = 0;
+        } else {
+          move = getMove(champ.specials[choice - 1]);
+          verif = 1;
+        }
+      }
+      if (choice == 4) {
+        strcpy(move.name, "Attaque Basique");
+        strcpy(move.description, "Une attaque basique.");
+        strcpy(move.type, "Attack");
+        move.stats.power = champ.stats.atk / 10;
+        move.stats.accuracy = 50;
+        move.stats.duration = -1;
+        move.stats.charge = -1;
+        move.stats.turns = 0;
+        move.stats.priority = 0;
+        move.stats.cooldown = 0;
+        move.stats.targets = 1;
+        verif = 1;
+      }
+      if (choice == 5) {
+        if (activeTeam[*i].cooldowns[choice - 2] > -1) {
+          verif = 0;
+        } else {
+          move = getUltimate(champ.ultimate);
+          verif = 1;
+        }
+      }
+      if (choice < 0 || choice > 5) {
+        verif = 0;
+      }
+    } while (verif == 0);
+    *index = choice - 1;
+    break;
+  }
+
+  // Displaying the fighter's moves and asking the player to choose one
+  do {
+    champ = ally->team[*i];
+    choice = rand() % 5;
+    if (choice <= 3) {
+      if (activeTeam[*i].cooldowns[choice - 1] > -1) {
+        printf("Cette capacité est en cours de récuperation. %d tours "
+               "restants.\nVeuillez en "
+               "choisir une autre.\n",
+               activeTeam[*i].cooldowns[choice - 1] + 1);
+        verif = 0;
+      } else {
+        move = getMove(champ.specials[choice - 1]);
+        verif = 1;
+      }
+    }
+    if (choice == 4) {
+      strcpy(move.name, "Attaque Basique");
+      strcpy(move.description, "Une attaque basique.");
+      strcpy(move.type, "Attack");
+      move.stats.power = champ.stats.atk / 10;
+      move.stats.accuracy = 50;
+      move.stats.duration = -1;
+      move.stats.charge = -1;
+      move.stats.turns = 0;
+      move.stats.priority = 0;
+      move.stats.cooldown = 0;
+      move.stats.targets = 1;
+      verif = 1;
+    }
+    if (choice == 5) {
+      if (activeTeam[*i].cooldowns[choice - 2] > -1) {
+        printf("La capacité ultime n'est pas prête. %d tours "
+               "restants avant utilisation.\n",
+               activeTeam[*i].cooldowns[choice - 2] + 1);
+        verif = 0;
+      } else {
+        move = getUltimate(champ.ultimate);
+        verif = 1;
+      }
+    }
+    if (choice < 0 || choice > 5) {
+      verif = 0;
     }
   } while (verif == 0);
   *index = choice - 1;
@@ -360,6 +471,24 @@ void turnBot(Team *ally, Team *enemy, ActiveTeam *activeTeam, int diff) {
   Move allyMove;
   int targets, choice = 0, index;
   int verif = 0, freeze, sleep, charge;
+
+  switch (diff) {
+  case 1:
+
+    break;
+
+  case 2:
+
+    break;
+
+  case 3:
+
+    break;
+
+  default:
+
+    break;
+  }
 
   // Starting the turn
   printf("Au tour de l'équipe %s de choisir ses attaques:\n\n", ally->teamName);
