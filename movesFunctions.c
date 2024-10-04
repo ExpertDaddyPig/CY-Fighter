@@ -307,6 +307,20 @@ Move getMove(char *moveName) {
     move.stats.turns = tur;
     move.stats.targets = tar;
   }
+  if (strcmp(move.type, "Shield") == 0) {
+    fscanf(data,
+           "power: %d;\ncharge: %d;\nduration: %d;\naccuracy: %d;\ncooldown: "
+           "%d;\npriority: %d;\nturn: %d;\ntargets: %d;\n",
+           &pow, &chr, &dur, &acc, &cd, &prio, &tur, &tar);
+    move.stats.power = pow;
+    move.stats.charge = chr;
+    move.stats.duration = dur;
+    move.stats.accuracy = acc;
+    move.stats.cooldown = cd;
+    move.stats.priority = prio;
+    move.stats.turns = tur;
+    move.stats.targets = tar;
+  }
   if (strcmp(move.type, "Buff") == 0) {
     fscanf(data,
            "power: %d;\ncharge: %d;\nduration: %d;\naccuracy: %d;\ncooldown: "

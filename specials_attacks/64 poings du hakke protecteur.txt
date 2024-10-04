@@ -1,6 +1,6 @@
 name: 64 Poings du Hakke Protecteur;
 description: Hinata tisse des fils de chakra|par la paume de sa main avec lesquels elle crée une défense autour|de son équipe, lui donnant un bouclier équivalent à 30% des hp max de son équipe.;
-type: Buff;
+type: Shield;
 power: 0;
 charge: -1;
 duration: 0;

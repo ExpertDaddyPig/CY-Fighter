@@ -28,7 +28,7 @@ debug: baseFunctions.o interfaceFunctions.o combatFunctions.o movesFunctions.o e
 	gcc -g main.o baseFunctions.o interfaceFunctions.o combatFunctions.o movesFunctions.o effectsFunctions.o attacksFunctions.o ultimateFunctions.o -o cy-fighter -lm
 
 exec: baseFunctions.o interfaceFunctions.o combatFunctions.o movesFunctions.o effectsFunctions.o attacksFunctions.o ultimateFunctions.o main.o
-	gcc main.o baseFunctions.o interfaceFunctions.o combatFunctions.o movesFunctions.o effectsFunctions.o attacksFunctions.o ultimateFunctions.o -o cy-fighter -lm
+	gcc main.o baseFunctions.o interfaceFunctions.o combatFunctions.o movesFunctions.o effectsFunctions.o attacksFunctions.o ultimateFunctions.o -o cy-fighter -lm;./cy-fighter
 
 test: test.c
 	gcc -o test test.c

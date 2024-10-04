@@ -10,8 +10,11 @@
 // Declaring all function needed for the interface and the turns
 Move moveChoice(Team *ally, Team *enemy, int *i, int *index,
                 ActiveTeam *activeTeam);
-void fight(Team ally, Team enemy);
+Move moveChoiceBot(Team *ally, Team *enemy, int *i, int *index,
+                ActiveTeam *activeTeam, int bot);
+void fight(Team ally, Team enemy, int bot);
 void turn(Team *ally, Team *enemy, ActiveTeam *activeTeam);
+void turnBot(Team *ally, Team *enemy, ActiveTeam *activeTeam, int diff);
 void sortBySpeed(ActiveTeam *team, int size);
 void makeOrder(ActiveTeam *team);
 void activeCooldown(ActiveTeam *activeTeam, int champIndex);

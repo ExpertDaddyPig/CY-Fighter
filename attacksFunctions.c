@@ -32,7 +32,7 @@ void basic(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
     fighter->buffs = deleteEffect(&fighter->buffs, "Kaioken");
   }
   float percent;
-  miss = rand() % 100;
+  miss = rand() % 125 + 25 - (100 - fighter->move.stats.accuracy);
   verif = verifyTeam(fighter->champ, *enemy);
   if (verif == 1) {
     target = ally->team[fighter->targets];

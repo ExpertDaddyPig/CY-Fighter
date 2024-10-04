@@ -1,0 +1,50 @@
+CHAMP CHOICES : 
+
+Choose between {
+    If HARD MODE
+    human player is player 2
+    tank support brawler predefined broken team with good synergy
+
+    If NORMAL AND EASY MODE
+    random
+}
+
+MOVES CHOICES : 
+
+IF NORMAL AND HARD MODE
+if current champ is support and has status move or heal move
+    Check if allies are healthy (more than 40% of their hp or can get a full move shield)
+        give group heal or shield if available else give targeted heal or shield 
+
+If HARD MODE
+Check if self heal move available
+    if available and champ not healthy
+        use self heal move
+Check if buff move is available
+    if available use buff move (inflicts boosts, regeneration or ultimate buffs [If Super Star is buff, do other steps until hp < 30%])
+Check if debuff move is available
+    if available use debuff move (inflicts sleep, paralysis, burn, stun or freeze)
+killable = damage with mid defense roll - hp > 0 
+Check if enemy killable (less than 30% hp, K.O. with moves, no Super Star effect up)
+    if killable check if ally is already attacking killable enemy
+        if no ally attacking killable enemy
+            if enemy_hp < 30%
+                use most available powerful move
+            if enemy_hp < 20%
+                use available damaging move except basic attack
+            if enemy_hp < 10%
+                use basic attack
+    else check if all enemies are healthy
+        if champ has multi-targeted move
+            use move
+    else use most powerful move on lowest hp enemy
+
+If NORMAL MODE
+Check if self heal move available
+    if available and champ not healthy
+        use self heal move 
+Check what move usable
+    use move on lowest hp
+
+If EASY MODE
+Random everywhere

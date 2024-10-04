@@ -1,10 +1,11 @@
+#include "baseFunctions.h"
+#include "combatFunctions.h"
+#include "effectsFunctions.h"
 #include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "baseFunctions.h"
-#include "combatFunctions.h"
-#include "effectsFunctions.h"
+#include <time.h>
 
 void toLowerCase(char *str) {
   int i = 0;
@@ -48,7 +49,7 @@ char *getAliase(char *fullName) {
     exit(1);
   }
 
-  while ((entry = readdir(dp)) && verif == 0) {
+  while ((entry = readdir(dp)) != NULL && verif == 0) {
     if (strcmp(entry->d_name, ".") != 0 && strcmp(entry->d_name, "..") != 0) {
       fileName = entry->d_name;
       snprintf(file, sizeof(file), "characters/%s", fileName);
@@ -92,7 +93,7 @@ char *getFullName(char *aliase) {
     exit(1);
   }
 
-  while ((entry = readdir(dp)) && verif == 0) {
+  while ((entry = readdir(dp)) != NULL && verif == 0) {
     if (strcmp(entry->d_name, ".") != 0 && strcmp(entry->d_name, "..") != 0) {
       fileName = entry->d_name;
       removePattern(fileName, ".txt");
@@ -106,6 +107,24 @@ char *getFullName(char *aliase) {
 
   closedir(dp);
   return fullName;
+}
+
+int getChampCount() {
+  int count = 0;
+  struct dirent *entry;
+  DIR *dp = opendir("./characters");
+
+  if (dp == NULL) {
+    perror("Unable to open directory");
+    exit(1);
+  }
+
+  while ((entry = readdir(dp)) != NULL) {
+    count++;
+  }
+
+  closedir(dp);
+  return count - 2;
 }
 
 char *getValue(char *input) {
@@ -124,23 +143,23 @@ char *getSpec(char *input) {
   return value;
 }
 
-Fighter getFighter(char *champName) {
+Fighter getFighter(char *championName) {
   FILE *data;
   Fighter champ;
   char file[100];
 
   // Open the file of the fighter
-  snprintf(file, sizeof(file), "characters/%s.txt", champName);
+  snprintf(file, sizeof(file), "characters/%s.txt", championName);
   data = fopen(file, "r");
 
   // If the file doesn't exist, return NULL, and print an error message
   if (data == NULL) {
-    snprintf(file, sizeof(file), "characters/%s.txt", getAliase(champName));
+    snprintf(file, sizeof(file), "characters/%s.txt", getAliase(championName));
     data = fopen(file, "r");
     if (data == NULL) {
       printf("%s n'est pas un personnage disponible dans ce roster.\nVeuillez "
              "réessayez avec une champion figurant dans la liste.",
-             champName);
+             championName);
       exit(1);
     }
   }
@@ -199,6 +218,33 @@ Fighter getFighter(char *champName) {
   return champ;
 }
 
+Fighter getRandomFighter() {
+  srand(time(NULL));
+  Fighter champ;
+  int champCount = getChampCount(), champFileIndex, i = 0;
+  champFileIndex = rand() % champCount + 2;
+  char *fileName;
+  struct dirent *entry;
+  DIR *dp = opendir("./characters");
+
+  if (dp == NULL) {
+    perror("Unable to open directory");
+    exit(1);
+  }
+
+  while ((entry = readdir(dp)) != NULL && i < champFileIndex) {
+    if (strcmp(entry->d_name, ".") != 0 && strcmp(entry->d_name, "..") != 0) {
+      fileName = entry->d_name;
+    }
+    i++;
+  }
+
+  closedir(dp);
+  removePattern(fileName, ".txt");
+  champ = getFighter(fileName);
+  return champ;
+}
+
 int verifyChamp(char *champName) {
   FILE *data;
   char file[100];
@@ -220,266 +266,177 @@ int verifyChamp(char *champName) {
 Team createTeam(char *name) {
   Team equipe;
   char *teamName = name;
-  char heros1[40], heros2[40], heros3[40];
-  int verif = 0, nameVerif = 0;
-  Fighter champ1, champ2, champ3;
+  char heros[40];
+  int verif = 0, nameVerif = 0, teamVerif;
+  Fighter champ;
 
   // Getting the name of the first fighter
-  printf(
-      "Le nom de votre équipe est : %s.\nChoissisez votre premier champion: ",
-      name);
-  do {
-    nameVerif = scanf("%[^\n]%*c", heros1);
-    toLowerCase(heros1);
+  printf("Le nom de votre équipe est : %s.", name);
+  for (int i = 0; i < 3; i++) {
+    printf("\nChoissisez votre %s champion: ", (i == 0)   ? "premier"
+                                               : (i == 1) ? "deuxième"
+                                                          : "troisième");
+    do {
+      nameVerif = scanf("%[^\n]%*c", heros);
+      toLowerCase(heros);
 
-    // Verify if the fighter name is valide
-    if (nameVerif == 0) {
-      printf("Veuillez entrer un nom de champion valide.\n");
-      printf("Choissisez votre premier champion: ");
-      clear_scan();
-    } else {
-      verif = verifyChamp(heros1);
-      // Verify if the fighter exists
-      if (verif == 0) {
-        printf("\"%s\" n'est pas un personnage disponible dans ce "
-               "roster.\nVeuillez réessayer avec une champion figurant dans la "
-               "liste.",
-               heros1);
-        printf("\nChoissisez votre premier champion: ");
+      // Verify if the fighter name is valide
+      if (nameVerif == 0) {
+        printf("Veuillez entrer un nom de champion valide.\n");
+        printf("\nChoissisez votre %s champion: ", (i == 0)   ? "premier"
+                                                   : (i == 1) ? "deuxième"
+                                                              : "troisième");
+        clear_scan();
+      } else {
+        verif = verifyChamp(heros);
+        // Verify if the fighter exists
+        if (verif == 0) {
+          printf(
+              "\"%s\" n'est pas un personnage disponible dans ce "
+              "roster.\nVeuillez réessayer avec une champion figurant dans la "
+              "liste.",
+              heros);
+          printf("\nChoissisez votre %s champion: ", (i == 0)   ? "premier"
+                                                     : (i == 1) ? "deuxième"
+                                                                : "troisième");
+        }
+        if (verif == 1) {
+          teamVerif = verifyTeam(getFighter(heros), equipe);
+          if (teamVerif == 1) {
+            printf("Vous avez déjà choisi %s.\nVeuillez choisir un autre "
+                   "personnage.\nChoissisez votre %s champion: ",
+                   heros,
+                   (i == 0)   ? "premier"
+                   : (i == 1) ? "deuxième"
+                              : "troisième");
+          }
+        }
       }
-    }
-  } while (verif == 0 || nameVerif == 0);
+    } while (verif == 0 || nameVerif == 0 || teamVerif == 1);
 
-  // Store the first fighter in a variable
-  champ1 = getFighter(heros1);
-  printf("Vous avez choisi: %s\n", champ1.name);
-
-  // Getting the name of the second fighter
-  printf("Choissisez votre deuxième champion: ");
-  do {
-    nameVerif = scanf("%[^\n]%*c", heros2);
-    toLowerCase(heros2);
-
-    // Verify if the fighter name is valide
-    if (nameVerif == 0) {
-      printf("Veuillez entrer un nom de champion valide.\n");
-      printf("Choissisez votre deuxième champion: ");
-      clear_scan();
-    } else {
-      verif = verifyChamp(heros2);
-      // Verify if the fighter exists
-      if (verif == 0) {
-        printf("\"%s\" n'est pas un personnage disponible dans ce "
-               "roster.\nVeuillez réessayer avec une champion figurant dans la "
-               "liste.",
-               heros2);
-        printf("\nChoissisez votre deuxième champion: ");
-      }
-
-      // Verify if the two first fighters are different
-      if (strcmp(heros1, heros2) == 0) {
-        printf("Vous avez déjà choisi %s.\nVeuillez choisir un autre "
-               "personnage.\nChoissisez votre deuxième champion: ",
-               heros2);
-        verif = 0;
-      }
-    }
-  } while (verif == 0 || nameVerif == 0);
-
-  // Store the second fighter in a variable
-  champ2 = getFighter(heros2);
-  printf("Vous avez choisi: %s\n", champ2.name);
-
-  // Getting the name of the third fighter
-  printf("Choissisez votre troisième champion: ");
-  do {
-    nameVerif = scanf("%[^\n]%*c", heros3);
-    toLowerCase(heros3);
-
-    // Verify if the fighter name is valide
-    if (nameVerif == 0) {
-      printf("Veuillez entrer un nom de champion valide.\n");
-      printf("Choissisez votre troisième champion: ");
-      clear_scan();
-    } else {
-      verif = verifyChamp(heros3);
-      // Verify if the fighter exists
-      if (verif == 0) {
-        printf("\"%s\" n'est pas un personnage disponible dans ce "
-               "roster.\nVeuillez réessayer avec une champion figurant dans la "
-               "liste.",
-               heros3);
-        printf("\nChoissisez votre troisième champion: ");
-      }
-
-      // Verify if all fighters are different
-      if (strcmp(heros1, heros3) == 0 || strcmp(heros2, heros3) == 0) {
-        printf("Vous avez déjà choisi %s.\nVeuillez choisir un autre "
-               "personnage.\nChoissisez votre troisième champion: ",
-               heros3);
-        verif = 0;
-      }
-    }
-  } while (verif == 0 || nameVerif == 0);
-
-  // Store the third fighter in a variable
-  champ3 = getFighter(heros3);
-  printf("Vous avez choisi: %s\n", champ3.name);
+    // Store the first fighter in a variable
+    champ = getFighter(heros);
+    printf("Vous avez choisi: %s\n", champ.name);
+    equipe.team[i] = champ;
+  }
 
   // Store the data in the Team structure and return it
   strcpy(equipe.teamName, name);
-  equipe.team[0] = champ1;
-  equipe.team[1] = champ2;
-  equipe.team[2] = champ3;
+
   return equipe;
 }
 
 Team createTeam2(char *name, Team team) {
   Team equipe;
   char *teamName = name;
-  char heros1[40], heros2[40], heros3[40];
+  char heros[40];
   int verif = 0, nameVerif = 0, teamVerif = 0;
-  Fighter champ1, champ2, champ3;
+  Fighter champ;
 
   // Getting the name of the first fighter
-  printf(
-      "Le nom de votre équipe est : %s.\nChoissisez votre premier champion: ",
-      name);
-  do {
-    nameVerif = scanf("%[^\n]%*c", heros1);
-    toLowerCase(heros1);
+  printf("Le nom de votre équipe est : %s.", name);
+  for (int i = 0; i < 3; i++) {
+    printf("\nChoissisez votre %s champion: ", (i == 0)   ? "premier"
+                                               : (i == 1) ? "deuxième"
+                                                          : "troisième");
+    do {
+      nameVerif = scanf("%[^\n]%*c", heros);
+      toLowerCase(heros);
 
-    // Verify if the fighter name is valide
-    if (nameVerif == 0) {
-      printf("Veuillez entrer un nom de champion valide.\n");
-      printf("Choissisez votre premier champion: ");
-      clear_scan();
-    } else {
-      verif = verifyChamp(heros1);
+      // Verify if the fighter name is valide
+      if (nameVerif == 0) {
+        printf("Veuillez entrer un nom de champion valide.\n");
+        printf("\nChoissisez votre %s champion: ", (i == 0)   ? "premier"
+                                                   : (i == 1) ? "deuxième"
+                                                              : "troisième");
+        clear_scan();
+      } else {
+        verif = verifyChamp(heros);
 
-      // Verify if the fighter exists
-      if (verif == 0) {
-        printf("\"%s\" n'est pas un personnage disponible dans ce "
-               "roster.\nVeuillez réessayer avec une champion figurant dans la "
-               "liste.",
-               heros1);
-        printf("\nChoissisez votre premier champion: ");
-      }
-      // If the fighter exists, verify if it's already in the first team
-      if (verif == 1) {
-        teamVerif = verifyTeam(getFighter(heros1), team);
-        if (teamVerif == 1) {
-          printf("Votre adversaire déjà choisi %s.\nVeuillez choisir un autre "
-                 "personnage.\nChoissisez votre premier champion: ",
-                 heros1);
+        // Verify if the fighter exists
+        if (verif == 0) {
+          printf(
+              "\"%s\" n'est pas un personnage disponible dans ce "
+              "roster.\nVeuillez réessayer avec une champion figurant dans la "
+              "liste.\nChoissisez votre %s champion: ",
+              heros,
+              (i == 0)   ? "premier"
+              : (i == 1) ? "deuxième"
+                         : "troisième");
+        }
+        // If the fighter exists, verify if it's already in the first team
+        if (verif == 1) {
+          teamVerif = verifyTeam(getFighter(heros), team);
+          if (teamVerif == 1) {
+            printf(
+                "Votre adversaire a déjà choisi %s.\nVeuillez choisir un autre "
+                "personnage.\nChoissisez votre %s champion: ",
+                heros,
+                (i == 0)   ? "premier"
+                : (i == 1) ? "deuxième"
+                           : "troisième");
+          } else {
+            teamVerif = verifyTeam(getFighter(heros), equipe);
+            if (teamVerif == 1) {
+              printf("Vous avez déjà choisi %s.\nVeuillez choisir un autre "
+                     "personnage.\nChoissisez votre %s champion: ",
+                     heros,
+                     (i == 0)   ? "premier"
+                     : (i == 1) ? "deuxième"
+                                : "troisième");
+            }
+          }
         }
       }
-    }
-  } while (verif == 0 || nameVerif == 0 || teamVerif == 1);
-
-  // Store the first fighter in a variable
-  champ1 = getFighter(heros1);
-  printf("Vous avez choisi: %s\n", champ1.name);
-
-  // Getting the name of the second fighter
-  printf("Choissisez votre deuxième champion: ");
-  do {
-    nameVerif = scanf("%[^\n]%*c", heros2);
-    toLowerCase(heros2);
-
-    // Verify if the fighter name is valide
-    if (nameVerif == 0) {
-      printf("Veuillez entrer un nom de champion valide.\n");
-      printf("Choissisez votre deuxième champion: ");
-      clear_scan();
-    } else {
-      verif = verifyChamp(heros2);
-
-      // Verify if the fighter exists
-      if (verif == 0) {
-        printf("\"%s\" n'est pas un personnage disponible dans ce "
-               "roster.\nVeuillez réessayer avec une champion figurant dans la "
-               "liste.",
-               heros2);
-        printf("\nChoissisez votre deuxième champion: ");
-      }
-
-      // Verify if the two first fighters are different
-      if (strcmp(heros1, heros2) == 0) {
-        printf("Vous avez déjà choisi %s.\nVeuillez choisir un autre "
-               "personnage.\nChoissisez votre deuxième champion: ",
-               heros2);
-        verif = 0;
-      }
-
-      // If the fighter exists, verify if it's already in the first team
-      if (verif == 1) {
-        teamVerif = verifyTeam(getFighter(heros2), team);
-        if (teamVerif == 1) {
-          printf("Votre adversaire déjà choisi %s.\nVeuillez choisir un autre "
-                 "personnage.\nChoissisez votre deuxième champion: ",
-                 heros2);
-        }
-      }
-    }
-  } while (verif == 0 || nameVerif == 0 || teamVerif == 1);
-
-  // Store the second fighter in a variable
-  champ2 = getFighter(heros2);
-  printf("Vous avez choisi: %s\n", champ2.name);
-
-  // Getting the name of the third fighter
-  printf("Choissisez votre troisième champion: ");
-  do {
-    nameVerif = scanf("%[^\n]%*c", heros3);
-    toLowerCase(heros3);
-
-    // Verify if the fighter name is valide
-    if (nameVerif == 0) {
-      printf("Veuillez entrer un nom de champion valide.\n");
-      printf("Choissisez votre troisième champion: ");
-      clear_scan();
-    } else {
-      verif = verifyChamp(heros3);
-
-      // Verify if the fighter exists
-      if (verif == 0) {
-        printf("\"%s\" n'est pas un personnage disponible dans ce "
-               "roster.\nVeuillez réessayer avec une champion figurant dans la "
-               "liste.",
-               heros3);
-        printf("\nChoissisez votre troisième champion: ");
-      }
-
-      // Verify if the two first fighters are different
-      if (strcmp(heros1, heros3) == 0 || strcmp(heros2, heros3) == 0) {
-        printf("Vous avez déjà choisi %s.\nVeuillez choisir un autre "
-               "personnage.\nChoissisez votre troisième champion: ",
-               heros3);
-        verif = 0;
-      }
-
-      // If the fighter exists, verify if it's already in the first team
-      if (verif == 1) {
-        teamVerif = verifyTeam(getFighter(heros3), team);
-        if (teamVerif == 1) {
-          printf("Votre adversaire déjà choisi %s.\nVeuillez choisir un autre "
-                 "personnage.\nChoissisez votre troisième champion: ",
-                 heros3);
-        }
-      }
-    }
-  } while (verif == 0 || nameVerif == 0 || teamVerif == 1);
-
-  // Store the third fighter in a variable
-  champ3 = getFighter(heros3);
-  printf("Vous avez choisi: %s\n", champ3.name);
-
+    } while (verif == 0 || nameVerif == 0 || teamVerif == 1);
+    champ = getFighter(heros);
+    printf("Vous avez choisi: %s\n", champ.name);
+    equipe.team[i] = champ;
+  }
   // Create the team with the fighters and the name of the team and return it
   strcpy(equipe.teamName, name);
-  equipe.team[0] = champ1;
-  equipe.team[1] = champ2;
-  equipe.team[2] = champ3;
+  return equipe;
+}
+
+Team createHardBotTeam(char *teamName) {
+  srand(time(NULL));
+  Team equipe;
+  char name1[20], name2[20], name3[20], *names,
+      teams[7][30] = {"edp;tails;goku;",        "edp;peach;sammy;",
+                      "hinata;tails;knuckles;", "luigi;peach;sasuke;",
+                      "edp;hinata;sasuke;",     "scooby;sammy;peach;",
+                      "sakura;hinata;peach;"};
+  int verif = 0, nameVerif = 0, teamChoice = rand() % 7;
+  names = teams[teamChoice];
+  sscanf(names, "%20[^;];%20[^;];%20[^;];", name1, name2, name3);
+  equipe.team[0] = getFighter(name1);
+  printf("L'Ordinateur a choisi: %s.\n", equipe.team[0].name);
+  equipe.team[1] = getFighter(name2);
+  printf("L'Ordinateur a choisi: %s.\n", equipe.team[1].name);
+  equipe.team[2] = getFighter(name3);
+  printf("L'Ordinateur a choisi: %s.\n", equipe.team[2].name);
+
+  strcpy(equipe.teamName, teamName);
+
+  return equipe;
+}
+
+Team createNormalBotTeam(char *name, Team team) {
+  Team equipe;
+  int teamVerif = 0, alreadyPicked = 0;
+  Fighter champ;
+
+  for (int i = 0; i < 3; i++) {
+    do {
+      champ = getRandomFighter();
+      teamVerif = verifyTeam(champ, team);
+      alreadyPicked = verifyTeam(champ, equipe);
+    } while (teamVerif == 1 || alreadyPicked == 1);
+    printf("L'Ordinateur a choisi: %s\n", champ.name);
+    equipe.team[i] = champ;
+  }
+  // Create the team with the fighters and the name of the team and return it
+  strcpy(equipe.teamName, name);
   return equipe;
 }
 
@@ -657,20 +614,38 @@ void fighterInfos(char *champ) {
 void printChamps() {
   // Display all the fighters in the database
   printf("CHAMPIONS:                |  ALIASES: \n");
-  printf("- Expert Daddy Pig        |  - %s\n", getAliase("Expert Daddy Pig"));
-  printf("- Scooby                  |  - %s\n", getAliase("Scooby"));
-  printf("- Shaggy                  |  - %s\n", getAliase("Shaggy"));
-  printf("- Saitama                 |  - %s\n", getAliase("Saitama"));
-  printf("- Son Goku                |  - %s\n", getAliase("Son Goku"));
-  printf("- Vegeta                  |  - %s\n", getAliase("Vegeta"));
-  printf("- Hinata                  |  - %s\n", getAliase("Hinata"));
-  printf("- Naruto                  |  - %s\n", getAliase("Naruto"));
-  printf("- Sasuke                  |  - %s\n", getAliase("Sasuke"));
-  printf("- Sakura                  |  - %s\n", getAliase("Sakura"));
-  printf("- Sonic                   |  - %s\n", getAliase("Sonic"));
-  printf("- Tails                   |  - %s\n", getAliase("Tails"));
-  printf("- Knuckles                |  - %s\n", getAliase("Knuckles"));
-  printf("- Mario                   |  - %s\n", getAliase("Mario"));
-  printf("- Luigi                   |  - %s\n", getAliase("Luigi"));
-  printf("- Princess Peach          |  - %s\n", getAliase("Princess Peach"));
+  FILE *data;
+  struct dirent *entry;
+  char *aliase, *fileName, *champName, file[100];
+  int space;
+  Fighter champ;
+  DIR *dp = opendir("./characters");
+
+  if (dp == NULL) {
+    perror("Unable to open directory");
+    exit(1);
+  }
+
+  while ((entry = readdir(dp)) != NULL) {
+    if (strcmp(entry->d_name, ".") != 0 && strcmp(entry->d_name, "..") != 0) {
+      fileName = entry->d_name;
+      snprintf(file, sizeof(file), "characters/%s", fileName);
+      data = fopen(file, "r+");
+      if (data == NULL) {
+        printf("Error opening : %s\n", fileName);
+      } else {
+        removePattern(fileName, ".txt");
+        champ = getFighter(fileName);
+        champName = champ.name;
+        printf("- %s", champ.name);
+        for (int i = strlen(champ.name) + 2; i < 27; i++) {
+          printf(" ");
+        }
+        printf("| - %s\n", fileName);
+        fclose(data);
+      }
+    }
+  }
+
+  closedir(dp);
 }

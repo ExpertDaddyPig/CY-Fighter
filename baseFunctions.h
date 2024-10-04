@@ -68,18 +68,15 @@ typedef struct {
   Effect *debuffs;
 } ActiveTeam;
 
-typedef struct {
-  char name[100];
-  char aliase[100];
-  struct ChampNames *next;
-} ChampNames;
-
 // Declaring basic functions
 Fighter getFighter(char *name);
+Fighter getRandomFighter();
 void fighterInfos(char *name);
 void printChamps();
 Team createTeam(char *name);
 Team createTeam2(char *name, Team team);
+Team createHardBotTeam(char *name);
+Team createNormalBotTeam(char *name, Team team);
 int verifyChamp(char *champName);
 int verifyTeam(Fighter champ, Team team);
 void toLowerCase(char *str);

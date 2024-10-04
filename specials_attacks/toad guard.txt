@@ -1,6 +1,6 @@
 name: Toad Guard;
 description: Peach appelle un Toad en tant que bouclier.|Toad donne un bouclier équvalent à 100 points de vie.;
-type: Buff;
+type: Shield;
 power: 100;
 charge: -1;
 duration: 0;

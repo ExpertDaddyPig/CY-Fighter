@@ -10,64 +10,41 @@
 #define color(param) printf("\033[%sm", param)
 
 void SoloTeamInterface(Team team) {
-  int space, namespace, spaceleft;
+  int space, namespace;
   float percent, shieldPercent;
-  char *heros1, *heros2, *heros3, *teamName;
+  char *heros, *teamName;
   teamName = team.teamName;
-  heros1 = team.team[0].name;
-  heros2 = team.team[1].name;
-  heros3 = team.team[2].name;
 
   // Display the two teams with their names and their fighters + their health
   // bar. If the fighter is dead, it's displayed next to a red K.O.
   printf("┏[%s]", teamName);
   space = strlen(teamName);
   namespace = 0;
-  spaceleft = 73 - (strlen("┃    ") * 2 + strlen(heros1) + strlen(heros2) +
-                    strlen(heros3) + strlen("|1|") * 3);
   for (int i = space; i < 78; i++) {
     printf("━");
   }
   printf("┓\n");
   printf("┃    ");
-  printf("%s", heros1);
-  for (int i = strlen(heros1); i < 17; i++) {
-    printf(" ");
-    namespace = namespace + 1;
-  }
-  if (team.team[0].stats.hp == 0) {
-    color("41");
-    printf("K.O.");
-    color("0");
-    printf("     ");
-  } else {
-    printf("|1|      ");
-  }
-  printf("%s", heros2);
-  for (int i = strlen(heros2); i < 17; i++) {
-    printf(" ");
-    namespace = namespace + 1;
-  }
-  if (team.team[1].stats.hp == 0) {
-    color("41");
-    printf("K.O.");
-    color("0");
-    printf("     ");
+  for (int j = 0; j < 3; j++) {
+    heros = team.team[j].name;
+    printf("%s", heros);
+    for (int i = strlen(heros); i < 17; i++) {
+      printf(" ");
+      namespace = namespace + 1;
+    }
+    if (team.team[j].stats.hp == 0) {
+      color("41");
+      printf("K.O.");
+      color("0");
+      printf("     ");
 
-  } else {
-    printf("|2|      ");
-  }
-  printf("%s", heros3);
-  for (int i = strlen(heros3); i < 17; i++) {
-    printf(" ");
-    namespace = namespace + 1;
-  }
-  if (team.team[2].stats.hp == 0) {
-    color("41");
-    printf("K.O.");
-    color("0");
-  } else {
-    printf("|3| ");
+    } else {
+      if (j != 2) {
+        printf("|%d|      ", j + 1);
+      } else {
+        printf("|%d| ", j + 1);
+      }
+    }
   }
   printf("   ┃\n");
   printf("┃    ");
@@ -106,10 +83,13 @@ void SoloTeamInterface(Team team) {
         ((float)team.team[i].stats.shield / (float)team.team[i].stats.hpMax) *
         20.0;
     for (int i = 0; i < 20; i++) {
-      color("92");
+      color("0");
       if (i < shieldPercent) {
         color("96");
       } else {
+        if (percent < 20) {
+          color("92");
+        }
         if (percent < 10) {
           color("93");
         }
@@ -138,7 +118,7 @@ void SoloTeamInterface(Team team) {
 }
 
 void Interface(Team ally, Team enemy) {
-  int space, namespace, spaceleft;
+  int space, namespace;
   float percent;
   char *heros1, *heros2, *heros3, *heros4, *heros5, *heros6, *allyName,
       *enemyName;
@@ -633,8 +613,9 @@ void caraInterface(Team equipe, int cara, ActiveTeam *activeTeam) {
     color("33");
     printf("Saisissez \"%d\" pour effectuer un retour arrière.", num - num);
     color("0");
-    for (int i = strlen("Saisissez \"\" . pour effectuer un retour arrière") + 6;
-        i < 79; i++) {
+    for (int i =
+             strlen("Saisissez \"\" . pour effectuer un retour arrière") + 6;
+         i < 79; i++) {
       printf(" ");
     }
     printf("   ┃\n");
