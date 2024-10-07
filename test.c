@@ -3,34 +3,18 @@
 
 #define color(param) printf("\033[%sm", param)
 
+typedef struct {
+  int caca;
+  int boudin;
+} pipi;
+
+pipi makePipi() {
+  pipi A;
+  A.boudin = 2;
+  A.caca = 14;
+  return A;
+}
+
 void main() {
-  char col[10];
-  for (int i = 0; i <= 7; i++) {
-    sprintf(col, "3%d", i);
-    color(col);
-    printf("■■■■■■■■■■■■■■■■■■■■");
-    color("0");
-    printf("\n");
-  }
-  for (int i = 0; i <= 7; i++) {
-    sprintf(col, "4%d", i);
-    color(col);
-    printf("■■■■■■■■■■■■■■■■■■■■");
-    color("0");
-    printf("\n");
-  }
-  for (int i = 0; i <= 7; i++) {
-    sprintf(col, "9%d", i);
-    color(col);
-    printf("■■■■■■■■■■■■■■■■■■■■");
-    color("0");
-    printf("\n");
-  }
-  for (int i = 0; i <= 7; i++) {
-    sprintf(col, "10%d", i);
-    color(col);
-    printf("■■■■■■■■■■■■■■■■■■■■");
-    color("0");
-    printf("\n");
-  }
+  printf("%d\n", makePipi().boudin);
 }

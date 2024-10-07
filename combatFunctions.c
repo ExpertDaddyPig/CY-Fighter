@@ -132,10 +132,21 @@ Move moveChoice(Team *ally, Team *enemy, int *i, int *index,
 
 Move moveChoiceBot(Team *ally, Team *enemy, int *i, int *index,
                    ActiveTeam activeTeam[], int bot) {
-  Move move;
+  Move move, strongestHealShield, strongestAttack, longestBuff;
   Fighter champ;
   int targets, choice, healthy, killable, statusMove[4] = {0, 0, 0, 0};
   int verif = 0;
+  strcpy(strongestHealShield.name, "None");
+  strcpy(strongestHealShield.description, "None.");
+  strcpy(strongestHealShield.type, "None");
+  strongestHealShield.stats.power = 0;
+  strongestHealShield.stats.accuracy = 0;
+  strongestHealShield.stats.duration = 0;
+  strongestHealShield.stats.charge = 0;
+  strongestHealShield.stats.turns = 0;
+  strongestHealShield.stats.priority = 0;
+  strongestHealShield.stats.cooldown = 0;
+  strongestHealShield.stats.targets = 0;
 
   switch (bot) {
   case 1:
@@ -182,51 +193,100 @@ Move moveChoiceBot(Team *ally, Team *enemy, int *i, int *index,
   case 2:
     champ = ally->team[*i];
     if (strcmp(champ.type, "Support") == 0) {
-      for (int i = 0; i < 3; i++) {
-        move = getMove(champ.specials[i]);
-        if (strcmp(move.type, "Heal") == 0 || strcmp(move.type, "Buff") == 0 ||
-            strcmp(move.type, "Shield") == 0) {
-          if (strcmp(move.type, "Heal") == 0) {
-            if (move.stats.targets > 1) {
-              statusMove[i] = 2;
+      for (int j = 0; j < 3; j++) {
+        if (activeTeam[*i].cooldowns[j] <= -1) {
+          move = getMove(champ.specials[j]);
+          if (strcmp(move.type, "Heal") == 0 ||
+              strcmp(move.type, "Buff") == 0 ||
+              strcmp(move.type, "Shield") == 0) {
+            if (strcmp(move.type, "Heal") == 0) {
+              if (move.stats.targets > 1) {
+                statusMove[j] = 2;
+              } else {
+                statusMove[j] = 1;
+              }
+            } else if (strcmp(move.type, "Shield") == 0) {
+              if (move.stats.targets > 1) {
+                statusMove[j] = 4;
+              } else {
+                statusMove[j] = 3;
+              }
             } else {
-              statusMove[i] = 1;
-            }
-          } else if (strcmp(move.type, "Shield") == 0) {
-            if (move.stats.targets > 1) {
-              statusMove[i] = 4;
-            } else {
-              statusMove[i] = 3;
-            }
-          } else {
-            if (move.stats.targets > 1) {
-              statusMove[i] = 6;
-            } else {
-              statusMove[i] = 5;
+              if (move.stats.targets > 1) {
+                statusMove[j] = 6;
+              } else {
+                statusMove[j] = 5;
+              }
             }
           }
         }
       }
-      move = getMove(champ.ultimate);
-      if (strcmp(move.type, "Heal") == 0 || strcmp(move.type, "Buff") == 0 ||
-          strcmp(move.type, "Shield") == 0) {
-        if (strcmp(move.type, "Heal") == 0) {
-          if (move.stats.targets > 1) {
-            statusMove[3] = 2;
+      if (activeTeam[*i].cooldowns[3] <= -1) {
+        move = getMove(champ.ultimate);
+        if (strcmp(move.type, "Heal") == 0 || strcmp(move.type, "Buff") == 0 ||
+            strcmp(move.type, "Shield") == 0) {
+          if (strcmp(move.type, "Heal") == 0) {
+            if (move.stats.targets > 1) {
+              statusMove[3] = 2;
+            } else {
+              statusMove[3] = 1;
+            }
+          } else if (strcmp(move.type, "Shield") == 0) {
+            if (move.stats.targets > 1) {
+              statusMove[3] = 4;
+            } else {
+              statusMove[3] = 3;
+            }
           } else {
-            statusMove[3] = 1;
+            if (move.stats.targets > 1) {
+              statusMove[3] = 6;
+            } else {
+              statusMove[3] = 5;
+            }
           }
-        } else if (strcmp(move.type, "Shield") == 0) {
-          if (move.stats.targets > 1) {
-            statusMove[3] = 4;
+        }
+      }
+      if (statusMove[0] + statusMove[1] + statusMove[2] + statusMove[3] > 0) {
+        for (int j = 0; j < 4; j++) {
+          if (j != 3) {
+            if (statusMove[j] != 0 && statusMove[j] <= 2) {
+              if (getMove(champ.specials[j]).stats.power >
+                  strongestHealShield.stats.power) {
+                strongestHealShield = getMove(champ.specials[j]);
+              }
+            } else if (statusMove[j] <= 4) {
+              if (getMove(champ.specials[j]).stats.power > 0) {
+                if (getMove(champ.specials[j]).stats.power >
+                    strongestHealShield.stats.power) {
+                  strongestHealShield = getMove(champ.specials[j]);
+                }
+              } else {
+                if ((int)((-getMove(champ.specials[j]).stats.power / 100.0) *
+                          champ.stats.hpMax) >
+                    strongestHealShield.stats.power) {
+                  strongestHealShield = getMove(champ.specials[j]);
+                }
+              }
+            }
           } else {
-            statusMove[3] = 3;
-          }
-        } else {
-          if (move.stats.targets > 1) {
-            statusMove[3] = 6;
-          } else {
-            statusMove[3] = 5;
+            if (statusMove[j] != 0 && statusMove[j] <= 2) {
+              if (getMove(champ.ultimate).stats.power >
+                  strongestHealShield.stats.power) {
+                strongestHealShield = getMove(champ.ultimate);
+              }
+            } else if (statusMove[j] <= 4) {
+              if (getMove(champ.ultimate).stats.power > 0) {
+                if (getMove(champ.ultimate).stats.power >
+                    strongestHealShield.stats.power) {
+                  strongestHealShield = getMove(champ.ultimate);
+                }
+              } else {
+                if ((int)((-getMove(champ.ultimate).stats.power / 100.0) * champ.stats.hpMax) >
+                    strongestHealShield.stats.power) {
+                  strongestHealShield = getMove(champ.ultimate);
+                }
+              }
+            }
           }
         }
       }
