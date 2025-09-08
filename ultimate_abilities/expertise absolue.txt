@@ -1,7 +1,7 @@
 name: Expertise Absolue;
 description: Expert Daddy Pig rassemble toute sa connaissance, et attaque sa cible lui infligant des points de dégats fixes, ignorant la statistique de défense de la cible. Etant un expert, son attaque ne peut pas échouer.;
 type: Attack;
-power: 75;
+power: 100;
 charge: -1;
 duration: 0;
 accuracy: 100;

@@ -8,7 +8,8 @@
 
 // Declaring all moves functions
 Effect *deleteEffect(Effect **effects, char *effect);
-Effect *addEffect(Effect *effects, char *effect, int dur);
+Effect *deleteAllEffect(Effect **effects);
+Effect *addEffect(ActiveTeam *activeFighter,Effect *effects, char *effect, int dur);
 Effect *returnEffect(Effect *effects, char *effect);
 Effect *createEffect(char *effect, int dur);
 int searchEffect(ActiveTeam *activeFighter, char *buff);

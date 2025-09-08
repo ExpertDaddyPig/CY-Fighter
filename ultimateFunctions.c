@@ -29,8 +29,8 @@ void blizzard(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (strcmp(target.name, fighters[i].champ.name) == 0) {
         printf("L'effet \"Kunaï Explosifs\" est actif sur %s.\n",
                fighters[i].champ.name);
-        fighters[i].debuffs = addEffect(fighters[i].debuffs, "kunai",
-                                        fighter->move.stats.duration);
+        fighters[i].debuffs = addEffect(&fighters[i], fighters[i].debuffs,
+                                        "kunai", fighter->move.stats.duration);
       }
     }
   }
@@ -46,12 +46,12 @@ void byakugan(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   }
   check = searchEffect(fighter, "Byakugan");
   if (check != 0) {
-    fighter->buffs =
-        addEffect(fighter->buffs, "byakugan", fighter->move.stats.duration);
+    fighter->buffs = addEffect(fighter, fighter->buffs, "byakugan",
+                               fighter->move.stats.duration);
+    target.stats.atk += 20;
+    target.stats.def += 20;
+    target.stats.agi += 20;
   }
-  target.stats.atk += 20;
-  target.stats.def += 20;
-  target.stats.agi += 20;
   if (verif == 1) {
     ally->team[fighter->champIndex] = target;
   } else {
@@ -146,12 +146,12 @@ void kyubi(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   }
   check = searchEffect(fighter, "Mode Chakra de Kyubi");
   if (check != 0) {
-    fighter->buffs =
-        addEffect(fighter->buffs, "kyubi", fighter->move.stats.duration);
+    fighter->buffs = addEffect(fighter, fighter->buffs, "kyubi",
+                               fighter->move.stats.duration);
+    target.stats.atk += 30;
+    target.stats.spd += 30;
+    target.stats.agi += 20;
   }
-  target.stats.atk += 30;
-  target.stats.spd += 30;
-  target.stats.agi += 20;
   if (verif == 1) {
     ally->team[fighter->champIndex] = target;
   } else {
@@ -399,11 +399,12 @@ void blossom(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
              target.name);
     }
     for (int j = 0; j < 6; j++) {
-      if (strcmp(target.name, fighters[j].champ.name) == 0) {
+      if (strcmp(target.name, fighters[j].champ.name) == 0 && fighters[j].alive != 0) {
         printf("L'effet \"Régénération\" est actif sur %s pendant %d tours.\n",
                fighters[j].champ.name, fighter->move.stats.duration + 2);
-        fighters[j].buffs = addEffect(fighters[j].buffs, "regeneration",
-                                      fighter->move.stats.duration + 2);
+        fighters[j].buffs =
+            addEffect(&fighters[j], fighters[j].buffs, "regeneration",
+                      fighter->move.stats.duration + 2);
       }
     }
     if (verif != 1) {
@@ -415,8 +416,8 @@ void blossom(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (strcmp(target.name, fighters[j].champ.name) == 0) {
         printf("%s s'est endormi(e) pendant %d tours.\n",
                fighters[j].champ.name, fighter->move.stats.duration);
-        fighters[j].debuffs = addEffect(fighters[j].debuffs, "sleep",
-                                        fighter->move.stats.duration);
+        fighters[j].debuffs = addEffect(&fighters[j], fighters[j].debuffs,
+                                        "sleep", fighter->move.stats.duration);
       }
     }
   }
@@ -446,7 +447,8 @@ void laser(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
     self = ally->team[fighter->champIndex];
   }
   self.stats.shield += shield;
-  printf("%s obtient un bouclier équivalent à %d points de vie.\n", self.name, shield);
+  printf("%s obtient un bouclier équivalent à %d points de vie.\n", self.name,
+         shield);
   if (verif == 1) {
     enemy->team[fighter->champIndex] = self;
   } else {
@@ -531,8 +533,8 @@ void serious(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   Fighter target = ally->team[fighter->champIndex];
   check = searchEffect(fighter, "Serious Mode");
   if (check != 0) {
-    fighter->buffs =
-        addEffect(fighter->buffs, "serious", fighter->move.stats.duration);
+    fighter->buffs = addEffect(fighter, fighter->buffs, "serious",
+                               fighter->move.stats.duration);
   }
   printf("Saitama devient serieux.\n");
 }
@@ -548,12 +550,12 @@ void saiyan(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   check = searchEffect(fighter, "Super Saiyan");
   if (check != 0) {
     fighter->buffs =
-        addEffect(fighter->buffs, "ssj", fighter->move.stats.duration);
+        addEffect(fighter, fighter->buffs, "ssj", fighter->move.stats.duration);
+    target.stats.atk += 20;
+    target.stats.spd += 20;
+    target.stats.agi += 20;
+    target.stats.def += 20;
   }
-  target.stats.atk += 20;
-  target.stats.spd += 20;
-  target.stats.agi += 20;
-  target.stats.def += 20;
   if (verif == 1) {
     ally->team[fighter->champIndex] = target;
   } else {
@@ -562,8 +564,7 @@ void saiyan(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   printf("%s se transforme en Super Saiyan.\n", target.name);
 }
 
-void super(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
-            Team *enemy) {
+void super(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   int verif, check;
   Fighter target = ally->team[fighter->champIndex];
   verif = verifyTeam(fighter->champ, *enemy);
@@ -572,12 +573,12 @@ void super(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   }
   check = searchEffect(fighter, "Super Sonic");
   if (check != 0) {
-    fighter->buffs =
-        addEffect(fighter->buffs, "super", fighter->move.stats.duration);
+    fighter->buffs = addEffect(fighter, fighter->buffs, "super",
+                               fighter->move.stats.duration);
+    target.stats.atk += 30;
+    target.stats.spd += 50;
+    target.stats.def += 50;
   }
-  target.stats.atk += 30;
-  target.stats.spd += 50;
-  target.stats.def += 50;
   if (verif == 1) {
     ally->team[fighter->champIndex] = target;
   } else {
@@ -595,10 +596,10 @@ void star(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   }
   check = searchEffect(fighter, "Super Star");
   if (check != 0) {
-    fighter->buffs =
-        addEffect(fighter->buffs, "star", fighter->move.stats.duration);
+    fighter->buffs = addEffect(fighter, fighter->buffs, "star",
+                               fighter->move.stats.duration);
+    target.stats.spd += 30;
   }
-  target.stats.spd += 30;
   if (verif == 1) {
     ally->team[fighter->champIndex] = target;
   } else {
@@ -618,8 +619,8 @@ void susano(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   }
   check = searchEffect(fighter, "Susano");
   if (check != 0) {
-    fighter->buffs =
-        addEffect(fighter->buffs, "susano", fighter->move.stats.duration);
+    fighter->buffs = addEffect(fighter, fighter->buffs, "susano",
+                               fighter->move.stats.duration);
   }
   target.stats.atk += 30;
   target.stats.def += 50;
@@ -631,8 +632,7 @@ void susano(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   printf("Sasuke utilise son Susano.\n");
 }
 
-void ultra(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
-            Team *enemy) {
+void ultra(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   int verif, check;
   Fighter target = ally->team[fighter->champIndex];
   verif = verifyTeam(fighter->champ, *enemy);
@@ -641,11 +641,11 @@ void ultra(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   }
   check = searchEffect(fighter, "Ultra Instinct");
   if (check != 0) {
-    fighter->buffs =
-        addEffect(fighter->buffs, "ultra instinct", fighter->move.stats.duration);
+    fighter->buffs = addEffect(fighter, fighter->buffs, "ultra instinct",
+                               fighter->move.stats.duration);
+    target.stats.spd += 10;
+    target.stats.agi += 60;
   }
-  target.stats.spd += 10;
-  target.stats.agi += 60;
   if (verif == 1) {
     ally->team[fighter->champIndex] = target;
   } else {

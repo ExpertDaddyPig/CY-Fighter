@@ -1,9 +1,9 @@
 name: Coup de marteau;
-description: Expert Daddy Pig prend un marteau et frappe sa cible.|Dû à sa force surhumaine, la cible a 30% de chance d'être brisée pendant 5 tours.|(comme le mur qu'il a brisé);
+description: Expert Daddy Pig prend un marteau et frappe sa cible.|Dû à sa force surhumaine, la cible a 50% de chance d'être brisée pendant 10 tours.|(comme le mur qu'il a brisé);
 type: Attack;
 power: 65;
 charge: -1;
-duration: 5;
+duration: 10;
 accuracy: 100;
 cooldown: 3;
 priority: 0;

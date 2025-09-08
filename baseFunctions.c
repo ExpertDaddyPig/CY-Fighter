@@ -27,19 +27,24 @@ void clear_scan() {
   } while (res == 1 && c != '\n');
 }
 
-void removePattern(char *str, const char *pattern) {
-  int len = strlen(pattern);
-  char *pos;
+void removePattern(char *string, char *sub) {
+  int len = strlen(string);
+  int patLen = strlen(sub);
 
-  while ((pos = strstr(str, pattern)) != NULL) {
-    memmove(pos, pos + len, strlen(pos + len) + 1);
+  for (int i = 0; i <= len - patLen;) {
+    if (strncmp(&string[i], sub, patLen) == 0) {
+      memmove(&string[i], &string[i + patLen], len - i - patLen + 1);
+      len -= patLen;
+    } else {
+      i++;
+    }
   }
 }
 
 char *getAliase(char *fullName) {
   FILE *data;
   struct dirent *entry;
-  char *aliase, *fileName, *champName, file[100];
+  char *aliase, fileName[50], *champName, file[100];
   int verif = 0;
   Fighter champ;
   DIR *dp = opendir("./characters");
@@ -51,7 +56,7 @@ char *getAliase(char *fullName) {
 
   while ((entry = readdir(dp)) != NULL && verif == 0) {
     if (strcmp(entry->d_name, ".") != 0 && strcmp(entry->d_name, "..") != 0) {
-      fileName = entry->d_name;
+      strcpy(fileName, entry->d_name);
       snprintf(file, sizeof(file), "characters/%s", fileName);
       data = fopen(file, "r+");
       if (data == NULL) {
@@ -143,6 +148,24 @@ char *getSpec(char *input) {
   return value;
 }
 
+int verifyChamp(char *champName) {
+  FILE *data;
+  char file[100];
+  snprintf(file, sizeof(file), "characters/%s.txt", champName);
+  data = fopen(file, "r+");
+
+  // Verify if the fighter exists, if not, return 0, else return 1
+  if (data == NULL) {
+    snprintf(file, sizeof(file), "characters/%s.txt", getAliase(champName));
+    data = fopen(file, "r+");
+    if (data == NULL) {
+      return 0;
+    }
+  }
+  fclose(data);
+  return 1;
+}
+
 Fighter getFighter(char *championName) {
   FILE *data;
   Fighter champ;
@@ -219,11 +242,10 @@ Fighter getFighter(char *championName) {
 }
 
 Fighter getRandomFighter() {
-  srand(time(NULL));
   Fighter champ;
   int champCount = getChampCount(), champFileIndex, i = 0;
-  champFileIndex = rand() % champCount + 2;
-  char *fileName;
+  champFileIndex = rand() % champCount;
+  char fileName[50];
   struct dirent *entry;
   DIR *dp = opendir("./characters");
 
@@ -232,35 +254,18 @@ Fighter getRandomFighter() {
     exit(1);
   }
 
-  while ((entry = readdir(dp)) != NULL && i < champFileIndex) {
-    if (strcmp(entry->d_name, ".") != 0 && strcmp(entry->d_name, "..") != 0) {
-      fileName = entry->d_name;
-    }
+  entry = readdir(dp);
+  entry = readdir(dp);
+
+  while ((entry = readdir(dp)) != NULL && i <= champFileIndex) {
+    strcpy(fileName, entry->d_name);
     i++;
   }
 
-  closedir(dp);
   removePattern(fileName, ".txt");
+  closedir(dp);
   champ = getFighter(fileName);
   return champ;
-}
-
-int verifyChamp(char *champName) {
-  FILE *data;
-  char file[100];
-  snprintf(file, sizeof(file), "characters/%s.txt", champName);
-  data = fopen(file, "r+");
-
-  // Verify if the fighter exists, if not, return 0, else return 1
-  if (data == NULL) {
-    snprintf(file, sizeof(file), "characters/%s.txt", getAliase(champName));
-    data = fopen(file, "r+");
-    if (data == NULL) {
-      return 0;
-    }
-  }
-  fclose(data);
-  return 1;
 }
 
 Team createTeam(char *name) {

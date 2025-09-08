@@ -18,16 +18,14 @@ void basic(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   }
   check = searchEffect(fighter, "Kaioken");
   if (check == 0) {
     kaio = 2;
-    printf("La puissance de %s a été doublée: elle passe de %d à %d.\n",
-           fighter->move.name, fighter->move.stats.power,
+    printf("La puissance de %s a été doublée: elle passe de %d à %d.\n", fighter->move.name, fighter->move.stats.power,
            fighter->move.stats.power * kaio);
     fighter->buffs = deleteEffect(&fighter->buffs, "Kaioken");
   }
@@ -48,8 +46,7 @@ void basic(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
     if (damage < 0) {
       damage = power / 10;
     }
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target.name);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
     if (target.stats.shield <= 0) {
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
@@ -62,15 +59,13 @@ void basic(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
         new_damage = damage - target.stats.shield;
         target.stats.shield = 0;
         target.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
       } else if (target.stats.shield == damage) {
         target.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     if (strcmp(fighter->champ.name, "Sakura") == 0) {
@@ -80,95 +75,78 @@ void basic(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
           if (kunai == 0) {
             effect = returnEffect(fighters[i].debuffs, "Kunaï Explosifs");
             printf("Les Kunaï Explosifs de Sakura explosent.\n");
-            fighters[i].debuffs =
-                deleteEffect(&fighters[i].debuffs, "Kunaï Explosifs");
+            fighters[i].debuffs = deleteEffect(&fighters[i].debuffs, "Kunaï Explosifs");
             for (int j = 0; j < 3; j++) {
               if (verif == 1) {
                 target = ally->team[j];
               } else {
                 target = enemy->team[j];
               }
-              def = target.stats.def;
-              percent = (rand() % 5 + 20) / 100.0;
-              burn = rand() % 100;
-              power = effect->damage + fighter->champ.stats.atk / 10;
-              int damage = power - def * percent;
-              if (damage < 0) {
-                damage = power / 10;
-              }
-              printf(
-                  "Les Kunaï Explosifs de Sakura infligent %d points de dégâts "
-                  "à %s.\n",
-                  damage, target.name);
-              if (target.stats.shield <= 0) {
-                target.stats.hp -= damage;
-                if (target.stats.hp < 0) {
-                  target.stats.hp = 0;
-                  printf("%s est K.O.\n", target.name);
+              if (target.stats.hp != 0) {
+                def = target.stats.def;
+                percent = (rand() % 5 + 20) / 100.0;
+                burn = rand() % 100;
+                power = effect->damage + fighter->champ.stats.atk / 10;
+                int damage = power - def * percent;
+                if (damage < 0) {
+                  damage = power / 10;
                 }
-              } else {
-                int new_damage = 0;
-                if (target.stats.shield < damage) {
-                  new_damage = damage - target.stats.shield;
-                  target.stats.shield = 0;
-                  target.stats.hp -= new_damage;
-                  printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-                         target.name, new_damage);
-                } else if (target.stats.shield == damage) {
-                  target.stats.shield = 0;
-                  printf("%s n'a plus de bouclier.\n", target.name);
+                printf("Les Kunaï Explosifs de Sakura infligent %d points de dégâts à %s.\n", damage, target.name);
+                if (target.stats.shield <= 0) {
+                  target.stats.hp -= damage;
+                  if (target.stats.hp < 0) {
+                    target.stats.hp = 0;
+                    printf("%s est K.O.\n", target.name);
+                  }
                 } else {
-                  target.stats.shield -= damage;
-                  printf("Le bouclier de %s perd %d points de vie.\n",
-                         target.name, damage);
+                  int new_damage = 0;
+                  if (target.stats.shield < damage) {
+                    new_damage = damage - target.stats.shield;
+                    target.stats.shield = 0;
+                    target.stats.hp -= new_damage;
+                    printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
+                  } else if (target.stats.shield == damage) {
+                    target.stats.shield = 0;
+                    printf("%s n'a plus de bouclier.\n", target.name);
+                  } else {
+                    target.stats.shield -= damage;
+                    printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
+                  }
                 }
-              }
-              check = searchEffect(fighter, "Brûlure");
-              if (check != 0) {
                 if (burn < 15) {
                   for (int k = 0; k < 6; k++) {
                     if (strcmp(target.name, fighters[k].champ.name) == 0) {
                       printf("%s est brulé(e).\n", fighters[k].champ.name);
                       fighters[k].debuffs =
-                          addEffect(fighters[k].debuffs, "burn",
-                                    fighter->move.stats.duration);
+                          addEffect(&fighters[i], fighters[k].debuffs, "burn", fighter->move.stats.duration);
                     }
                   }
                 }
-              }
-              for (int k = 0; k < 6; k++) {
-                if (strcmp(target.name, fighters[k].champ.name) == 0) {
-                  star = searchEffect(&fighters[k], "Super Star");
+                for (int k = 0; k < 6; k++) {
+                  if (strcmp(target.name, fighters[k].champ.name) == 0) {
+                    star = searchEffect(&fighters[k], "Super Star");
+                  }
                 }
-              }
-              if (star == 0 && target.stats.hp == 0) {
-                printf("La Super Star de %s l'empèche d'être K.O.\n",
-                       target.name);
-                target.stats.hp = 1;
-              }
-              if (verif == 1) {
-                ally->team[j] = target;
-                if (target.stats.shield > 0) {
-                  printf("%s a maintenant %d points de vie et %d points de vie "
-                         "sur son "
-                         "bouclier.\n",
-                         ally->team[j].name, ally->team[j].stats.hp,
-                         ally->team[j].stats.shield);
-                } else {
-                  printf("%s a maintenant %d points de vie.\n",
-                         ally->team[j].name, ally->team[j].stats.hp);
+                if (star == 0 && target.stats.hp == 0) {
+                  printf("La Super Star de %s l'empèche d'être K.O.\n", target.name);
+                  target.stats.hp = 1;
                 }
-              } else {
-                enemy->team[j] = target;
-                if (target.stats.shield > 0) {
-                  printf("%s a maintenant %d points de vie et %d points de vie "
-                         "sur son "
-                         "bouclier.\n",
-                         enemy->team[j].name, enemy->team[j].stats.hp,
-                         enemy->team[j].stats.shield);
+                if (verif == 1) {
+                  ally->team[j] = target;
+                  if (target.stats.shield > 0) {
+                    printf("%s a maintenant %d points de vie et %d points de vie sur son bouclier.\n",
+                           ally->team[j].name, ally->team[j].stats.hp, ally->team[j].stats.shield);
+                  } else {
+                    printf("%s a maintenant %d points de vie.\n", ally->team[j].name, ally->team[j].stats.hp);
+                  }
                 } else {
-                  printf("%s a maintenant %d points de vie.\n",
-                         enemy->team[j].name, enemy->team[j].stats.hp);
+                  enemy->team[j] = target;
+                  if (target.stats.shield > 0) {
+                    printf("%s a maintenant %d points de vie et %d points de vie sur son bouclier.\n",
+                           enemy->team[j].name, enemy->team[j].stats.hp, enemy->team[j].stats.shield);
+                  } else {
+                    printf("%s a maintenant %d points de vie.\n", enemy->team[j].name, enemy->team[j].stats.hp);
+                  }
                 }
               }
             }
@@ -189,27 +167,21 @@ void basic(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (verif == 1) {
         ally->team[fighter->targets] = target;
         if (target.stats.shield > 0) {
-          printf("%s a maintenant %d points de vie et %d points de vie sur son "
-                 "bouclier.\n",
-                 ally->team[fighter->targets].name,
-                 ally->team[fighter->targets].stats.hp,
+          printf("%s a maintenant %d points de vie et %d points de vie sur son bouclier.\n",
+                 ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                  ally->team[fighter->targets].stats.shield);
         } else {
-          printf("%s a maintenant %d points de vie.\n",
-                 ally->team[fighter->targets].name,
+          printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                  ally->team[fighter->targets].stats.hp);
         }
       } else {
         enemy->team[fighter->targets] = target;
         if (target.stats.shield > 0) {
-          printf("%s a maintenant %d points de vie et %d points de vie sur son "
-                 "bouclier.\n",
-                 enemy->team[fighter->targets].name,
-                 enemy->team[fighter->targets].stats.hp,
+          printf("%s a maintenant %d points de vie et %d points de vie sur son bouclier.\n",
+                 enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                  enemy->team[fighter->targets].stats.shield);
         } else {
-          printf("%s a maintenant %d points de vie.\n",
-                 enemy->team[fighter->targets].name,
+          printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                  enemy->team[fighter->targets].stats.hp);
         }
       }
@@ -224,8 +196,7 @@ void pizza(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   };
@@ -236,8 +207,7 @@ void pizza(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
     target = enemy->team[fighter->champIndex];
   }
   if (target.stats.hp > 0) {
-    printf("La capacité %s redonne %d points de vie à %s.\n",
-           fighter->move.name, heal, target.name);
+    printf("La capacité %s redonne %d points de vie à %s.\n", fighter->move.name, heal, target.name);
     target.stats.hp += heal;
     if (target.stats.hp > target.stats.hpMax) {
       target.stats.hp = target.stats.hpMax;
@@ -247,12 +217,10 @@ void pizza(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
@@ -260,18 +228,15 @@ void pizza(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
   } else {
-    printf("%s est K.O. et ne peut pas regagner de points de vie.\n",
-           target.name);
+    printf("%s est K.O. et ne peut pas regagner de points de vie.\n", target.name);
   }
 }
 
@@ -283,8 +248,7 @@ void avion(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   };
@@ -305,8 +269,7 @@ void avion(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
     if (damage < 0) {
       damage = power / 10;
     }
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target.name);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
     if (target.stats.shield <= 0) {
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
@@ -319,15 +282,13 @@ void avion(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
         new_damage = damage - target.stats.shield;
         target.stats.shield = 0;
         target.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
       } else if (target.stats.shield == damage) {
         target.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     for (int i = 0; i < 6; i++) {
@@ -344,12 +305,10 @@ void avion(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
@@ -357,20 +316,17 @@ void avion(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
   }
 }
 
-void marteau(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
-             Team *enemy) {
+void marteau(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss, broken, check, star = 1, para;
@@ -378,8 +334,7 @@ void marteau(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   }
@@ -401,8 +356,7 @@ void marteau(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
     if (damage < 0) {
       damage = power / 10;
     }
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target.name);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
     if (target.stats.shield <= 0) {
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
@@ -415,15 +369,13 @@ void marteau(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
         new_damage = damage - target.stats.shield;
         target.stats.shield = 0;
         target.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
       } else if (target.stats.shield == damage) {
         target.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     for (int i = 0; i < 6; i++) {
@@ -435,15 +387,11 @@ void marteau(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       printf("La Super Star de %s l'empèche d'être K.O.\n", target.name);
       target.stats.hp = 1;
     }
-    check = searchEffect(fighter, "Brisage");
-    if (check != 0) {
-      if (broken < 30) {
-        for (int i = 0; i < 6; i++) {
-          if (strcmp(target.name, fighters[i].champ.name) == 0) {
-            printf("%s est brisé(e).\n", fighters[i].champ.name);
-            fighters[i].debuffs = addEffect(fighters[i].debuffs, "broken",
-                                            fighter->move.stats.duration);
-          }
+    if (broken < 30) {
+      for (int i = 0; i < 6; i++) {
+        if (strcmp(target.name, fighters[i].champ.name) == 0) {
+          printf("%s est brisé(e).\n", fighters[i].champ.name);
+          fighters[i].debuffs = addEffect(&fighters[i], fighters[i].debuffs, "broken", fighter->move.stats.duration);
         }
       }
     }
@@ -452,12 +400,10 @@ void marteau(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
@@ -465,36 +411,31 @@ void marteau(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
   }
 }
 
-void kamehameha(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
-                Team *enemy) {
+void kamehameha(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int def, verif, miss, check, star = 1, para, kaio = 1;
   check = searchEffect(fighter, "Paralysie");
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   }
   check = searchEffect(fighter, "Kaioken");
   if (check == 0) {
     kaio = 2;
-    printf("La puissance de %s a été doublée: elle passe de %d à %d.\n",
-           fighter->move.name, fighter->move.stats.power,
+    printf("La puissance de %s a été doublée: elle passe de %d à %d.\n", fighter->move.name, fighter->move.stats.power,
            fighter->move.stats.power * kaio);
     fighter->buffs = deleteEffect(&fighter->buffs, "Kaioken");
   }
@@ -516,8 +457,7 @@ void kamehameha(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
     if (damage < 0) {
       damage = power / 10;
     }
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target.name);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
     if (target.stats.shield <= 0) {
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
@@ -530,15 +470,13 @@ void kamehameha(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
         new_damage = damage - target.stats.shield;
         target.stats.shield = 0;
         target.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
       } else if (target.stats.shield == damage) {
         target.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     for (int i = 0; i < 6; i++) {
@@ -555,12 +493,10 @@ void kamehameha(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
@@ -568,20 +504,17 @@ void kamehameha(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
   }
 }
 
-void kaioken(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
-             Team *enemy) {
+void kaioken(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   int verif, check, para;
   Fighter target = ally->team[fighter->champIndex];
   verif = verifyTeam(fighter->champ, *enemy);
@@ -592,21 +525,18 @@ void kaioken(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   }
   check = searchEffect(fighter, "Kaioken");
   if (check != 0) {
-    fighter->buffs =
-        addEffect(fighter->buffs, "kaioken", fighter->move.stats.duration);
+    fighter->buffs = addEffect(&*fighter, fighter->buffs, "kaioken", fighter->move.stats.duration);
   }
   printf("La puissance de sa prochaine attaque sera doublée.\n");
 }
 
-void instant(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
-             Team *enemy) {
+void instant(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss, check, star = 1, kaio = 1, para;
@@ -614,16 +544,14 @@ void instant(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   };
   check = searchEffect(fighter, "Kaioken");
   if (check == 0) {
     kaio = 2;
-    printf("La puissance de %s a été doublée: elle passe de %d à %d.\n",
-           fighter->move.name, fighter->move.stats.power,
+    printf("La puissance de %s a été doublée: elle passe de %d à %d.\n", fighter->move.name, fighter->move.stats.power,
            fighter->move.stats.power * kaio);
     fighter->buffs = deleteEffect(&fighter->buffs, "Kaioken");
   }
@@ -644,8 +572,7 @@ void instant(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
     if (damage < 0) {
       damage = power / 10;
     }
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target.name);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
     if (target.stats.shield <= 0) {
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
@@ -658,15 +585,13 @@ void instant(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
         new_damage = damage - target.stats.shield;
         target.stats.shield = 0;
         target.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
       } else if (target.stats.shield == damage) {
         target.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     for (int i = 0; i < 6; i++) {
@@ -683,12 +608,10 @@ void instant(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
@@ -696,29 +619,24 @@ void instant(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
   }
 }
 
-void chakra(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
-            Team *enemy) {
+void chakra(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
-  int heal = fighter->move.stats.power, missing, verif, check, star = 1, para,
-      shield;
+  int heal = fighter->move.stats.power, missing, verif, check, star = 1, para, shield;
   check = searchEffect(fighter, "Paralysie");
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   }
@@ -732,8 +650,7 @@ void chakra(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   heal = heal + missing * 0.3;
   check = searchEffect(fighter, "Byakugan");
   if (target.stats.hp > 0) {
-    printf("La capacité %s redonne %d points de vie à %s.\n",
-           fighter->move.name, heal, target.name);
+    printf("La capacité %s redonne %d points de vie à %s.\n", fighter->move.name, heal, target.name);
     target.stats.hp += heal;
     if (target.stats.hp > target.stats.hpMax) {
       target.stats.hp = target.stats.hpMax;
@@ -745,41 +662,34 @@ void chakra(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
     if (verif == 1) {
       ally->team[fighter->targets] = target;
       if (check == 0) {
-        printf("%s reçoit un bouclier équivalent à %d points de vie.\n",
-               ally->team[fighter->targets].name, shield);
+        printf("%s reçoit un bouclier équivalent à %d points de vie.\n", ally->team[fighter->targets].name, shield);
       }
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
       enemy->team[fighter->targets] = target;
       if (check == 0) {
-        printf("%s reçoit un bouclier équivalent à %d points de vie.\n",
-               enemy->team[fighter->targets].name, shield);
+        printf("%s reçoit un bouclier équivalent à %d points de vie.\n", enemy->team[fighter->targets].name, shield);
       }
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
   } else {
-    printf("%s est K.O. et ne peut pas regagner de points de vie.\n",
-           target.name);
+    printf("%s est K.O. et ne peut pas regagner de points de vie.\n", target.name);
   }
 }
 
@@ -791,8 +701,7 @@ void paume(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   };
@@ -815,11 +724,10 @@ void paume(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
     }
     check = searchEffect(fighter, "Byakugan");
     if (check == 0) {
-      printf("Le Byakugan d'Hinata double les dégats de son attaque.");
+      printf("Le Byakugan d'Hinata double les dégats de son attaque.\n");
       damage = damage * 2;
     }
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target.name);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
     if (target.stats.shield <= 0) {
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
@@ -832,15 +740,13 @@ void paume(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
         new_damage = damage - target.stats.shield;
         target.stats.shield = 0;
         target.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
       } else if (target.stats.shield == damage) {
         target.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     for (int i = 0; i < 6; i++) {
@@ -857,12 +763,10 @@ void paume(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
@@ -870,28 +774,24 @@ void paume(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
   }
 }
 
-void poings(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
-            Team *enemy) {
+void poings(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int shield, verif, check, star = 1, para;
   check = searchEffect(fighter, "Paralysie");
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   }
@@ -909,8 +809,7 @@ void poings(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
         if (target.stats.shield > target.stats.hpMax) {
           target.stats.shield = target.stats.hpMax;
         }
-        printf("%s reçoit un bouclier équivalent à %d points de vie.\n",
-               target.name, shield);
+        printf("%s reçoit un bouclier équivalent à %d points de vie.\n", target.name, shield);
       }
       if (verif == 1) {
         ally->team[i] = target;
@@ -923,8 +822,7 @@ void poings(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
              "maximum.\n",
              target.name);
     } else {
-      printf("\n%s est K.O. et ne peut pas gagner des boucliers.\n",
-             target.name);
+      printf("\n%s est K.O. et ne peut pas gagner des boucliers.\n", target.name);
     }
   }
 }
@@ -937,8 +835,7 @@ void hook(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   };
@@ -960,22 +857,17 @@ void hook(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
     if (damage < 0) {
       damage = power / 10;
     }
-    check = searchEffect(fighter, "Stun");
-    if (check != 0) {
-      if (stun < 30) {
-        target.stats.spd = target.stats.spd / 2;
-        target.stats.agi = target.stats.agi / 2;
-        for (int i = 0; i < 6; i++) {
-          if (strcmp(target.name, fighters[i].champ.name) == 0) {
-            printf("%s est étourdi(e).\n", fighters[i].champ.name);
-            fighters[i].debuffs = addEffect(fighters[i].debuffs, "stun",
-                                            fighter->move.stats.duration);
-          }
+    if (stun < 30) {
+      target.stats.spd = target.stats.spd / 2;
+      target.stats.agi = target.stats.agi / 2;
+      for (int i = 0; i < 6; i++) {
+        if (strcmp(target.name, fighters[i].champ.name) == 0) {
+          printf("%s est étourdi(e).\n", fighters[i].champ.name);
+          fighters[i].debuffs = addEffect(&fighters[i], fighters[i].debuffs, "stun", fighter->move.stats.duration);
         }
       }
     }
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target.name);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
     if (target.stats.shield <= 0) {
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
@@ -988,15 +880,13 @@ void hook(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
         new_damage = damage - target.stats.shield;
         target.stats.shield = 0;
         target.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
       } else if (target.stats.shield == damage) {
         target.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     for (int i = 0; i < 6; i++) {
@@ -1013,12 +903,10 @@ void hook(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
@@ -1026,12 +914,10 @@ void hook(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
@@ -1046,8 +932,7 @@ void heat(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   };
@@ -1063,15 +948,14 @@ void heat(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
     def = target.stats.def;
     if (miss < target.stats.agi) {
       printf("%s a manqué %s.\n", fighter->champ.name, target.name);
-    } else {
+    } else if (target.stats.hp != 0) {
       percent = (rand() % 5 + 20) / 100.0;
       int damage = power - def * percent;
       if (damage < 0) {
         damage = power / 10;
       }
       if (target.stats.shield <= 0) {
-        printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-               damage, target.name);
+        printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
         target.stats.hp -= damage;
         if (target.stats.hp < 0) {
           target.stats.hp = 0;
@@ -1083,15 +967,13 @@ void heat(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
           new_damage = damage - target.stats.shield;
           target.stats.shield = 0;
           target.stats.hp -= new_damage;
-          printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-                 target.name, new_damage);
+          printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
         } else if (target.stats.shield == damage) {
           target.stats.shield = 0;
           printf("%s n'a plus de bouclier.\n", target.name);
         } else {
           target.stats.shield -= damage;
-          printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-                 damage);
+          printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
         }
       }
       for (int j = 0; j < 6; j++) {
@@ -1106,32 +988,25 @@ void heat(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (verif == 1) {
         ally->team[i] = target;
         if (target.stats.shield > 0) {
-          printf("%s a maintenant %d points de vie et %d points de vie sur son "
-                 "bouclier.\n",
-                 ally->team[i].name, ally->team[i].stats.hp,
-                 ally->team[i].stats.shield);
+          printf("%s a maintenant %d points de vie et %d points de vie sur son bouclier.\n", ally->team[i].name,
+                 ally->team[i].stats.hp, ally->team[i].stats.shield);
         } else {
-          printf("%s a maintenant %d points de vie.\n", ally->team[i].name,
-                 ally->team[i].stats.hp);
+          printf("%s a maintenant %d points de vie.\n", ally->team[i].name, ally->team[i].stats.hp);
         }
       } else {
         enemy->team[i] = target;
         if (target.stats.shield > 0) {
-          printf("%s a maintenant %d points de vie et %d points de vie sur son "
-                 "bouclier.\n",
-                 enemy->team[i].name, enemy->team[i].stats.hp,
-                 enemy->team[i].stats.shield);
+          printf("%s a maintenant %d points de vie et %d points de vie sur son bouclier.\n", enemy->team[i].name,
+                 enemy->team[i].stats.hp, enemy->team[i].stats.shield);
         } else {
-          printf("%s a maintenant %d points de vie.\n", enemy->team[i].name,
-                 enemy->team[i].stats.hp);
+          printf("%s a maintenant %d points de vie.\n", enemy->team[i].name, enemy->team[i].stats.hp);
         }
       }
     }
   }
 }
 
-void thunder(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
-             int pos1, int pos2) {
+void thunder(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy, int pos1, int pos2) {
   Fighter target1, target2;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss, check, star = 1, para;
@@ -1139,8 +1014,7 @@ void thunder(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   };
@@ -1164,21 +1038,16 @@ void thunder(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
     if (damage < 0) {
       damage = power / 10;
     }
-    check = searchEffect(fighter, "Paralysie");
-    if (check != 0) {
-      if (para < 30) {
-        for (int i = 0; i < 6; i++) {
-          if (strcmp(target1.name, fighters[i].champ.name) == 0) {
-            printf("%s est paralysé(e).\n", target1.name);
-            target1.stats.spd = target1.stats.spd - target1.stats.spd * 0.25;
-            fighters[i].debuffs = addEffect(fighters[i].debuffs, "paralyze",
-                                            fighter->move.stats.duration);
-          }
+    if (para < 30) {
+      for (int i = 0; i < 6; i++) {
+        if (strcmp(target1.name, fighters[i].champ.name) == 0) {
+          printf("%s est paralysé(e).\n", target1.name);
+          target1.stats.spd = target1.stats.spd - target1.stats.spd * 0.25;
+          fighters[i].debuffs = addEffect(&fighters[i], fighters[i].debuffs, "paralyze", fighter->move.stats.duration);
         }
       }
     }
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target1.name);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target1.name);
     if (target1.stats.shield <= 0) {
       target1.stats.hp -= damage;
       if (target1.stats.hp < 0) {
@@ -1191,15 +1060,13 @@ void thunder(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
         new_damage = damage - target1.stats.shield;
         target1.stats.shield = 0;
         target1.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target1.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target1.name, new_damage);
       } else if (target1.stats.shield == damage) {
         target1.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target1.name);
       } else {
         target1.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target1.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target1.name, damage);
       }
     }
     if (verif == 1) {
@@ -1207,22 +1074,18 @@ void thunder(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
       if (target1.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[pos1].name, ally->team[pos1].stats.hp,
-               ally->team[pos1].stats.shield);
+               ally->team[pos1].name, ally->team[pos1].stats.hp, ally->team[pos1].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n", ally->team[pos1].name,
-               ally->team[pos1].stats.hp);
+        printf("%s a maintenant %d points de vie.\n", ally->team[pos1].name, ally->team[pos1].stats.hp);
       }
     } else {
       enemy->team[pos1] = target1;
       if (target1.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[pos1].name, enemy->team[pos1].stats.hp,
-               enemy->team[pos1].stats.shield);
+               enemy->team[pos1].name, enemy->team[pos1].stats.hp, enemy->team[pos1].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n", enemy->team[pos1].name,
-               enemy->team[pos1].stats.hp);
+        printf("%s a maintenant %d points de vie.\n", enemy->team[pos1].name, enemy->team[pos1].stats.hp);
       }
     }
   }
@@ -1236,21 +1099,16 @@ void thunder(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
     if (damage < 0) {
       damage = power / 10;
     }
-    check = searchEffect(fighter, "Paralysie");
-    if (check != 0) {
-      if (para < 30) {
-        for (int i = 0; i < 6; i++) {
-          if (strcmp(target2.name, fighters[i].champ.name) == 0) {
-            printf("%s est paralysé(e).\n", target2.name);
-            target2.stats.spd = target2.stats.spd - target2.stats.spd * 0.25;
-            fighters[i].debuffs = addEffect(fighters[i].debuffs, "paralyze",
-                                            fighter->move.stats.duration);
-          }
+    if (para < 30) {
+      for (int i = 0; i < 6; i++) {
+        if (strcmp(target2.name, fighters[i].champ.name) == 0) {
+          printf("%s est paralysé(e).\n", target2.name);
+          target2.stats.spd = target2.stats.spd - target2.stats.spd * 0.25;
+          fighters[i].debuffs = addEffect(&fighters[i], fighters[i].debuffs, "paralyze", fighter->move.stats.duration);
         }
       }
     }
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target2.name);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target2.name);
     if (target2.stats.shield <= 0) {
       target2.stats.hp -= damage;
       if (target2.stats.hp < 0) {
@@ -1263,15 +1121,13 @@ void thunder(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
         new_damage = damage - target2.stats.shield;
         target2.stats.shield = 0;
         target2.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target2.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target2.name, new_damage);
       } else if (target2.stats.shield == damage) {
         target2.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target2.name);
       } else {
         target2.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target2.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target2.name, damage);
       }
     }
     if (verif == 1) {
@@ -1279,29 +1135,24 @@ void thunder(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
       if (target2.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[pos2].name, ally->team[pos2].stats.hp,
-               ally->team[pos2].stats.shield);
+               ally->team[pos2].name, ally->team[pos2].stats.hp, ally->team[pos2].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n", ally->team[pos2].name,
-               ally->team[pos2].stats.hp);
+        printf("%s a maintenant %d points de vie.\n", ally->team[pos2].name, ally->team[pos2].stats.hp);
       }
     } else {
       enemy->team[pos2] = target2;
       if (target2.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[pos2].name, enemy->team[pos2].stats.hp,
-               enemy->team[pos2].stats.shield);
+               enemy->team[pos2].name, enemy->team[pos2].stats.hp, enemy->team[pos2].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n", enemy->team[pos2].name,
-               enemy->team[pos2].stats.hp);
+        printf("%s a maintenant %d points de vie.\n", enemy->team[pos2].name, enemy->team[pos2].stats.hp);
       }
     }
   }
 }
 
-void boomerang(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
-               Team *enemy) {
+void boomerang(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss, check, star = 1, para;
@@ -1309,8 +1160,7 @@ void boomerang(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   };
@@ -1331,8 +1181,7 @@ void boomerang(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
     if (damage < 0) {
       damage = power / 10;
     }
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target.name);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
     if (target.stats.shield <= 0) {
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
@@ -1345,20 +1194,17 @@ void boomerang(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
         new_damage = damage - target.stats.shield;
         target.stats.shield = 0;
         target.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
       } else if (target.stats.shield == damage) {
         target.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     if (target.stats.shield <= 0) {
-      printf("Le boomerang revient, %s inflige %d points de dégâts à %s.\n",
-             fighter->champ.name, damage, target.name);
+      printf("Le boomerang revient, %s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
         target.stats.hp = 0;
@@ -1378,9 +1224,7 @@ void boomerang(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
         printf("Le boomerang revient, %s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf(
-            "Le boomerang revient, Le bouclier de %s perd %d points de vie.\n",
-            target.name, damage);
+        printf("Le boomerang revient, Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     for (int i = 0; i < 6; i++) {
@@ -1397,12 +1241,10 @@ void boomerang(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
@@ -1410,20 +1252,17 @@ void boomerang(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
   }
 }
 
-void green(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
-           int pos1) {
+void green(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy, int pos1) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss, check, star = 1, para;
@@ -1431,8 +1270,7 @@ void green(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   };
@@ -1454,8 +1292,7 @@ void green(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
     if (damage < 0) {
       damage = power / 10;
     }
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target.name);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
     if (target.stats.shield <= 0) {
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
@@ -1468,15 +1305,13 @@ void green(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
         new_damage = damage - target.stats.shield;
         target.stats.shield = 0;
         target.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
       } else if (target.stats.shield == damage) {
         target.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     if (verif == 1) {
@@ -1484,22 +1319,18 @@ void green(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy,
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[pos1].name, ally->team[pos1].stats.hp,
-               ally->team[pos1].stats.shield);
+               ally->team[pos1].name, ally->team[pos1].stats.hp, ally->team[pos1].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n", ally->team[pos1].name,
-               ally->team[pos1].stats.hp);
+        printf("%s a maintenant %d points de vie.\n", ally->team[pos1].name, ally->team[pos1].stats.hp);
       }
     } else {
       enemy->team[pos1] = target;
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[pos1].name, enemy->team[pos1].stats.hp,
-               enemy->team[pos1].stats.shield);
+               enemy->team[pos1].name, enemy->team[pos1].stats.hp, enemy->team[pos1].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n", enemy->team[pos1].name,
-               enemy->team[pos1].stats.hp);
+        printf("%s a maintenant %d points de vie.\n", enemy->team[pos1].name, enemy->team[pos1].stats.hp);
       }
     }
   }
@@ -1513,8 +1344,7 @@ void fire(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   };
@@ -1536,8 +1366,7 @@ void fire(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
     if (damage < 0) {
       damage = power / 10;
     }
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target.name);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
     if (target.stats.shield <= 0) {
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
@@ -1550,15 +1379,13 @@ void fire(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
         new_damage = damage - target.stats.shield;
         target.stats.shield = 0;
         target.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
       } else if (target.stats.shield == damage) {
         target.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     percent = (rand() % 5 + 20) / 100.0;
@@ -1567,20 +1394,16 @@ void fire(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       damage = power / 10;
     }
     damage = damage * 1.25;
-    check = searchEffect(fighter, "Brûlure");
-    if (check != 0) {
-      if (burn < 30) {
-        for (int i = 0; i < 6; i++) {
-          if (strcmp(target.name, fighters[i].champ.name) == 0) {
-            printf("%s est brûlé(e).\n", fighters[i].champ.name);
-            fighters[i].debuffs = addEffect(fighters[i].debuffs, "burn",
-                                            fighter->move.stats.duration);
-          }
+    if (burn < 30) {
+      for (int i = 0; i < 6; i++) {
+        if (strcmp(target.name, fighters[i].champ.name) == 0) {
+          printf("%s est brûlé(e).\n", fighters[i].champ.name);
+          fighters[i].debuffs = addEffect(&fighters[i], fighters[i].debuffs, "burn", fighter->move.stats.duration);
         }
       }
     }
-    printf("%s renvoie une boule de feu et inflige %d points de dégâts à %s.\n",
-           fighter->champ.name, damage, target.name);
+    printf("%s renvoie une boule de feu et inflige %d points de dégâts à %s.\n", fighter->champ.name, damage,
+           target.name);
     if (target.stats.shield <= 0) {
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
@@ -1593,15 +1416,13 @@ void fire(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
         new_damage = damage - target.stats.shield;
         target.stats.shield = 0;
         target.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
       } else if (target.stats.shield == damage) {
         target.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     for (int i = 0; i < 6; i++) {
@@ -1618,12 +1439,10 @@ void fire(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
@@ -1631,12 +1450,10 @@ void fire(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
@@ -1651,8 +1468,7 @@ void ice(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   }
@@ -1674,8 +1490,7 @@ void ice(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
     if (damage < 0) {
       damage = power / 10;
     }
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target.name);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
     if (target.stats.shield <= 0) {
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
@@ -1688,15 +1503,13 @@ void ice(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
         new_damage = damage - target.stats.shield;
         target.stats.shield = 0;
         target.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
       } else if (target.stats.shield == damage) {
         target.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     for (int i = 0; i < 6; i++) {
@@ -1708,15 +1521,11 @@ void ice(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       printf("La Super Star de %s l'empèche d'être K.O.\n", target.name);
       target.stats.hp = 1;
     }
-    check = searchEffect(fighter, "Gel");
-    if (check != 0) {
-      if (freeze < 40) {
-        for (int i = 0; i < 6; i++) {
-          if (strcmp(target.name, fighters[i].champ.name) == 0) {
-            printf("%s est gelé(e).\n", fighters[i].champ.name);
-            fighters[i].debuffs = addEffect(fighters[i].debuffs, "freeze",
-                                            fighter->move.stats.duration);
-          }
+    if (freeze < 40) {
+      for (int i = 0; i < 6; i++) {
+        if (strcmp(target.name, fighters[i].champ.name) == 0) {
+          printf("%s est gelé(e).\n", fighters[i].champ.name);
+          fighters[i].debuffs = addEffect(&fighters[i], fighters[i].debuffs, "freeze", fighter->move.stats.duration);
         }
       }
     }
@@ -1725,12 +1534,10 @@ void ice(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
@@ -1738,12 +1545,10 @@ void ice(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
@@ -1758,8 +1563,7 @@ void red(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   };
@@ -1781,8 +1585,7 @@ void red(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
     if (damage < 0) {
       damage = power / 10;
     }
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target.name);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
     if (target.stats.shield <= 0) {
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
@@ -1795,15 +1598,13 @@ void red(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
         new_damage = damage - target.stats.shield;
         target.stats.shield = 0;
         target.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
       } else if (target.stats.shield == damage) {
         target.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     if (verif == 1) {
@@ -1811,12 +1612,10 @@ void red(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
@@ -1824,20 +1623,17 @@ void red(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
   }
 }
 
-void rasengan(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
-              Team *enemy) {
+void rasengan(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss, check, star = 1, para;
@@ -1845,8 +1641,7 @@ void rasengan(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   };
@@ -1867,8 +1662,7 @@ void rasengan(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
     if (damage < 0) {
       damage = power / 10;
     }
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target.name);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
     if (target.stats.shield <= 0) {
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
@@ -1881,15 +1675,13 @@ void rasengan(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
         new_damage = damage - target.stats.shield;
         target.stats.shield = 0;
         target.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
       } else if (target.stats.shield == damage) {
         target.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     for (int i = 0; i < 6; i++) {
@@ -1906,12 +1698,10 @@ void rasengan(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
@@ -1919,12 +1709,10 @@ void rasengan(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
@@ -1939,8 +1727,7 @@ void clone(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   }
@@ -1963,10 +1750,8 @@ void clone(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       damage = power / 10;
     }
     damage = damage * clones;
-    printf("%s a fait apparaitre %d clones qui frapperont tous une fois.",
-           fighter->champ.name, clones);
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target.name);
+    printf("%s a fait apparaitre %d clones qui frapperont tous une fois.", fighter->champ.name, clones);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
     if (target.stats.shield <= 0) {
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
@@ -1979,15 +1764,13 @@ void clone(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
         new_damage = damage - target.stats.shield;
         target.stats.shield = 0;
         target.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
       } else if (target.stats.shield == damage) {
         target.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     for (int i = 0; i < 6; i++) {
@@ -2004,12 +1787,10 @@ void clone(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
@@ -2017,20 +1798,17 @@ void clone(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
   }
 }
 
-void rasenshuriken(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
-                   Team *enemy) {
+void rasenshuriken(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10, bonus;
   int def, verif, miss, check, star = 1, para;
@@ -2038,8 +1816,7 @@ void rasenshuriken(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   };
@@ -2055,7 +1832,7 @@ void rasenshuriken(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
     def = target.stats.def;
     if (miss < target.stats.agi) {
       printf("%s a manqué %s.\n", fighter->champ.name, target.name);
-    } else {
+    } else if (target.stats.hp != 0) {
       percent = (rand() % 5 + 20) / 100.0;
       int damage = power - def * percent;
       if (damage < 0) {
@@ -2065,8 +1842,7 @@ void rasenshuriken(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (i == fighter->targets) {
         damage += bonus;
       }
-      printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-             damage, target.name);
+      printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
       if (target.stats.shield <= 0) {
         target.stats.hp -= damage;
         if (target.stats.hp < 0) {
@@ -2079,15 +1855,13 @@ void rasenshuriken(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
           new_damage = damage - target.stats.shield;
           target.stats.shield = 0;
           target.stats.hp -= new_damage;
-          printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-                 target.name, new_damage);
+          printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
         } else if (target.stats.shield == damage) {
           target.stats.shield = 0;
           printf("%s n'a plus de bouclier.\n", target.name);
         } else {
           target.stats.shield -= damage;
-          printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-                 damage);
+          printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
         }
       }
       for (int j = 0; j < 6; j++) {
@@ -2102,24 +1876,18 @@ void rasenshuriken(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (verif == 1) {
         ally->team[i] = target;
         if (target.stats.shield > 0) {
-          printf("%s a maintenant %d points de vie et %d points de vie sur son "
-                 "bouclier.\n",
-                 ally->team[i].name, ally->team[i].stats.hp,
-                 ally->team[i].stats.shield);
+          printf("%s a maintenant %d points de vie et %d points de vie sur son bouclier.\n", ally->team[i].name,
+                 ally->team[i].stats.hp, ally->team[i].stats.shield);
         } else {
-          printf("%s a maintenant %d points de vie.\n", ally->team[i].name,
-                 ally->team[i].stats.hp);
+          printf("%s a maintenant %d points de vie.\n", ally->team[i].name, ally->team[i].stats.hp);
         }
       } else {
         enemy->team[i] = target;
         if (target.stats.shield > 0) {
-          printf("%s a maintenant %d points de vie et %d points de vie sur son "
-                 "bouclier.\n",
-                 enemy->team[i].name, enemy->team[i].stats.hp,
-                 enemy->team[i].stats.shield);
+          printf("%s a maintenant %d points de vie et %d points de vie sur son bouclier.\n", enemy->team[i].name,
+                 enemy->team[i].stats.hp, enemy->team[i].stats.shield);
         } else {
-          printf("%s a maintenant %d points de vie.\n", enemy->team[i].name,
-                 enemy->team[i].stats.hp);
+          printf("%s a maintenant %d points de vie.\n", enemy->team[i].name, enemy->team[i].stats.hp);
         }
       }
     }
@@ -2134,8 +1902,7 @@ void golf(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   }
@@ -2157,21 +1924,16 @@ void golf(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
     if (damage < 0) {
       damage = power / 10;
     }
-    check = searchEffect(fighter, "Stun");
-    if (check != 0) {
-      if (stun < 20) {
-        target.stats.spd = target.stats.spd / 2;
-        for (int i = 0; i < 6; i++) {
-          if (strcmp(target.name, fighters[i].champ.name) == 0) {
-            printf("%s est étourdi(e).\n", fighters[i].champ.name);
-            fighters[i].debuffs = addEffect(fighters[i].debuffs, "stun",
-                                            fighter->move.stats.duration);
-          }
+    if (stun < 20) {
+      target.stats.spd = target.stats.spd / 2;
+      for (int i = 0; i < 6; i++) {
+        if (strcmp(target.name, fighters[i].champ.name) == 0) {
+          printf("%s est étourdi(e).\n", fighters[i].champ.name);
+          fighters[i].debuffs = addEffect(&fighters[i], fighters[i].debuffs, "stun", fighter->move.stats.duration);
         }
       }
     }
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target.name);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
     if (target.stats.shield <= 0) {
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
@@ -2184,15 +1946,13 @@ void golf(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
         new_damage = damage - target.stats.shield;
         target.stats.shield = 0;
         target.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
       } else if (target.stats.shield == damage) {
         target.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     for (int i = 0; i < 6; i++) {
@@ -2209,12 +1969,10 @@ void golf(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
@@ -2222,28 +1980,24 @@ void golf(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
   }
 }
 
-void vegetable(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
-               Team *enemy) {
+void vegetable(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int heal = fighter->move.stats.power, verif, check, star = 1, para;
   check = searchEffect(fighter, "Paralysie");
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   }
@@ -2260,15 +2014,12 @@ void vegetable(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
         if (target.stats.hp > target.stats.hpMax) {
           target.stats.hp = target.stats.hpMax;
         }
-        printf("La capacité %s redonne %d points de vie à %s.\n",
-               fighter->move.name, heal, target.name);
+        printf("La capacité %s redonne %d points de vie à %s.\n", fighter->move.name, heal, target.name);
         if (target.stats.shield > 0) {
-          printf("%s a maintenant %d points de vie et %d points de vie sur son "
-                 "bouclier.\n",
-                 target.name, target.stats.hp, target.stats.shield);
+          printf("%s a maintenant %d points de vie et %d points de vie sur son bouclier.\n", target.name,
+                 target.stats.hp, target.stats.shield);
         } else {
-          printf("%s a maintenant %d points de vie.\n", target.name,
-                 target.stats.hp);
+          printf("%s a maintenant %d points de vie.\n", target.name, target.stats.hp);
         }
       }
       if (verif == 1) {
@@ -2281,8 +2032,7 @@ void vegetable(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
              "sont au maximum.\n",
              target.name);
     } else {
-      printf("\n%s est K.O. et ne peut pas regagner des points de vie.\n",
-             target.name);
+      printf("\n%s est K.O. et ne peut pas regagner des points de vie.\n", target.name);
     }
   }
 }
@@ -2294,8 +2044,7 @@ void toad(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   }
@@ -2312,8 +2061,7 @@ void toad(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > target.stats.hpMax) {
         target.stats.shield = target.stats.hpMax;
       }
-      printf("%s reçoit un bouclier équivalent à %d points de vie.\n",
-             target.name, shield);
+      printf("%s reçoit un bouclier équivalent à %d points de vie.\n", target.name, shield);
     }
     if (verif == 1) {
       ally->team[fighter->targets] = target;
@@ -2330,8 +2078,7 @@ void toad(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   }
 }
 
-void sneeze(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
-            Team *enemy) {
+void sneeze(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss, check, star = 1, para, bonus = 0, stun;
@@ -2339,8 +2086,7 @@ void sneeze(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   };
@@ -2366,21 +2112,16 @@ void sneeze(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
     if (damage < 0) {
       damage = power / 10;
     }
-    check = searchEffect(fighter, "Stun");
-    if (check != 0) {
-      if (stun < 50 + bonus) {
-        target.stats.spd = target.stats.spd / 2;
-        for (int i = 0; i < 6; i++) {
-          if (strcmp(target.name, fighters[i].champ.name) == 0) {
-            printf("%s est étourdi(e).\n", fighters[i].champ.name);
-            fighters[i].debuffs = addEffect(fighters[i].debuffs, "stun",
-                                            fighter->move.stats.duration);
-          }
+    if (stun < 50 + bonus) {
+      target.stats.spd = target.stats.spd / 2;
+      for (int i = 0; i < 6; i++) {
+        if (strcmp(target.name, fighters[i].champ.name) == 0) {
+          printf("%s est étourdi(e).\n", fighters[i].champ.name);
+          fighters[i].debuffs = addEffect(&fighters[i], fighters[i].debuffs, "stun", fighter->move.stats.duration);
         }
       }
     }
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target.name);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
     if (target.stats.shield <= 0) {
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
@@ -2393,15 +2134,13 @@ void sneeze(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
         new_damage = damage - target.stats.shield;
         target.stats.shield = 0;
         target.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
       } else if (target.stats.shield == damage) {
         target.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     for (int i = 0; i < 6; i++) {
@@ -2418,12 +2157,10 @@ void sneeze(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
@@ -2431,12 +2168,10 @@ void sneeze(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
@@ -2451,8 +2186,7 @@ void punch(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   };
@@ -2477,8 +2211,7 @@ void punch(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
     if (damage < 0) {
       damage = power / 10;
     }
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target.name);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
     if (target.stats.shield <= 0) {
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
@@ -2491,15 +2224,13 @@ void punch(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
         new_damage = damage - target.stats.shield;
         target.stats.shield = 0;
         target.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
       } else if (target.stats.shield == damage) {
         target.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     for (int i = 0; i < 6; i++) {
@@ -2516,12 +2247,10 @@ void punch(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
@@ -2529,20 +2258,17 @@ void punch(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
   }
 }
 
-void headbutt(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
-              Team *enemy) {
+void headbutt(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss, check, star = 1, para, stun;
@@ -2550,8 +2276,7 @@ void headbutt(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   };
@@ -2573,21 +2298,16 @@ void headbutt(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
     if (damage < 0) {
       damage = power / 10;
     }
-    check = searchEffect(fighter, "Stun");
-    if (check != 0) {
-      if (stun < 20) {
-        target.stats.spd = target.stats.spd / 2;
-        for (int i = 0; i < 6; i++) {
-          if (strcmp(target.name, fighters[i].champ.name) == 0) {
-            printf("%s est étourdi(e).\n", fighters[i].champ.name);
-            fighters[i].debuffs = addEffect(fighters[i].debuffs, "stun",
-                                            fighter->move.stats.duration);
-          }
+    if (stun < 20) {
+      target.stats.spd = target.stats.spd / 2;
+      for (int i = 0; i < 6; i++) {
+        if (strcmp(target.name, fighters[i].champ.name) == 0) {
+          printf("%s est étourdi(e).\n", fighters[i].champ.name);
+          fighters[i].debuffs = addEffect(&fighters[i], fighters[i].debuffs, "stun", fighter->move.stats.duration);
         }
       }
     }
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target.name);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
     if (target.stats.shield <= 0) {
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
@@ -2600,15 +2320,13 @@ void headbutt(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
         new_damage = damage - target.stats.shield;
         target.stats.shield = 0;
         target.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
       } else if (target.stats.shield == damage) {
         target.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     for (int i = 0; i < 6; i++) {
@@ -2625,12 +2343,10 @@ void headbutt(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
@@ -2638,20 +2354,17 @@ void headbutt(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
   }
 }
 
-void cherry(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
-            Team *enemy) {
+void cherry(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   Effect *effect;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
@@ -2660,8 +2373,7 @@ void cherry(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   };
@@ -2682,8 +2394,7 @@ void cherry(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
     if (damage < 0) {
       damage = power / 10;
     }
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target.name);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
     if (target.stats.shield <= 0) {
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
@@ -2696,15 +2407,13 @@ void cherry(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
         new_damage = damage - target.stats.shield;
         target.stats.shield = 0;
         target.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
       } else if (target.stats.shield == damage) {
         target.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     for (int i = 0; i < 6; i++) {
@@ -2721,8 +2430,7 @@ void cherry(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
             }
             for (int k = 0; k < 6; k++) {
               if (strcmp(fighters[k].champ.name, target.name) == 0) {
-                fighters[k].debuffs =
-                    deleteEffect(&fighters[i].debuffs, "Kunaï Explosifs");
+                fighters[k].debuffs = deleteEffect(&fighters[i].debuffs, "Kunaï Explosifs");
               }
             }
             def = target.stats.def;
@@ -2733,10 +2441,7 @@ void cherry(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
             if (damage < 0) {
               damage = power / 10;
             }
-            printf(
-                "Les Kunaï Explosifs de Sakura infligent %d points de dégâts "
-                "à %s.\n",
-                damage, target.name);
+            printf("Les Kunaï Explosifs de Sakura infligent %d points de dégâts à %s.\n", damage, target.name);
             if (target.stats.shield <= 0) {
               target.stats.hp -= damage;
               if (target.stats.hp < 0) {
@@ -2749,27 +2454,21 @@ void cherry(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
                 new_damage = damage - target.stats.shield;
                 target.stats.shield = 0;
                 target.stats.hp -= new_damage;
-                printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-                       target.name, new_damage);
+                printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
               } else if (target.stats.shield == damage) {
                 target.stats.shield = 0;
                 printf("%s n'a plus de bouclier.\n", target.name);
               } else {
                 target.stats.shield -= damage;
-                printf("Le bouclier de %s perd %d points de vie.\n",
-                       target.name, damage);
+                printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
               }
             }
-            check = searchEffect(fighter, "Brûlure");
-            if (check != 0) {
-              if (burn < 15) {
-                for (int k = 0; k < 6; k++) {
-                  if (strcmp(target.name, fighters[k].champ.name) == 0) {
-                    printf("%s est brulé(e).\n", fighters[k].champ.name);
-                    fighters[k].debuffs =
-                        addEffect(fighters[k].debuffs, "burn",
-                                  fighter->move.stats.duration);
-                  }
+            if (burn < 15) {
+              for (int k = 0; k < 6; k++) {
+                if (strcmp(target.name, fighters[k].champ.name) == 0) {
+                  printf("%s est brulé(e).\n", fighters[k].champ.name);
+                  fighters[k].debuffs =
+                      addEffect(&fighters[i], fighters[k].debuffs, "burn", fighter->move.stats.duration);
                 }
               }
             }
@@ -2779,8 +2478,7 @@ void cherry(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
               }
             }
             if (star == 0 && target.stats.hp == 0) {
-              printf("La Super Star de %s l'empèche d'être K.O.\n",
-                     target.name);
+              printf("La Super Star de %s l'empèche d'être K.O.\n", target.name);
               target.stats.hp = 1;
             }
             if (verif == 1) {
@@ -2789,11 +2487,9 @@ void cherry(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
                 printf("%s a maintenant %d points de vie et %d points de vie "
                        "sur son "
                        "bouclier.\n",
-                       ally->team[j].name, ally->team[j].stats.hp,
-                       ally->team[j].stats.shield);
+                       ally->team[j].name, ally->team[j].stats.hp, ally->team[j].stats.shield);
               } else {
-                printf("%s a maintenant %d points de vie.\n",
-                       ally->team[j].name, ally->team[j].stats.hp);
+                printf("%s a maintenant %d points de vie.\n", ally->team[j].name, ally->team[j].stats.hp);
               }
             } else {
               enemy->team[j] = target;
@@ -2801,11 +2497,9 @@ void cherry(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
                 printf("%s a maintenant %d points de vie et %d points de vie "
                        "sur son "
                        "bouclier.\n",
-                       enemy->team[j].name, enemy->team[j].stats.hp,
-                       enemy->team[j].stats.shield);
+                       enemy->team[j].name, enemy->team[j].stats.hp, enemy->team[j].stats.shield);
               } else {
-                printf("%s a maintenant %d points de vie.\n",
-                       enemy->team[j].name, enemy->team[j].stats.hp);
+                printf("%s a maintenant %d points de vie.\n", enemy->team[j].name, enemy->team[j].stats.hp);
               }
             }
           }
@@ -2825,27 +2519,21 @@ void cherry(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (verif == 1) {
         ally->team[fighter->targets] = target;
         if (target.stats.shield > 0) {
-          printf("%s a maintenant %d points de vie et %d points de vie sur son "
-                 "bouclier.\n",
-                 ally->team[fighter->targets].name,
-                 ally->team[fighter->targets].stats.hp,
+          printf("%s a maintenant %d points de vie et %d points de vie sur son bouclier.\n",
+                 ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                  ally->team[fighter->targets].stats.shield);
         } else {
-          printf("%s a maintenant %d points de vie.\n",
-                 ally->team[fighter->targets].name,
+          printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                  ally->team[fighter->targets].stats.hp);
         }
       } else {
         enemy->team[fighter->targets] = target;
         if (target.stats.shield > 0) {
-          printf("%s a maintenant %d points de vie et %d points de vie sur son "
-                 "bouclier.\n",
-                 enemy->team[fighter->targets].name,
-                 enemy->team[fighter->targets].stats.hp,
+          printf("%s a maintenant %d points de vie et %d points de vie sur son bouclier.\n",
+                 enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                  enemy->team[fighter->targets].stats.shield);
         } else {
-          printf("%s a maintenant %d points de vie.\n",
-                 enemy->team[fighter->targets].name,
+          printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                  enemy->team[fighter->targets].stats.hp);
         }
       }
@@ -2860,8 +2548,7 @@ void heal(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   }
@@ -2872,8 +2559,7 @@ void heal(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
     target = enemy->team[fighter->targets];
   }
   if (target.stats.hp > 0) {
-    printf("La capacité %s redonne %d points de vie à %s.\n",
-           fighter->move.name, heal, target.name);
+    printf("La capacité %s redonne %d points de vie à %s.\n", fighter->move.name, heal, target.name);
     target.stats.hp += heal;
     if (target.stats.hp > target.stats.hpMax) {
       target.stats.hp = target.stats.hpMax;
@@ -2883,12 +2569,10 @@ void heal(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
@@ -2896,31 +2580,26 @@ void heal(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
   } else {
-    printf("%s est K.O. et ne peut pas regagner de points de vie.\n",
-           target.name);
+    printf("%s est K.O. et ne peut pas regagner de points de vie.\n", target.name);
   }
 }
 
-void rebirth(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
-             Team *enemy) {
+void rebirth(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int verif, check, star = 1, para;
   check = searchEffect(fighter, "Paralysie");
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   }
@@ -2932,11 +2611,10 @@ void rebirth(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       target = enemy->team[i];
     }
     for (int i = 0; i < 6; i++) {
-      if (strcmp(target.name, fighters[i].champ.name) == 0) {
-        printf("L'effet \"Régénération\" est actif sur %s pendant %d tours.\n",
-               fighters[i].champ.name, fighter->move.stats.duration);
-        fighters[i].buffs = addEffect(fighters[i].buffs, "regeneration",
-                                      fighter->move.stats.duration);
+      if (strcmp(target.name, fighters[i].champ.name) == 0 && fighters[i].champ.stats.hp != 0) {
+        printf("L'effet \"Régénération\" est actif sur %s pendant %d tours.\n", fighters[i].champ.name,
+               fighter->move.stats.duration);
+        fighters[i].buffs = addEffect(&fighters[i], fighters[i].buffs, "regeneration", fighter->move.stats.duration);
       }
     }
   }
@@ -2950,8 +2628,7 @@ void katon(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   };
@@ -2973,20 +2650,15 @@ void katon(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
     if (damage < 0) {
       damage = power / 10;
     }
-    check = searchEffect(fighter, "Brûlure");
-    if (check != 0) {
-      if (burn < 40) {
-        for (int i = 0; i < 6; i++) {
-          if (strcmp(target.name, fighters[i].champ.name) == 0) {
-            printf("%s est brûlé(e).\n", fighters[i].champ.name);
-            fighters[i].debuffs = addEffect(fighters[i].debuffs, "burn",
-                                            fighter->move.stats.duration);
-          }
+    if (burn < 40) {
+      for (int i = 0; i < 6; i++) {
+        if (strcmp(target.name, fighters[i].champ.name) == 0) {
+          printf("%s est brûlé(e).\n", fighters[i].champ.name);
+          fighters[i].debuffs = addEffect(&fighters[i], fighters[i].debuffs, "burn", fighter->move.stats.duration);
         }
       }
     }
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target.name);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
     if (target.stats.shield <= 0) {
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
@@ -2999,15 +2671,13 @@ void katon(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
         new_damage = damage - target.stats.shield;
         target.stats.shield = 0;
         target.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
       } else if (target.stats.shield == damage) {
         target.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     for (int i = 0; i < 6; i++) {
@@ -3024,12 +2694,10 @@ void katon(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
@@ -3037,20 +2705,17 @@ void katon(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
   }
 }
 
-void chidori(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
-             Team *enemy) {
+void chidori(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss, check, star = 1, para;
@@ -3058,8 +2723,7 @@ void chidori(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   }
@@ -3081,20 +2745,15 @@ void chidori(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
     if (damage < 0) {
       damage = power / 10;
     }
-    check = searchEffect(fighter, "Paralysie");
-    if (check != 0) {
-      if (para < 30) {
-        for (int i = 0; i < 6; i++) {
-          if (strcmp(target.name, fighters[i].champ.name) == 0) {
-            printf("%s est paralysé(e).\n", target.name);
-            fighters[i].debuffs = addEffect(fighters[i].debuffs, "paralyze",
-                                            fighter->move.stats.duration);
-          }
+    if (para < 30) {
+      for (int i = 0; i < 6; i++) {
+        if (strcmp(target.name, fighters[i].champ.name) == 0) {
+          printf("%s est paralysé(e).\n", target.name);
+          fighters[i].debuffs = addEffect(&fighters[i], fighters[i].debuffs, "paralyze", fighter->move.stats.duration);
         }
       }
     }
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target.name);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
     if (target.stats.shield <= 0) {
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
@@ -3107,15 +2766,13 @@ void chidori(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
         new_damage = damage - target.stats.shield;
         target.stats.shield = 0;
         target.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
       } else if (target.stats.shield == damage) {
         target.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     for (int i = 0; i < 6; i++) {
@@ -3132,12 +2789,10 @@ void chidori(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
@@ -3145,20 +2800,17 @@ void chidori(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
   }
 }
 
-void amaterasu(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
-               Team *enemy) {
+void amaterasu(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss, check, star = 1, para, burn;
@@ -3166,8 +2818,7 @@ void amaterasu(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   };
@@ -3189,18 +2840,13 @@ void amaterasu(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
     if (damage < 0) {
       damage = power / 10;
     }
-    check = searchEffect(fighter, "Brûlure");
-    if (check != 0) {
-      for (int i = 0; i < 6; i++) {
-        if (strcmp(target.name, fighters[i].champ.name) == 0) {
-          printf("%s est brûlé(e).\n", fighters[i].champ.name);
-          fighters[i].debuffs = addEffect(fighters[i].debuffs, "burn",
-                                          fighter->move.stats.duration);
-        }
+    for (int i = 0; i < 6; i++) {
+      if (strcmp(target.name, fighters[i].champ.name) == 0) {
+        printf("%s est brûlé(e).\n", fighters[i].champ.name);
+        fighters[i].debuffs = addEffect(&fighters[i], fighters[i].debuffs, "burn", fighter->move.stats.duration);
       }
     }
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target.name);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
     if (target.stats.shield <= 0) {
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
@@ -3213,15 +2859,13 @@ void amaterasu(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
         new_damage = damage - target.stats.shield;
         target.stats.shield = 0;
         target.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
       } else if (target.stats.shield == damage) {
         target.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     for (int i = 0; i < 6; i++) {
@@ -3238,12 +2882,10 @@ void amaterasu(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
@@ -3251,28 +2893,24 @@ void amaterasu(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
   }
 }
 
-void croque(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
-            Team *enemy) {
+void croque(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int heal = fighter->move.stats.power, verif, check, star = 1, para;
   check = searchEffect(fighter, "Paralysie");
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   }
@@ -3283,8 +2921,7 @@ void croque(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
     target = enemy->team[fighter->champIndex];
   }
   if (target.stats.hp > 0) {
-    printf("La capacité %s redonne %d points de vie à %s.\n",
-           fighter->move.name, heal, target.name);
+    printf("La capacité %s redonne %d points de vie à %s.\n", fighter->move.name, heal, target.name);
     target.stats.hp += heal;
     if (target.stats.hp > target.stats.hpMax) {
       target.stats.hp = target.stats.hpMax;
@@ -3294,12 +2931,10 @@ void croque(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
@@ -3307,18 +2942,15 @@ void croque(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
   } else {
-    printf("%s est K.O. et ne peut pas regagner de points de vie.\n",
-           target.name);
+    printf("%s est K.O. et ne peut pas regagner de points de vie.\n", target.name);
   }
 }
 
@@ -3329,8 +2961,7 @@ void repos(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   }
@@ -3340,19 +2971,14 @@ void repos(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   } else {
     target = enemy->team[fighter->champIndex];
   }
-  check = searchEffect(fighter, "Sommeil");
-  if (check != 0) {
-    for (int i = 0; i < 6; i++) {
-      if (strcmp(target.name, fighters[i].champ.name) == 0) {
-        printf("%s est endormi(e).\n", target.name);
-        fighters[i].debuffs = addEffect(fighters[i].debuffs, "sleep",
-                                        fighter->move.stats.duration);
-      }
+  for (int i = 0; i < 6; i++) {
+    if (strcmp(target.name, fighters[i].champ.name) == 0) {
+      printf("%s est endormi(e).\n", target.name);
+      fighters[i].debuffs = addEffect(&fighters[i], fighters[i].debuffs, "sleep", fighter->move.stats.duration);
     }
   }
   if (target.stats.hp > 0) {
-    printf("La capacité %s redonne %d points de vie à %s.\n",
-           fighter->move.name, heal, target.name);
+    printf("La capacité %s redonne %d points de vie à %s.\n", fighter->move.name, heal, target.name);
     target.stats.hp += heal;
     if (target.stats.hp > target.stats.hpMax) {
       target.stats.hp = target.stats.hpMax;
@@ -3362,12 +2988,10 @@ void repos(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
@@ -3375,23 +2999,19 @@ void repos(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
   } else {
-    printf("%s est K.O. et ne peut pas regagner de points de vie.\n",
-           target.name);
+    printf("%s est K.O. et ne peut pas regagner de points de vie.\n", target.name);
   }
 }
 
-void charge(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
-            Team *enemy) {
+void charge(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss, check, star = 1, para;
@@ -3399,8 +3019,7 @@ void charge(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   };
@@ -3421,8 +3040,7 @@ void charge(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
     if (damage < 0) {
       damage = power / 10;
     }
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target.name);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
     if (target.stats.shield <= 0) {
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
@@ -3435,15 +3053,13 @@ void charge(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
         new_damage = damage - target.stats.shield;
         target.stats.shield = 0;
         target.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
       } else if (target.stats.shield == damage) {
         target.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     for (int i = 0; i < 6; i++) {
@@ -3460,12 +3076,10 @@ void charge(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
@@ -3473,12 +3087,10 @@ void charge(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
@@ -3493,17 +3105,15 @@ void flick(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   };
-  check = searchEffect(fighter, "Ultra Instinct 0.00001%%");
+  check = searchEffect(fighter, "Ultra Instinct");
   if (check == 0) {
     ui = 5;
-    printf("La puissance de %s a été quintuplée: elle passe de %d à %d.\n",
-           fighter->move.name, fighter->move.stats.power,
-           fighter->move.stats.power * ui);
+    printf("La puissance de %s a été quintuplée: elle passe de %d à %d.\n", fighter->move.name,
+           fighter->move.stats.power, fighter->move.stats.power * ui);
   }
   float percent;
   miss = rand() % 125 + 25 - (100 - fighter->move.stats.accuracy);
@@ -3522,8 +3132,7 @@ void flick(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
     if (damage < 0) {
       damage = power / 10;
     }
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target.name);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
     if (target.stats.shield <= 0) {
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
@@ -3536,15 +3145,13 @@ void flick(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
         new_damage = damage - target.stats.shield;
         target.stats.shield = 0;
         target.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
       } else if (target.stats.shield == damage) {
         target.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     for (int i = 0; i < 6; i++) {
@@ -3561,12 +3168,10 @@ void flick(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
@@ -3574,20 +3179,17 @@ void flick(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
   }
 }
 
-void spinattack(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
-                Team *enemy) {
+void spinattack(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss, check, star = 1, para;
@@ -3595,8 +3197,7 @@ void spinattack(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   };
@@ -3617,8 +3218,7 @@ void spinattack(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
     if (damage < 0) {
       damage = power / 10;
     }
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target.name);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
     if (target.stats.shield <= 0) {
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
@@ -3631,15 +3231,13 @@ void spinattack(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
         new_damage = damage - target.stats.shield;
         target.stats.shield = 0;
         target.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
       } else if (target.stats.shield == damage) {
         target.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     for (int i = 0; i < 6; i++) {
@@ -3656,12 +3254,10 @@ void spinattack(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
@@ -3669,20 +3265,17 @@ void spinattack(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
   }
 }
 
-void homming(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
-             Team *enemy) {
+void homming(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss, check, star = 1, para;
@@ -3690,8 +3283,7 @@ void homming(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   };
@@ -3712,8 +3304,7 @@ void homming(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
     if (damage < 0) {
       damage = power / 10;
     }
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target.name);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
     if (target.stats.shield <= 0) {
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
@@ -3726,15 +3317,13 @@ void homming(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
         new_damage = damage - target.stats.shield;
         target.stats.shield = 0;
         target.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
       } else if (target.stats.shield == damage) {
         target.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     for (int i = 0; i < 6; i++) {
@@ -3751,12 +3340,10 @@ void homming(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
@@ -3764,20 +3351,17 @@ void homming(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
   }
 }
 
-void lightspeed(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
-                Team *enemy) {
+void lightspeed(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss, check, star = 1, para, i = 0, alive[3] = {0, 0, 0};
@@ -3785,8 +3369,7 @@ void lightspeed(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   };
@@ -3826,8 +3409,7 @@ void lightspeed(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
         if (damage < 0) {
           damage = power / 10;
         }
-        printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-               damage, target.name);
+        printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
         if (target.stats.shield <= 0) {
           target.stats.hp -= damage;
           if (target.stats.hp < 0) {
@@ -3840,15 +3422,13 @@ void lightspeed(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
             new_damage = damage - target.stats.shield;
             target.stats.shield = 0;
             target.stats.hp -= new_damage;
-            printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-                   target.name, new_damage);
+            printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
           } else if (target.stats.shield == damage) {
             target.stats.shield = 0;
             printf("%s n'a plus de bouclier.\n", target.name);
           } else {
             target.stats.shield -= damage;
-            printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-                   damage);
+            printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
           }
         }
         for (int j = 0; j < 6; j++) {
@@ -3863,26 +3443,20 @@ void lightspeed(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
         if (verif == 1) {
           ally->team[i] = target;
           if (target.stats.shield > 0) {
-            printf(
-                "%s a maintenant %d points de vie et %d points de vie sur son "
-                "bouclier.\n",
-                ally->team[i].name, ally->team[i].stats.hp,
-                ally->team[i].stats.shield);
+            printf("%s a maintenant %d points de vie et %d points de vie sur son "
+                   "bouclier.\n",
+                   ally->team[i].name, ally->team[i].stats.hp, ally->team[i].stats.shield);
           } else {
-            printf("%s a maintenant %d points de vie.\n", ally->team[i].name,
-                   ally->team[i].stats.hp);
+            printf("%s a maintenant %d points de vie.\n", ally->team[i].name, ally->team[i].stats.hp);
           }
         } else {
           enemy->team[i] = target;
           if (target.stats.shield > 0) {
-            printf(
-                "%s a maintenant %d points de vie et %d points de vie sur son "
-                "bouclier.\n",
-                enemy->team[i].name, enemy->team[i].stats.hp,
-                enemy->team[i].stats.shield);
+            printf("%s a maintenant %d points de vie et %d points de vie sur son "
+                   "bouclier.\n",
+                   enemy->team[i].name, enemy->team[i].stats.hp, enemy->team[i].stats.shield);
           } else {
-            printf("%s a maintenant %d points de vie.\n", enemy->team[i].name,
-                   enemy->team[i].stats.hp);
+            printf("%s a maintenant %d points de vie.\n", enemy->team[i].name, enemy->team[i].stats.hp);
           }
         }
       }
@@ -3891,8 +3465,7 @@ void lightspeed(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
     if (i > alive[0] + alive[1] + alive[2])
       i = 0;
   } while (miss >= target.stats.agi && target.stats.hp != 0);
-  printf("L'attaque \"%s\" de %s prend fin.\n", fighter->move.name,
-         fighter->champ.name);
+  printf("L'attaque \"%s\" de %s prend fin.\n", fighter->move.name, fighter->champ.name);
 }
 
 void hand(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
@@ -3903,8 +3476,7 @@ void hand(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   };
@@ -3927,22 +3499,16 @@ void hand(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (damage < 0) {
         damage = power / 10;
       }
-      printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-             damage, target.name);
-      check = searchEffect(fighter, "Paralysie");
-      if (check != 0) {
-        if (para < 30) {
-          for (int i = 0; i < 6; i++) {
-            if (strcmp(target.name, fighters[i].champ.name) == 0) {
-              printf("%s est paralysé(e).\n", fighters[i].champ.name);
-              fighters[i].debuffs = addEffect(fighters[i].debuffs, "paralyze",
-                                              fighter->move.stats.duration);
-            }
+      printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
+      if (para < 30) {
+        for (int i = 0; i < 6; i++) {
+          if (strcmp(target.name, fighters[i].champ.name) == 0) {
+            printf("%s est paralysé(e).\n", fighters[i].champ.name);
+            fighters[i].debuffs =
+                addEffect(&fighters[i], fighters[i].debuffs, "paralyze", fighter->move.stats.duration);
           }
         }
       }
-      printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-             damage, target.name);
       if (target.stats.shield <= 0) {
         target.stats.hp -= damage;
         if (target.stats.hp < 0) {
@@ -3955,15 +3521,13 @@ void hand(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
           new_damage = damage - target.stats.shield;
           target.stats.shield = 0;
           target.stats.hp -= new_damage;
-          printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-                 target.name, new_damage);
+          printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
         } else if (target.stats.shield == damage) {
           target.stats.shield = 0;
           printf("%s n'a plus de bouclier.\n", target.name);
         } else {
           target.stats.shield -= damage;
-          printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-                 damage);
+          printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
         }
       }
       for (int j = 0; j < 6; j++) {
@@ -3978,24 +3542,18 @@ void hand(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (verif == 1) {
         ally->team[i] = target;
         if (target.stats.shield > 0) {
-          printf("%s a maintenant %d points de vie et %d points de vie sur son "
-                 "bouclier.\n",
-                 ally->team[i].name, ally->team[i].stats.hp,
-                 ally->team[i].stats.shield);
+          printf("%s a maintenant %d points de vie et %d points de vie sur son bouclier.\n", ally->team[i].name,
+                 ally->team[i].stats.hp, ally->team[i].stats.shield);
         } else {
-          printf("%s a maintenant %d points de vie.\n", ally->team[i].name,
-                 ally->team[i].stats.hp);
+          printf("%s a maintenant %d points de vie.\n", ally->team[i].name, ally->team[i].stats.hp);
         }
       } else {
         enemy->team[i] = target;
         if (target.stats.shield > 0) {
-          printf("%s a maintenant %d points de vie et %d points de vie sur son "
-                 "bouclier.\n",
-                 enemy->team[i].name, enemy->team[i].stats.hp,
-                 enemy->team[i].stats.shield);
+          printf("%s a maintenant %d points de vie et %d points de vie sur son bouclier.\n", enemy->team[i].name,
+                 enemy->team[i].stats.hp, enemy->team[i].stats.shield);
         } else {
-          printf("%s a maintenant %d points de vie.\n", enemy->team[i].name,
-                 enemy->team[i].stats.hp);
+          printf("%s a maintenant %d points de vie.\n", enemy->team[i].name, enemy->team[i].stats.hp);
         }
       }
     }
@@ -4009,8 +3567,7 @@ void bots(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   }
@@ -4026,10 +3583,8 @@ void bots(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
     }
     for (int i = 0; i < 6; i++) {
       if (strcmp(target.name, fighters[i].champ.name) == 0) {
-        printf("Le buff \"Defense Bots\" est actif sur %s.\n",
-               fighters[i].champ.name);
-        fighters[i].buffs =
-            addEffect(fighters[i].buffs, "bots", fighter->move.stats.duration);
+        printf("Le buff \"Defense Bots\" est actif sur %s.\n", fighters[i].champ.name);
+        fighters[i].buffs = addEffect(&fighters[i], fighters[i].buffs, "bots", fighter->move.stats.duration);
       }
     }
     target.stats.def = target.stats.def + fighter->move.stats.power;
@@ -4038,8 +3593,7 @@ void bots(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
     } else {
       enemy->team[i] = target;
     }
-    printf("%s a maintenant %d points de defense.\n", target.name,
-           target.stats.def);
+    printf("%s a maintenant %d points de defense.\n", target.name, target.stats.def);
   }
 }
 
@@ -4051,8 +3605,7 @@ void tails(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   }
@@ -4075,9 +3628,8 @@ void tails(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       damage = power / 10;
     }
     damage = damage * hits;
-    printf("%s frappe %d fois.", fighter->champ.name, hits);
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target.name);
+    printf("%s frappe %d fois.\n", fighter->champ.name, hits);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
     if (target.stats.shield <= 0) {
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
@@ -4090,15 +3642,13 @@ void tails(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
         new_damage = damage - target.stats.shield;
         target.stats.shield = 0;
         target.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
       } else if (target.stats.shield == damage) {
         target.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     for (int i = 0; i < 6; i++) {
@@ -4115,12 +3665,10 @@ void tails(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
@@ -4128,12 +3676,10 @@ void tails(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
@@ -4148,8 +3694,7 @@ void flash(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   };
@@ -4170,8 +3715,7 @@ void flash(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
     if (damage < 0) {
       damage = power / 10;
     }
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target.name);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
     if (target.stats.shield <= 0) {
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
@@ -4184,15 +3728,13 @@ void flash(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
         new_damage = damage - target.stats.shield;
         target.stats.shield = 0;
         target.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
       } else if (target.stats.shield == damage) {
         target.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     for (int i = 0; i < 6; i++) {
@@ -4209,12 +3751,10 @@ void flash(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
@@ -4222,20 +3762,17 @@ void flash(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
   }
 }
 
-void garrick(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
-             Team *enemy) {
+void garrick(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   Fighter target;
   int power = fighter->move.stats.power + fighter->champ.stats.atk / 10;
   int def, verif, miss, check, star = 1, para;
@@ -4243,8 +3780,7 @@ void garrick(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   };
@@ -4265,8 +3801,7 @@ void garrick(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
     if (damage < 0) {
       damage = power / 10;
     }
-    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name,
-           damage, target.name);
+    printf("%s inflige %d points de dégâts à %s.\n", fighter->champ.name, damage, target.name);
     if (target.stats.shield <= 0) {
       target.stats.hp -= damage;
       if (target.stats.hp < 0) {
@@ -4279,15 +3814,13 @@ void garrick(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
         new_damage = damage - target.stats.shield;
         target.stats.shield = 0;
         target.stats.hp -= new_damage;
-        printf("%s n'a plus de bouclier et perd %d points de vie.\n",
-               target.name, new_damage);
+        printf("%s n'a plus de bouclier et perd %d points de vie.\n", target.name, new_damage);
       } else if (target.stats.shield == damage) {
         target.stats.shield = 0;
         printf("%s n'a plus de bouclier.\n", target.name);
       } else {
         target.stats.shield -= damage;
-        printf("Le bouclier de %s perd %d points de vie.\n", target.name,
-               damage);
+        printf("Le bouclier de %s perd %d points de vie.\n", target.name, damage);
       }
     }
     for (int i = 0; i < 6; i++) {
@@ -4304,12 +3837,10 @@ void garrick(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               ally->team[fighter->targets].name,
-               ally->team[fighter->targets].stats.hp,
+               ally->team[fighter->targets].name, ally->team[fighter->targets].stats.hp,
                ally->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               ally->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", ally->team[fighter->targets].name,
                ally->team[fighter->targets].stats.hp);
       }
     } else {
@@ -4317,12 +3848,10 @@ void garrick(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally,
       if (target.stats.shield > 0) {
         printf("%s a maintenant %d points de vie et %d points de vie sur son "
                "bouclier.\n",
-               enemy->team[fighter->targets].name,
-               enemy->team[fighter->targets].stats.hp,
+               enemy->team[fighter->targets].name, enemy->team[fighter->targets].stats.hp,
                enemy->team[fighter->targets].stats.shield);
       } else {
-        printf("%s a maintenant %d points de vie.\n",
-               enemy->team[fighter->targets].name,
+        printf("%s a maintenant %d points de vie.\n", enemy->team[fighter->targets].name,
                enemy->team[fighter->targets].stats.hp);
       }
     }
@@ -4340,15 +3869,13 @@ void pride(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   if (check == 0) {
     para = rand() % 100;
     if (para < 30) {
-      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name,
-             fighter->champ.name);
+      printf("%s est paralysé(e), %s n'a pas pu agir.\n", fighter->champ.name, fighter->champ.name);
       return;
     }
   }
   check = searchEffect(fighter, "Saiyan Pride");
   if (check != 0) {
-    fighter->buffs =
-        addEffect(fighter->buffs, "pride", fighter->move.stats.duration);
+    fighter->buffs = addEffect(&*fighter, fighter->buffs, "pride", fighter->move.stats.duration);
   }
   target.stats.atk = target.stats.atk + fighter->move.stats.power;
   if (verif == 1) {
@@ -4356,6 +3883,5 @@ void pride(ActiveTeam *fighters, ActiveTeam *fighter, Team *ally, Team *enemy) {
   } else {
     enemy->team[fighter->champIndex] = target;
   }
-  printf("Vegeta gagne 40 points d'attaque supplémentaire pendant %d tours.\n",
-         fighter->move.stats.duration);
+  printf("Vegeta gagne 40 points d'attaque supplémentaire pendant %d tours.\n", fighter->move.stats.duration);
 }

@@ -81,7 +81,7 @@ int verifyChamp(char *champName);
 int verifyTeam(Fighter champ, Team team);
 void toLowerCase(char *str);
 void clear_scan();
-void removePattern(char *str, const char *pattern);
+void removePattern(char *str, char *pattern);
 char *getAliase(char *fullName);
 char *getFullName(char *aliase);
 char *getValue(char *input);

@@ -21,10 +21,10 @@ Check if self heal move available
     if available and champ not healthy
         use self heal move
 Check if buff move is available
-    if available use buff move (inflicts boosts, regeneration or ultimate buffs [If Super Star is buff, do other steps until hp < 30%])
+    if available use buff move (inflicts boosts, regeneration or ultimate buffs [If Super Star is buff, do other steps if hp > 30%])
 Check if debuff move is available
     if available use debuff move (inflicts sleep, paralysis, burn, stun or freeze)
-killable = damage with mid defense roll - hp > 0 
+killable = damage with max defense roll - hp > 0
 Check if enemy killable (less than 30% hp, K.O. with moves, no Super Star effect up)
     if killable check if ally is already attacking killable enemy
         if no ally attacking killable enemy

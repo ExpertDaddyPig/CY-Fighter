@@ -83,10 +83,40 @@ Effect *deleteEffect(Effect **effects, char *effect) {
   return *effects;
 }
 
-Effect *addEffect(Effect *effects, char *effect, int dur) {
-  Effect *new = createEffect(effect, dur);
-  new->next = effects;
-  return new;
+Effect *deleteAllEffect(Effect **effects) {
+  Effect *current = *effects;
+  Effect *next = NULL;
+
+  while (current != NULL) {
+    next = current->next;
+    free(current);
+    current = next;
+  }
+
+  *effects = NULL;
+  return *effects;
+}
+
+Effect *addEffect(ActiveTeam *activeFighter, Effect *effects, char *effect,
+                  int dur) {
+  Effect *new = createEffect(effect, dur), *temp = effects, *res = NULL;
+  if (searchEffect(activeFighter, new->name) == 0) {
+    while (temp != NULL) {
+      if (strcmp(temp->name, new->name) == 0) {
+        res = temp;
+      }
+      temp = temp->next;
+    }
+    printf("L'effet \"%s\" est déjà actif sur %s, extension de la durée de "
+           "l'effet: [%d tours]",
+           res->name, activeFighter->champ.name, res->duration);
+    res->duration = res->duration + new->duration;
+    printf("-> [%d tours].\n", res->duration);
+    return effects;
+  } else {
+    new->next = effects;
+    return new;
+  }
 }
 
 Effect *returnEffect(Effect *effects, char *effect) {
@@ -106,7 +136,7 @@ int searchEffect(ActiveTeam *activeFighter, char *buff) {
   Effect *temp = activeFighter->buffs;
   int res = 1;
   while (temp != NULL) {
-    if (strcmp(temp->name, buff) == 0) {
+    if (strcmp(buff, temp->name) == 0) {
       res = 0;
     }
     temp = temp->next;
@@ -116,7 +146,7 @@ int searchEffect(ActiveTeam *activeFighter, char *buff) {
   temp = activeFighter->debuffs;
   res = 1;
   while (temp != NULL) {
-    if (strcmp(temp->name, buff) == 0) {
+    if (strcmp(buff, temp->name) == 0) {
       res = 0;
     }
     temp = temp->next;
@@ -129,6 +159,10 @@ void updateEffects(Effect **effectList, Effect *effect,
   int free = rand() % 100;
   if (effect == NULL)
     return;
+  if (activeFighter->alive == 0) {
+    *effectList = deleteAllEffect(effectList);
+    return;
+  }
   if (free <= effect->luck) {
     printf("%s s'est libéré(e) de l'effet \"%s\" (%d %d)\n",
            activeFighter->champ.name, effect->name, free, effect->luck);
@@ -154,9 +188,10 @@ void updateEffects(Effect **effectList, Effect *effect,
       effect->duration--;
     } else {
       if (strcmp(effect->name, "Charge") != 0)
-        printf("L'effet \"%s\" est actif sur %s. Il prendra à la prochaine "
-               "attaque.\n\n",
-               effect->name, activeFighter->champ.name);
+        printf(
+            "L'effet \"%s\" est actif sur %s. Il sera effectif à la prochaine "
+            "attaque.\n\n",
+            effect->name, activeFighter->champ.name);
     }
     updateEffects(effectList, effect->next, activeFighter, team);
   } else {
@@ -172,18 +207,22 @@ void updateEffects(Effect **effectList, Effect *effect,
 void applyEffect(ActiveTeam *activeFighter, Team *team, Effect *effect) {
   int star = searchEffect(activeFighter, "Super Star");
   if (strcmp(effect->name, "Régénération") == 0) {
-   if (team->team[activeFighter->champIndex].stats.hp != 0) {
-    printf("%s est régénère %d points de vie.\n", activeFighter->champ.name,
-           -effect->damage);
-    team->team[activeFighter->champIndex].stats.hp =
-        team->team[activeFighter->champIndex].stats.hp - effect->damage;
-    if (team->team[activeFighter->champIndex].stats.hp >
-        team->team[activeFighter->champIndex].stats.hpMax) {
+    if (team->team[activeFighter->champIndex].stats.hp != 0) {
+      printf("%s est régénère %d points de vie.\n", activeFighter->champ.name,
+             -effect->damage);
       team->team[activeFighter->champIndex].stats.hp =
-          team->team[activeFighter->champIndex].stats.hpMax;
+          team->team[activeFighter->champIndex].stats.hp - effect->damage;
+      if (team->team[activeFighter->champIndex].stats.hp >
+          team->team[activeFighter->champIndex].stats.hpMax) {
+        team->team[activeFighter->champIndex].stats.hp =
+            team->team[activeFighter->champIndex].stats.hpMax;
+      }
+      printf("%s a maintenant %d points de vie.\n", activeFighter->champ.name,
+             team->team[activeFighter->champIndex].stats.hp);
+    } else {
+      printf("%s est K.O. et ne peut pas regagner des points de vie.\n",
+             activeFighter->champ.name);
     }
-    printf("%s a maintenant %d points de vie.\n", activeFighter->champ.name,
-           team->team[activeFighter->champIndex].stats.hp);}
   }
   if (strcmp(effect->name, "Brûlure") == 0) {
     printf("%s est brûlé(e) et subit %d points de dégats.\n",

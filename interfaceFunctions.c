@@ -9,8 +9,38 @@
 
 #define color(param) printf("\033[%sm", param)
 
-void SoloTeamInterface(Team team) {
-  int space, namespace;
+char effectList[][50] = {"Paralysie", "Gel",  "Régénération",
+                         "Brûlure",   "Stun", "Sommeil"};
+char buffList[][50] = {
+    "Defense Bots", "Byakugan",     "Kaioken",       "Mode Chakra de Kyubi",
+    "Saiyan Pride", "Serious Mode", "Super Saiyan",  "Super Star",
+    "Super Sonic",  "Susano",       "Ultra Instinct"};
+char debuffList[][50] = {"Brisage", "Charge", "Kunaï Explosifs"};
+char effectSymbols[][5] = {"⚡", "⛄", "💖", "🔥", "✨", "💤", "🔺", "🔻"};
+
+void getActiveEffects(ActiveTeam fighter, int *effectStates) {
+  for (int i = 0; i < 6; i++) {
+    if (searchEffect(&fighter, effectList[i]) == 0)
+      effectStates[i] = 1;
+  }
+  for (int i = 0; i < sizeof(buffList) / 50; i++) {
+    if (searchEffect(&fighter, buffList[i]) == 0)
+      effectStates[6] = 1;
+  }
+  for (int i = 0; i < sizeof(debuffList) / 50; i++) {
+    if (searchEffect(&fighter, debuffList[i]) == 0)
+      effectStates[7] = 1;
+  }
+}
+
+void resetEffects(int *effects) {
+  for (int i = 0; i < 8; i++) {
+    effects[i] = 0;
+  }
+}
+
+void SoloTeamInterface(ActiveTeam activeTeam[], Team team) {
+  int space, namespace, effects[8] = {0};
   float percent, shieldPercent;
   char *heros, *teamName;
   teamName = team.teamName;
@@ -36,20 +66,38 @@ void SoloTeamInterface(Team team) {
       color("41");
       printf("K.O.");
       color("0");
-      printf("     ");
-
+      if (j != 2) {
+        printf("     ");
+      }
     } else {
       if (j != 2) {
-        printf("|%d|      ", j + 1);
+        printf(" |%d|     ", j + 1);
       } else {
-        printf("|%d| ", j + 1);
+        printf(" |%d|", j + 1);
       }
     }
   }
   printf("   ┃\n");
   printf("┃    ");
-  for (int i = 0; i < 72; i++) {
-    printf(" ");
+  for (int i = 0; i < 3; i++) {
+    getActiveEffects(activeTeam[i], effects);
+    printf("[ ");
+    for (int j = 0; j < 8; j++) {
+      if (effects[j] == 1) {
+        if (j == 0)
+          color("93");
+        printf("%s", effectSymbols[j]);
+        if (j == 0)
+          color("0");
+      } else {
+        printf("──");
+      }
+    }
+    printf(" ]");
+    resetEffects(effects);
+    if (i != 2) {
+      printf("      ");
+    }
   }
   printf("    ┃\n");
   printf("┃   ");
@@ -117,13 +165,23 @@ void SoloTeamInterface(Team team) {
   printf("┛\n");
 }
 
-void Interface(Team ally, Team enemy) {
-  int space, namespace;
-  float percent;
-  char *heros1, *heros2, *heros3, *heros4, *heros5, *heros6, *allyName,
-      *enemyName;
-  SoloTeamInterface(ally);
-  SoloTeamInterface(enemy);
+void Interface(ActiveTeam *fusedTeam, Team ally, Team enemy) {
+  ActiveTeam *activeAlly = malloc(3 * sizeof(ActiveTeam)),
+             *activeEnemy = malloc(3 * sizeof(ActiveTeam));
+  for (int i = 0; i < 3; i++) {
+    if (verifyTeam(fusedTeam[i].champ, ally) == 0) {
+      activeEnemy[i] = fusedTeam[i];
+    } else {
+      activeAlly[i] = fusedTeam[i];
+    }
+    if (verifyTeam(fusedTeam[i + 3].champ, ally) == 0) {
+      activeEnemy[i] = fusedTeam[i + 3];
+    } else {
+      activeAlly[i] = fusedTeam[i + 3];
+    }
+  }
+  SoloTeamInterface(activeAlly, ally);
+  SoloTeamInterface(activeEnemy, enemy);
 }
 
 void champInfos(Fighter champ, ActiveTeam fighter) {

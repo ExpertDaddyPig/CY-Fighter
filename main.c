@@ -9,6 +9,7 @@
 #include "movesFunctions.h"
 
 void main() {
+  srand(time(NULL));
   int choice, combatChoice, diffChoice;
   char teamName[200];
   int verif = 1;
@@ -70,7 +71,6 @@ void main() {
         // Starting the game
         // Display the teams
         printf("\n");
-        Interface(team1, team2);
         printf("\nAppuyez sur entrée pour commencer le tour.\n");
         clear_scan();
         // Launch the fight until one team is dead
@@ -127,7 +127,6 @@ void main() {
           Team team2 = createTeam2(teamName, team1);
         }
         printf("\n");
-        Interface(team1, team2);
         printf("\nAppuyez sur entrée pour commencer le tour.\n");
         clear_scan();
         fight(team1, team2, diffChoice);
